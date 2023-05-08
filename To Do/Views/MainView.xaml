@@ -96,8 +96,39 @@
                 <StackPanel
                     Grid.Column="0"
                     Width="200">
-                    <TextBlock Text="Item1" />
-                    <TextBlock Text="Item2" />
+                    <materialDesign:Card>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image
+                                Grid.Column="0"
+                                Width="50"
+                                Height="50"
+                                Margin="10,0"
+                                Source="/Images/todo.png">
+                                <Image.Clip>
+                                    <EllipseGeometry
+                                        Center="25, 25"
+                                        RadiusX="25"
+                                        RadiusY="25" />
+                                </Image.Clip>
+                            </Image>
+                            <StackPanel
+                                Grid.Column="1"
+                                VerticalAlignment="Center">
+                                <TextBlock
+                                    FontWeight="Bold"
+                                    Text="Me" />
+                                <TextBlock Text="已同步于..." />
+                            </StackPanel>
+                        </Grid>
+
+                    </materialDesign:Card>
+
+                    <TextBox materialDesign:HintAssist.Hint="Search" />
+
                     <TextBlock Text="Item3" />
                 </StackPanel>
                 <!--  Content control  -->
