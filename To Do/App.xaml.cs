@@ -28,7 +28,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterInstance(config.CreateMapper());
 
         /*viewmodels*/
-        //containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
+        containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
 
         /*dialog*/
         //containerRegistry.RegisterDialog<SomeDialog>();
