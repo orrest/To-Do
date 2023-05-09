@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 
 namespace To_Do;
@@ -10,6 +11,21 @@ public partial class MainView : Window
         InitializeComponent();
     }
 
+    private void btnMin_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void btnMax_Click(object sender, RoutedEventArgs e)
+    {
+        WindowScale();
+    }
+
+    private void btnClose_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
     private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed)
@@ -18,19 +34,14 @@ public partial class MainView : Window
         }
     }
 
-    private void btnMin_Click(object sender, RoutedEventArgs e)
+    private void TitleBar_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        WindowState = WindowState.Minimized;
+        WindowScale();
     }
 
-    private void btnMax_Click(object sender, RoutedEventArgs e)
+    private void WindowScale()
     {
         WindowState = WindowState == WindowState.Maximized ?
             WindowState.Normal : WindowState.Maximized;
-    }
-
-    private void btnClose_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
     }
 }

@@ -23,7 +23,7 @@
 
     <Border
         Background="{DynamicResource MaterialDesignDarkBackground}"
-        BorderBrush="LightGray"
+        BorderBrush="Gray"
         BorderThickness="1"
         CornerRadius="8">
 
@@ -35,11 +35,13 @@
 
             <!--  Title bar  -->
             <materialDesign:ColorZone
+                x:Name="TitleBar"
                 materialDesign:ElevationAssist.Elevation="Dp4"
                 Background="{StaticResource MaterialDesignDarkBackground}"
                 CornerRadius="8,8,0,0"
                 Mode="PrimaryMid"
-                MouseDown="TitleBar_MouseDown">
+                MouseDown="TitleBar_MouseDown"
+                PreviewMouseDoubleClick="TitleBar_PreviewMouseDoubleClick">
                 <DockPanel>
                     <StackPanel Orientation="Horizontal">
                         <Image
