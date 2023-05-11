@@ -24,22 +24,33 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ListBoxItem}">
                             <Grid>
-                                <Border x:Name="borderHeader" />
-                                <Border x:Name="border" />
+                                <Border
+                                    x:Name="PART_BackgroundBorder"
+                                    CornerRadius="5" />
+                                <Rectangle
+                                    x:Name="PART_LeftIndicatorRect"
+                                    Width="3.5"
+                                    Height="18"
+                                    Margin="2,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    RadiusX="2"
+                                    RadiusY="2" />
+                                <Rectangle
+                                    Fill="AliceBlue"
+                                    Opacity="0" />
                                 <ContentPresenter />
                             </Grid>
 
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter TargetName="borderHeader" Property="BorderThickness" Value="4,0,0,0" />
-                                    <Setter TargetName="borderHeader" Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}" />
-                                    <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
-                                    <Setter TargetName="border" Property="Opacity" Value="0.2" />
+                                    <Setter TargetName="PART_LeftIndicatorRect" Property="Fill" Value="LightSeaGreen" />
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Opacity" Value="0.2" />
                                 </Trigger>
 
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
-                                    <Setter TargetName="border" Property="Opacity" Value="0.2" />
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Opacity" Value="0.2" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

@@ -2,11 +2,13 @@
     x:Class="To_Do.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="clr-namespace:To_Do.Helpers"
     xmlns:local="clr-namespace:To_Do"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:To_Do.Models"
     xmlns:prism="http://prismlibrary.com/"
     Width="1020"
     Height="600"
@@ -15,14 +17,17 @@
     AllowsTransparency="True"
     Background="Transparent"
     FontFamily="{DynamicResource MaterialDesignFont}"
-    ResizeMode="CanResizeWithGrip"
-    TextElement.FontSize="16"
+    TextElement.FontSize="18"
     TextElement.FontWeight="Regular"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     WindowStyle="None"
     mc:Ignorable="d">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" />
+    </WindowChrome.WindowChrome>
 
     <Border
         Background="{DynamicResource MaterialDesignDarkBackground}"
@@ -100,9 +105,9 @@
                 <!--  Navigation panel  -->
                 <StackPanel
                     Grid.Column="0"
-                    Margin="20,5">
+                    Margin="0,5">
                     <!--  Avarta  -->
-                    <Grid Margin="0,8">
+                    <Grid Margin="20,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="10" />
@@ -149,7 +154,7 @@
                     </Grid>
 
                     <!--  Search box  -->
-                    <Grid Margin="0,8">
+                    <Grid Margin="20,8">
                         <TextBox
                             CaretBrush="{StaticResource MaterialDesignDarkForeground}"
                             FontSize="16">
@@ -187,8 +192,35 @@
                     </Grid>
 
                     <!--  Menu  -->
-                    <!--  ToDo  -->
-                    <ListBox />
+                    <ListBox
+                        x:Name="MenuListBox"
+                        Margin="5,8"
+                        ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
+                        ItemsSource="{Binding MenuItems}">
+                        <behavior:Interaction.Triggers>
+                            <behavior:EventTrigger EventName="SelectionChanged">
+                                <behavior:InvokeCommandAction
+                                    Command="{Binding NavigationCommand}"
+                                    CommandParameter="{Binding ElementName=MenuListBox, Path=SelectedItem}" />
+                            </behavior:EventTrigger>
+                        </behavior:Interaction.Triggers>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:MenuItem}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon
+                                        Width="22"
+                                        Height="22"
+                                        Margin="24,0,8,0"
+                                        VerticalAlignment="Center"
+                                        Foreground="{Binding Color}"
+                                        Kind="{Binding Icon}" />
+                                    <TextBlock
+                                        Margin="10,8"
+                                        Text="{Binding Title}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </StackPanel>
                 <!--  Content control  -->
                 <ContentControl prism:RegionManager.RegionName="{x:Static helpers:Constants.MainRegion}" />
