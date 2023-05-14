@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 
-namespace To_Do;
+namespace To_Do.Views;
 
 public partial class MainView : Window
 {

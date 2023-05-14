@@ -4,6 +4,8 @@ using Prism.Ioc;
 using Refit;
 using System.Windows;
 using To_Do.Services;
+using To_Do.ViewModels;
+using To_Do.Views;
 
 namespace To_Do;
 
@@ -29,6 +31,12 @@ public partial class App : PrismApplication
 
         /*viewmodels*/
         containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
+        containerRegistry.RegisterForNavigation<DayView, DayViewModel>();
+        containerRegistry.RegisterForNavigation<EmailView, EmailViewModel>();
+        containerRegistry.RegisterForNavigation<LongTermView, LongTermViewModel>();
+        containerRegistry.RegisterForNavigation<MonthView, MonthViewModel>();
+        containerRegistry.RegisterForNavigation<UrgentView, UrgentViewModel>();
+        containerRegistry.RegisterForNavigation<WeekView, WeekViewModel>();
 
         /*dialog*/
         //containerRegistry.RegisterDialog<SomeDialog>();
