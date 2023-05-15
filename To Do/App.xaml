@@ -58,6 +58,79 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style
+                x:Key="TaskItemStyle"
+                TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Grid>
+                                <Border
+                                    x:Name="PART_BackgroundBorder"
+                                    Margin="2"
+                                    CornerRadius="5" />
+                                <Rectangle
+                                    x:Name="PART_LeftIndicatorRect"
+                                    Width="3.5"
+                                    Height="18"
+                                    Margin="2,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    RadiusX="2"
+                                    RadiusY="2" />
+                                <Rectangle
+                                    Fill="AliceBlue"
+                                    Opacity="0" />
+                                <ContentPresenter />
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="PART_LeftIndicatorRect" Property="Fill" Value="LightSeaGreen" />
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Opacity" Value="0.2" />
+                                </Trigger>
+
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+                                    <Setter TargetName="PART_BackgroundBorder" Property="Opacity" Value="0.2" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <Style
+                x:Key="SubViewBottomBar"
+                TargetType="{x:Type TextBox}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Grid>
+                                <Decorator
+                                    Name="PART_ContentHost"
+                                    Margin="5" />
+                                <Border
+                                    Name="PART_BackgroudBorder"
+                                    Background="{StaticResource MaterialDesignDarkBackground}"
+                                    CornerRadius="3" />
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Trigger.Setters>
+                                        <Setter TargetName="PART_BackgroudBorder" Property="Background" Value="LightGray" />
+                                    </Trigger.Setters>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignLightForeground}" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>
