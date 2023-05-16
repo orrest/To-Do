@@ -101,34 +101,57 @@
                 </Setter>
             </Style>
 
-
             <Style
-                x:Key="SubViewBottomBar"
+                x:Key="SubViewBottomTextBox"
                 TargetType="{x:Type TextBox}">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TextBox">
-                            <Grid>
-                                <Decorator
-                                    Name="PART_ContentHost"
-                                    Margin="5" />
-                                <Border
-                                    Name="PART_BackgroudBorder"
-                                    Background="{StaticResource MaterialDesignDarkBackground}"
-                                    CornerRadius="3" />
-                            </Grid>
-
+                            <Border
+                                Name="backgroundBorder"
+                                Background="#222222"
+                                CornerRadius="3">
+                                <StackPanel
+                                    Margin="0,10"
+                                    Orientation="Horizontal">
+                                    <Grid VerticalAlignment="Center">
+                                        <materialDesign:PackIcon
+                                            Name="leadingIcon"
+                                            Width="30"
+                                            Height="30"
+                                            Margin="10,0"
+                                            VerticalAlignment="Center"
+                                            Kind="Add" />
+                                        <Decorator
+                                            Name="PART_ContentHost"
+                                            Margin="45,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Panel.ZIndex="1" />
+                                    </Grid>
+                                    <TextBlock
+                                        Name="indicatorTextBlock"
+                                        VerticalAlignment="Center"
+                                        Text="添加任务" />
+                                </StackPanel>
+                            </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Trigger.Setters>
-                                        <Setter TargetName="PART_BackgroudBorder" Property="Background" Value="LightGray" />
+                                        <Setter TargetName="backgroundBorder" Property="Background" Value="#3c3c3c" />
+                                    </Trigger.Setters>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Trigger.Setters>
+                                        <Setter TargetName="leadingIcon" Property="Kind" Value="CircleOutline" />
+                                        <Setter TargetName="indicatorTextBlock" Property="Visibility" Value="Hidden" />
                                     </Trigger.Setters>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignLightForeground}" />
+                <Setter Property="CaretBrush" Value="#c3c3c3" />
+                <Setter Property="Foreground" Value="#808d97" />
             </Style>
 
         </ResourceDictionary>
