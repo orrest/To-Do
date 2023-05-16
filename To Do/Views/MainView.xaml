@@ -194,7 +194,7 @@
                     <ListBox
                         x:Name="MenuListBox"
                         Margin="5,8"
-                        ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
+                        ItemContainerStyle="{StaticResource MenuItemStyle}"
                         ItemsSource="{Binding MenuItems}"
                         SelectedItem="{Binding SelectedItem}">
                         <behavior:Interaction.Triggers>

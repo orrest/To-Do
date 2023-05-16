@@ -7,7 +7,8 @@
     xmlns:local="clr-namespace:To_Do.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:Background="AliceBlue"
+    xmlns:models="clr-namespace:To_Do.Models"
+    d:Background="Black"
     d:DesignHeight="600"
     d:DesignWidth="1020"
     Background="Transparent"
@@ -18,7 +19,7 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
-    <Grid Background="black">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="90" />
             <RowDefinition Height="*" />
@@ -46,10 +47,12 @@
         <!--  Content  -->
         <ListBox
             x:Name="TaskListBox"
-            Margin="5,8"
+            Grid.Row="1"
+            Margin="40,0"
             ItemContainerStyle="{StaticResource TaskItemStyle}"
-            ItemsSource="{Binding TaskItems}"
-            SelectedItem="{Binding SelectedItem}">
+            ItemsSource="{Binding Tasks}"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            SelectedItem="{Binding SelectedTask}">
             <behavior:Interaction.Triggers>
                 <behavior:EventTrigger EventName="SelectionChanged">
                     <behavior:InvokeCommandAction
@@ -57,44 +60,47 @@
                         CommandParameter="{Binding ElementName=TaskListBox, Path=SelectedItem}" />
                 </behavior:EventTrigger>
             </behavior:Interaction.Triggers>
-            <!--<ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:MenuItem}">
-                    <StackPanel
-                        Margin="11"
-                        Orientation="Horizontal">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:TaskModel}">
+                    <Grid
+                        Height="60"
+                        Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="60" />
+                        </Grid.ColumnDefinitions>
                         <materialDesign:PackIcon
+                            Grid.Column="0"
                             Width="22"
                             Height="22"
-                            Margin="24,0,8,0"
+                            Margin="20,0,0,0"
                             VerticalAlignment="Center"
-                            Foreground="{Binding Color}"
-                            Kind="{Binding Icon}" />
+                            Kind="CircleOutline" />
                         <TextBlock
-                            Margin="10,0"
-                            Text="{Binding Title}" />
-                    </StackPanel>
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Text="{Binding Description}" />
+                        <materialDesign:PackIcon
+                            Grid.Column="2"
+                            Width="22"
+                            Height="22"
+                            Margin="0,0,20,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Kind="StarOutline" />
+                    </Grid>
                 </DataTemplate>
-            </ListBox.ItemTemplate>-->
+            </ListBox.ItemTemplate>
         </ListBox>
 
         <!--  Bottom bar  -->
-        <StackPanel
+        <TextBox
             Grid.Row="2"
-            Margin="40,0,40,60"
-            Background="Transparent"
-            Orientation="Horizontal">
-            <materialDesign:PackIcon
-                Width="30"
-                Height="30"
-                Margin="5,0"
-                VerticalAlignment="Center"
-                Kind="Add" />
-            <TextBox
-                VerticalAlignment="Center"
-                FontSize="16"
-                Foreground="White"
-                Style="{x:Null}"
-                Text="添加任务" />
-        </StackPanel>
+            Margin="40,0"
+            VerticalAlignment="Center"
+            FontSize="16"
+            Style="{StaticResource SubViewBottomTextBox}" />
     </Grid>
 </UserControl>
