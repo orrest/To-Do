@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using To_Do.API.Contexts;
+using To_Do.API.Entities;
 
 namespace To_Do.API
 {
@@ -23,13 +23,18 @@ namespace To_Do.API
             });
 
             /*Identity*/
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddAuthentication(options =>
+            builder.Services.AddDataProtection(); /*necessary to identity services*/
+            builder.Services.AddIdentityCore<User>(options =>
             {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
+                options.Password.RequireDigit = false;
+                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
+            }).AddRoles<Role>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders()
+            .AddRoleManager<RoleManager<Role>>()
+            .AddUserManager<UserManager<User>>();
+
 
             /*Controllers*/
             builder.Services.AddControllers();
