@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using To_Do.API.Entities;
 using To_Do.API.Models;
 using To_Do.Shared;
 
@@ -14,24 +11,27 @@ namespace To_Do.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> logger;
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<Role> roleManager;
 
-        public UserController(ILogger<UserController> logger,
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager)
+        public UserController(
+            ILogger<UserController> logger,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            RoleManager<Role> roleManager)
         {
             this.logger = logger;
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterDTO model)
         {
-            var newUser = new IdentityUser 
+            var newUser = new User 
             { 
-                UserName = model.UserName, 
                 Email = model.EmailAddress,
             };
 
@@ -50,7 +50,7 @@ namespace To_Do.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
-            var result = await signInManager.PasswordSignInAsync(login.UserName, login.Password, false, false);
+            var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, false, false);
             
             if (!result.Succeeded)
             {
