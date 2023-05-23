@@ -25,6 +25,7 @@
         <converters:BoolToStarIconConverter x:Key="boolToStarIconConverter" />
         <converters:BoolToCircleIconConveter x:Key="boolToCircleIconConverter" />
         <converters:BoolToRevertConverter x:Key="boolToRevertConverter" />
+        <converters:BoolToColorConverter x:Key="boolToColorConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -109,6 +110,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 FontWeight="ExtraBold"
+                                Foreground="{Binding IsFinished, Converter={StaticResource boolToColorConverter}}"
                                 Kind="Check"
                                 Visibility="Hidden" />
                             <materialDesign:PackIcon
