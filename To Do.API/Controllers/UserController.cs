@@ -11,18 +11,15 @@ namespace To_Do.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> logger;
-        private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
 
         public UserController(
             ILogger<UserController> logger,
-            SignInManager<User> signInManager,
             UserManager<User> userManager,
             RoleManager<Role> roleManager)
         {
             this.logger = logger;
-            this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
@@ -32,6 +29,8 @@ namespace To_Do.API.Controllers
         {
             var newUser = new User 
             { 
+                CreateTime = DateTime.Now,
+                UserName = model.EmailAddress,
                 Email = model.EmailAddress,
             };
 
@@ -50,17 +49,6 @@ namespace To_Do.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
-            var result = await signInManager.PasswordSignInAsync(login.Email, login.Password, false, false);
-            
-            if (!result.Succeeded)
-            {
-                return BadRequest(new LoginResult
-                {
-                    Successful = false,
-                    Error = "Username and password are invalid."
-                });
-            }
-
             return Ok(new LoginResult 
             { 
                 Successful = true, 
@@ -71,7 +59,6 @@ namespace To_Do.API.Controllers
         [HttpPost]
         public async Task Logout()
         {
-            await signInManager.SignOutAsync();
         }
     }
 }

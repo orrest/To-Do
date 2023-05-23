@@ -30,10 +30,10 @@ namespace To_Do.API
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
                 options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             }).AddRoles<Role>()
-            .AddEntityFrameworkStores<UserRoleDbContext>()
-            .AddDefaultTokenProviders()
-            .AddRoleManager<RoleManager<Role>>()
-            .AddUserManager<UserManager<User>>();
+                .AddEntityFrameworkStores<UserRoleDbContext>()
+                .AddDefaultTokenProviders()
+                .AddRoleManager<RoleManager<Role>>()
+                .AddUserManager<UserManager<User>>();
 
 
             /*Controllers*/
@@ -60,7 +60,7 @@ namespace To_Do.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            
             app.MapControllers();
 
             app.Run();
