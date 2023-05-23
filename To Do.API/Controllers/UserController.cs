@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using To_Do.API.Entities;
 using To_Do.API.Models;
+using To_Do.Helpers;
 using To_Do.Shared;
 
 namespace To_Do.API.Controllers
@@ -31,11 +32,22 @@ namespace To_Do.API.Controllers
             { 
                 CreateTime = DateTime.Now,
                 UserName = model.EmailAddress,
-                Email = model.EmailAddress,
+                Email = model.EmailAddress
             };
 
+            // Add new user
             var result = await userManager.CreateAsync(newUser, model.Password);
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
 
+                return Ok(new RegisterResult { Successful = false, Errors = errors });
+            }
+
+            // Add new role to user
+            var role = new Role() { Name = RoleHelper.NORMAL_ROLE };
+            var normalRole = await roleManager.CreateAsync(role);
+            result = await userManager.AddToRoleAsync(newUser, RoleHelper.NORMAL_ROLE);
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(x => x.Description);
@@ -49,11 +61,48 @@ namespace To_Do.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
-            return Ok(new LoginResult 
-            { 
-                Successful = true, 
-                Token = ""
-            });
+            string email = login.Email;
+            string password = login.Password;
+
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return Ok(new LoginResult
+                {
+                    Successful = false,
+                    Token = "",
+                    Error = "Wrong email or password."
+                });
+            }
+
+            if (await userManager.IsLockedOutAsync(user))
+            {
+                return Ok(new LoginResult
+                {
+                    Successful = false,
+                    Token = "",
+                    Error = "Account is locked."
+                });
+            }
+
+            if (await userManager.CheckPasswordAsync(user, password))
+            {
+                return Ok(new LoginResult
+                {
+                    Successful = true,
+                });
+            }
+            else
+            {
+                await userManager.AccessFailedAsync(user);
+                return Ok(new LoginResult
+                {
+                    Successful = false,
+                    Error = "Wrong email or password."
+                });
+            }
+            // TODO: Token
         }
 
         [HttpPost]
