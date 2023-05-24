@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using To_Do.API.Contexts;
 using To_Do.API.Entities;
+using To_Do.Helpers;
 
 namespace To_Do.API
 {
@@ -23,6 +27,22 @@ namespace To_Do.API
             });
 
             /*Identity*/
+            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    var jwtOptions = builder.Configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>();
+                    var keyBytes = Encoding.UTF8.GetBytes(jwtOptions.SigningKey);
+                    var secKey = new SymmetricSecurityKey(keyBytes);
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = secKey
+                    };
+                });
             builder.Services.AddDataProtection(); /*necessary to identity services*/
             builder.Services.AddIdentityCore<User>(options =>
             {

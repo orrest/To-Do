@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
 using To_Do.API.Entities;
 using To_Do.API.Models;
 using To_Do.Helpers;
@@ -59,55 +61,47 @@ namespace To_Do.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginDTO login)
+        public async Task<IActionResult> Login(
+            [FromBody] LoginDTO login, 
+            [FromServices] IOptions<JwtOptions> jwtOptions)
         {
-            string email = login.Email;
+            string userName = login.Email;
             string password = login.Password;
-
-            var user = await userManager.FindByEmailAsync(email);
-
+            var user = await userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                return Ok(new LoginResult
-                {
-                    Successful = false,
-                    Token = "",
-                    Error = "Wrong email or password."
-                });
+                return Ok(new LoginResult { Successful = false, Error = "Not registered user." });
             }
 
-            if (await userManager.IsLockedOutAsync(user))
+            if (!await userManager.CheckPasswordAsync(user, password))
             {
-                return Ok(new LoginResult
-                {
-                    Successful = false,
-                    Token = "",
-                    Error = "Account is locked."
-                });
+                return Ok(new LoginResult { Successful = false, Error = "Wrong email or password." });
             }
 
-            if (await userManager.CheckPasswordAsync(user, password))
+            if (!await userManager.IsLockedOutAsync(user))
             {
-                return Ok(new LoginResult
-                {
-                    Successful = true,
-                });
+                return Ok(new LoginResult { Successful = false, Error = "The account is currently locked, try again later." });
             }
-            else
+
+            var claims = new List<Claim>
             {
-                await userManager.AccessFailedAsync(user);
-                return Ok(new LoginResult
-                {
-                    Successful = false,
-                    Error = "Wrong email or password."
-                });
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
+            var roles = await userManager.GetRolesAsync(user);
+            foreach (string role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            // TODO: Token
+
+            string jwtToken = JwtHelper.BuildToken(claims, jwtOptions.Value);
+            return Ok(new LoginResult { Successful = true, Token = jwtToken });
         }
 
         [HttpPost]
         public async Task Logout()
         {
+            // delete the jwt at client.
         }
     }
 }
