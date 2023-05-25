@@ -9,6 +9,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:To_Do.Models"
+    xmlns:todo="clr-namespace:To_Do.Controls"
     xmlns:vm_models="clr-namespace:To_Do.ViewModels"
     d:Background="Black"
     d:DesignHeight="600"
@@ -21,173 +22,114 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
-    <UserControl.Resources>
-        <converters:BoolToStarIconConverter x:Key="boolToStarIconConverter" />
-        <converters:BoolToCircleIconConveter x:Key="boolToCircleIconConverter" />
-        <converters:BoolToRevertConverter x:Key="boolToRevertConverter" />
-        <converters:BoolToColorConverter x:Key="boolToColorConverter" />
-    </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="90" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
-        </Grid.RowDefinitions>
-
-        <!--  Title bar  -->
-        <StackPanel
-            Margin="40,0"
-            Background="Transparent"
-            Orientation="Horizontal">
-            <materialDesign:PackIcon
-                Width="30"
-                Height="30"
-                VerticalAlignment="Center"
-                Kind="CalendarTodayOutline" />
-            <TextBlock
-                Margin="10,0,0,0"
-                VerticalAlignment="Center"
-                FontSize="30"
-                FontWeight="Bold"
-                Text="日任务" />
-        </StackPanel>
-
+    <materialDesign:DrawerHost IsRightDrawerOpen="True">
         <!--  Content  -->
-        <ListBox
-            x:Name="TaskListBox"
-            Grid.Row="1"
-            Margin="40,0"
-            ItemContainerStyle="{StaticResource TaskItemStyle}"
-            ItemsSource="{Binding Tasks}"
-            ScrollViewer.VerticalScrollBarVisibility="Hidden"
-            SelectedItem="{Binding SelectedTask}">
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type vm_models:TaskViewModel}">
-                    <Grid
-                        Height="60"
-                        Margin="0,2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="60" />
-                        </Grid.ColumnDefinitions>
-                        <!--  Left finish icon  -->
-                        <Grid
-                            x:Name="finishIconGrid"
-                            Grid.Column="0"
-                            Width="24"
-                            Height="24">
-                            <behavior:Interaction.Triggers>
-                                <behavior:EventTrigger
-                                    EventName="PreviewMouseLeftButtonDown"
-                                    SourceObject="{Binding ElementName=finishIconGrid}">
-                                    <behavior:InvokeCommandAction
-                                        Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}" />
-                                </behavior:EventTrigger>
-                                <behavior:EventTrigger
-                                    EventName="MouseEnter"
-                                    SourceObject="{Binding ElementName=finishIconGrid}">
-                                    <behavior:ChangePropertyAction
-                                        PropertyName="Visibility"
-                                        TargetObject="{Binding ElementName=circleCheckIndicationIcon}"
-                                        Value="Visible" />
-                                </behavior:EventTrigger>
-                                <behavior:EventTrigger
-                                    EventName="MouseLeave"
-                                    SourceObject="{Binding ElementName=finishIconGrid}">
-                                    <behavior:ChangePropertyAction
-                                        PropertyName="Visibility"
-                                        TargetObject="{Binding ElementName=circleCheckIndicationIcon}"
-                                        Value="Hidden" />
-                                </behavior:EventTrigger>
-                            </behavior:Interaction.Triggers>
-                            <Ellipse Fill="Transparent" />
-                            <materialDesign:PackIcon
-                                x:Name="circleCheckIndicationIcon"
-                                Width="16"
-                                Height="16"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontWeight="ExtraBold"
-                                Foreground="{Binding IsFinished, Converter={StaticResource boolToColorConverter}}"
-                                Kind="Check"
-                                Visibility="Hidden" />
-                            <materialDesign:PackIcon
-                                x:Name="circleIcon"
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Kind="{Binding IsFinished, Converter={StaticResource boolToCircleIconConverter}}"
-                                Visibility="Visible" />
-                        </Grid>
-                        <!--  Central task content  -->
-                        <TextBlock
-                            x:Name="description"
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            Text="{Binding Description}">
-                            <behavior:Interaction.Triggers>
-                                <behavior:EventTrigger
-                                    EventName="PreviewMouseLeftButtonDown"
-                                    SourceObject="{Binding ElementName=description}">
-                                    <behavior:InvokeCommandAction Command="{Binding DataContext.OpenDetailCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" />
-                                </behavior:EventTrigger>
-                            </behavior:Interaction.Triggers>
-                        </TextBlock>
-                        <!--  Right star icon  -->
-                        <Grid
-                            x:Name="starIconGrid"
-                            Grid.Column="2"
-                            Width="24"
-                            Height="24">
-                            <behavior:Interaction.Triggers>
-                                <behavior:EventTrigger
-                                    EventName="PreviewMouseLeftButtonDown"
-                                    SourceObject="{Binding ElementName=starIconGrid}">
-                                    <behavior:InvokeCommandAction
-                                        Command="{Binding DataContext.StarCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}" />
-                                </behavior:EventTrigger>
-                                <behavior:EventTrigger
-                                    EventName="MouseEnter"
-                                    SourceObject="{Binding ElementName=starIconGrid}">
-                                    <behavior:ChangePropertyAction
-                                        PropertyName="Foreground"
-                                        TargetObject="{Binding ElementName=starIcon}"
-                                        Value="#7081ca" />
-                                </behavior:EventTrigger>
-                                <behavior:EventTrigger
-                                    EventName="MouseLeave"
-                                    SourceObject="{Binding ElementName=starIconGrid}">
-                                    <behavior:ChangePropertyAction
-                                        PropertyName="Foreground"
-                                        TargetObject="{Binding ElementName=starIcon}"
-                                        Value="#fbfbfb" />
-                                </behavior:EventTrigger>
-                            </behavior:Interaction.Triggers>
-                            <Ellipse Fill="Transparent" />
-                            <materialDesign:PackIcon
-                                x:Name="starIcon"
-                                Width="24"
-                                Height="24"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Foreground="#fbfbfb"
-                                Kind="{Binding IsStared, Converter={StaticResource boolToStarIconConverter}}" />
-                        </Grid>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
 
-        <!--  Bottom bar  -->
-        <TextBox
-            Grid.Row="2"
-            Margin="40,0"
-            VerticalAlignment="Center"
-            FontSize="16"
-            Style="{StaticResource SubViewBottomTextBox}" />
-    </Grid>
+            <!--  Title bar  -->
+            <StackPanel
+                Margin="40,0"
+                Background="Transparent"
+                Orientation="Horizontal">
+                <materialDesign:PackIcon
+                    Width="30"
+                    Height="30"
+                    VerticalAlignment="Center"
+                    Kind="CalendarTodayOutline" />
+                <TextBlock
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    Text="日任务" />
+            </StackPanel>
+
+            <!--  Content  -->
+            <ListBox
+                x:Name="TaskListBox"
+                Grid.Row="1"
+                Margin="40,0"
+                ItemContainerStyle="{StaticResource TaskItemStyle}"
+                ItemsSource="{Binding Tasks}"
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                SelectedItem="{Binding SelectedTask}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type vm_models:TaskViewModel}">
+                        <Grid Height="60" Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="60" />
+                            </Grid.ColumnDefinitions>
+                            <!--  Left finish icon  -->
+                            <todo:IndicationCheckIcon Grid.Column="0" IsChecked="{Binding IsFinished}">
+                                <behavior:Interaction.Triggers>
+                                    <behavior:EventTrigger EventName="MouseLeftButtonUp">
+                                        <behavior:InvokeCommandAction Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}" />
+                                    </behavior:EventTrigger>
+                                </behavior:Interaction.Triggers>
+                            </todo:IndicationCheckIcon>
+                            <!--  Central task content  -->
+                            <TextBlock
+                                x:Name="description"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{Binding Description}">
+                                <behavior:Interaction.Triggers>
+                                    <behavior:EventTrigger EventName="PreviewMouseLeftButtonDown" SourceObject="{Binding ElementName=description}">
+                                        <behavior:InvokeCommandAction Command="{Binding DataContext.OpenDetailCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" />
+                                    </behavior:EventTrigger>
+                                </behavior:Interaction.Triggers>
+                            </TextBlock>
+                            <!--  Right star icon  -->
+                            <todo:CheckIcon />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!--  Bottom bar  -->
+            <TextBox
+                Grid.Row="2"
+                Margin="40,0"
+                VerticalAlignment="Center"
+                FontSize="16"
+                Style="{StaticResource SubViewBottomTextBox}" />
+        </Grid>
+        <!--  Right drawer  -->
+        <materialDesign:DrawerHost.RightDrawerContent>
+            <DockPanel Margin="10,0">
+                <StackPanel Width="200" DockPanel.Dock="Top">
+                    <materialDesign:PackIcon HorizontalAlignment="Right" Kind="Close" />
+                    <materialDesign:Card Margin="0,5">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="自定义控件: ⭕ title ⭐" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Add" />
+                                <TextBlock Text="添加步骤" />
+                            </StackPanel>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    <materialDesign:Card Margin="0,5">
+                        <TextBox Padding="10,10,0,50" materialDesign:HintAssist.Hint="添加备注" />
+                    </materialDesign:Card>
+                </StackPanel>
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="创建于" />
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="Trash" />
+                </StackPanel>
+            </DockPanel>
+        </materialDesign:DrawerHost.RightDrawerContent>
+    </materialDesign:DrawerHost>
 </UserControl>
