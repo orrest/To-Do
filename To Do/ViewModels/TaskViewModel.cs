@@ -1,4 +1,5 @@
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using To_Do.Models;
 
@@ -6,8 +7,14 @@ namespace To_Do.ViewModels;
 
 public class TaskViewModel : BindableBase
 {
-    public string Description { get; set; }
-    
+    private string description;
+
+    public string Description
+    {
+        get { return description; }
+        set { description = value; RaisePropertyChanged(); }
+    }
+
     private bool isStared;
 
     public bool IsStared
@@ -22,6 +29,14 @@ public class TaskViewModel : BindableBase
     {
         get { return isFinished; }
         set { isFinished = value; RaisePropertyChanged(); }
+    }
+
+    private DateTime createTime;
+
+    public DateTime CreateTime
+    {
+        get { return createTime; }
+        set { createTime = value; RaisePropertyChanged(); }
     }
 
 

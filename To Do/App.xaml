@@ -13,6 +13,7 @@
                     PrimaryColor="DeepPurple"
                     SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/To Do;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <FontFamily x:Key="MaterialDesignFont">微软雅黑</FontFamily>

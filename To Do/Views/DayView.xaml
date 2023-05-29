@@ -19,8 +19,8 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
-    <materialDesign:DrawerHost IsRightDrawerOpen="True">
-        <!--  Content  -->
+    <materialDesign:DrawerHost IsRightDrawerOpen="{Binding IsDrawerOpen}">
+        <!--  View  -->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="90" />
@@ -28,7 +28,7 @@
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
 
-            <!--  Title bar  -->
+            <!--  View: Title bar  -->
             <StackPanel
                 Margin="40,0"
                 Background="Transparent"
@@ -46,7 +46,7 @@
                     Text="日任务" />
             </StackPanel>
 
-            <!--  Content  -->
+            <!--  View: Task List  -->
             <ListBox
                 x:Name="TaskListBox"
                 Grid.Row="1"
@@ -65,7 +65,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="60" />
                             </Grid.ColumnDefinitions>
-                            <!--  Left finish icon  -->
+                            <!--  Task List: Left finish icon  -->
                             <todo:IndicationCheckIcon
                                 x:Name="leftIcon"
                                 Grid.Column="0"
@@ -75,12 +75,12 @@
                                         EventName="MouseLeftButtonUp"
                                         SourceObject="{Binding ElementName=leftIcon}">
                                         <behavior:InvokeCommandAction
-                                            Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                            Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
                                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}" />
                                     </behavior:EventTrigger>
                                 </behavior:Interaction.Triggers>
                             </todo:IndicationCheckIcon>
-                            <!--  Central task content  -->
+                            <!--  Task List: Central task content  -->
                             <TextBlock
                                 x:Name="description"
                                 Grid.Column="1"
@@ -88,22 +88,34 @@
                                 Text="{Binding Description}">
                                 <behavior:Interaction.Triggers>
                                     <behavior:EventTrigger
-                                        EventName="PreviewMouseLeftButtonDown"
+                                        EventName="MouseLeftButtonUp"
                                         SourceObject="{Binding ElementName=description}">
-                                        <behavior:InvokeCommandAction Command="{Binding DataContext.OpenDetailCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" />
+                                        <behavior:InvokeCommandAction
+                                            Command="{Binding DataContext.DrawerOpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
                                     </behavior:EventTrigger>
                                 </behavior:Interaction.Triggers>
                             </TextBlock>
-                            <!--  Right star icon  -->
+                            <!--  Task List: Right star icon  -->
                             <todo:CheckIcon
+                                x:Name="starIcon"
                                 Grid.Column="2"
-                                IsChecked="{Binding IsStared}" />
+                                IsChecked="{Binding IsStared}">
+                                <behavior:Interaction.Triggers>
+                                    <behavior:EventTrigger
+                                        EventName="MouseLeftButtonUp"
+                                        SourceObject="{Binding ElementName=starIcon}">
+                                        <behavior:InvokeCommandAction
+                                            Command="{Binding Path=DataContext.StarCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
+                                    </behavior:EventTrigger>
+                                </behavior:Interaction.Triggers>
+                            </todo:CheckIcon>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
-            <!--  Bottom bar  -->
+            <!--  View: Bottom Adding Content Bar  -->
             <TextBox
                 Grid.Row="2"
                 Margin="40,0"
@@ -111,44 +123,74 @@
                 FontSize="16"
                 Style="{StaticResource SubViewBottomTextBox}" />
         </Grid>
+
         <!--  Right drawer  -->
         <materialDesign:DrawerHost.RightDrawerContent>
+            <!--  Drawer: Layout  -->
             <DockPanel Margin="10,0">
+                <!--  Drawer: Content  -->
                 <StackPanel
-                    Width="200"
+                    Width="340"
                     DockPanel.Dock="Top">
-                    <materialDesign:PackIcon
+                    <!--  Drawer: Close Drawer Button  -->
+                    <todo:IndicationButton
+                        Margin="5"
                         HorizontalAlignment="Right"
-                        Kind="Close" />
+                        IconKind="Close">
+                        <behavior:Interaction.Triggers>
+                            <behavior:EventTrigger EventName="MouseLeftButtonUp">
+                                <behavior:InvokeCommandAction Command="{Binding DrawerCloseCommand}" />
+                            </behavior:EventTrigger>
+                        </behavior:Interaction.Triggers>
+                    </todo:IndicationButton>
+                    <!--  Drawer: Title Row  -->
                     <materialDesign:Card Margin="0,5">
                         <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="自定义控件: ⭕ title ⭐" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Add" />
-                                <TextBlock Text="添加步骤" />
-                            </StackPanel>
+                            <Grid Margin="10">
+                                <todo:IndicationCheckIcon HorizontalAlignment="Left" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    FontSize="18"
+                                    Text="{Binding SelectedTask.Description}" />
+                                <todo:CheckIcon HorizontalAlignment="Right" />
+                            </Grid>
+                            <Grid
+                                Height="30"
+                                Margin="10">
+                                <todo:IndicationCheckIcon HorizontalAlignment="Left" />
+                                <TextBox
+                                    Width="240"
+                                    Margin="10,0"
+                                    Padding="5,0"
+                                    HorizontalAlignment="Center"
+                                    Text="添加步骤" />
+                                <todo:IndicationButton
+                                    HorizontalAlignment="Right"
+                                    IconKind="DotsVertical" />
+                            </Grid>
                         </StackPanel>
                     </materialDesign:Card>
+                    <!--  Drawer: Memo Row  -->
                     <materialDesign:Card Margin="0,5">
                         <TextBox
                             Padding="10,10,0,50"
                             materialDesign:HintAssist.Hint="添加备注" />
                     </materialDesign:Card>
                 </StackPanel>
-                <StackPanel
-                    HorizontalAlignment="Center"
+                <!--  Drawer: Bottom Row  -->
+                <Grid
+                    Margin="0,10"
                     VerticalAlignment="Bottom"
-                    DockPanel.Dock="Bottom"
-                    Orientation="Horizontal">
+                    DockPanel.Dock="Bottom">
                     <TextBlock
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="创建于" />
-                    <materialDesign:PackIcon
+                        Text="{Binding SelectedTask.CreateTime}" />
+                    <todo:IndicationButton
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        Kind="Trash" />
-                </StackPanel>
+                        IconKind="Trash" />
+                </Grid>
             </DockPanel>
         </materialDesign:DrawerHost.RightDrawerContent>
     </materialDesign:DrawerHost>

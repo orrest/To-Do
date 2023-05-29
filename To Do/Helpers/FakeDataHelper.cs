@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using To_Do.ViewModels;
 
@@ -12,6 +13,7 @@ public static class FakeDataHelper
             Description = "Task 1...",
             IsFinished = false,
             IsStared = false,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -25,6 +27,7 @@ public static class FakeDataHelper
             Description = "Task 2...",
             IsFinished = false,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -37,6 +40,7 @@ public static class FakeDataHelper
         {
             Description = "Task 3...",
             IsFinished = true,
+            CreateTime = DateTime.Now,
             IsStared = true,
             Steps = new System.Collections.Generic.List<string>()
             {
@@ -51,6 +55,7 @@ public static class FakeDataHelper
             Description = "Task 4...",
             IsFinished = true,
             IsStared = false,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -64,6 +69,7 @@ public static class FakeDataHelper
             Description = "Task 5...",
             IsFinished = false,
             IsStared = false,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -77,6 +83,7 @@ public static class FakeDataHelper
             Description = "Task 6...",
             IsFinished = true,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -90,6 +97,7 @@ public static class FakeDataHelper
             Description = "Task 7...",
             IsFinished = false,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -103,6 +111,7 @@ public static class FakeDataHelper
             Description = "Task 8...",
             IsFinished = false,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -116,6 +125,7 @@ public static class FakeDataHelper
             Description = "Task 9...",
             IsFinished = false,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -129,6 +139,7 @@ public static class FakeDataHelper
             Description = "Task 10...",
             IsFinished = false,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -142,6 +153,7 @@ public static class FakeDataHelper
             Description = "Task 11...",
             IsFinished = false,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
@@ -155,6 +167,7 @@ public static class FakeDataHelper
             Description = "Task 12...",
             IsFinished = false,
             IsStared = true,
+            CreateTime = DateTime.Now,
             Steps = new System.Collections.Generic.List<string>()
             {
                 "First, ...",
