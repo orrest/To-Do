@@ -48,13 +48,6 @@ public class MainViewModel : BindableBase
         });
         MenuItems.Add(new MenuItem
         {
-            Icon = "CalendarTodayOutline",
-            Color = "#a9828a",
-            Title = "日任务",
-            ViewPath = Constants.DAY_VIEW
-        });
-        MenuItems.Add(new MenuItem
-        {
             Icon = "CalendarWeekOutline",
             Color = "#78b1ad",
             Title = "周任务",

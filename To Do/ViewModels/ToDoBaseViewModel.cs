@@ -5,8 +5,16 @@ using To_Do.Models;
 
 namespace To_Do.ViewModels;
 
-public class DayViewModel : BindableBase
+public class ToDoBaseViewModel : BindableBase
 {
+	private string viewTitle;
+
+	public string ViewTitle
+	{
+		get { return viewTitle; }
+		set { viewTitle = value; RaisePropertyChanged(); }
+	}
+
 	public ObservableCollection<TaskViewModel> Tasks { get; set; } = new ObservableCollection<TaskViewModel>();
 
 	private TaskViewModel? selectedTask;
@@ -30,7 +38,7 @@ public class DayViewModel : BindableBase
 	public DelegateCommand<TaskViewModel> StarCommand { get; private set; }
     public DelegateCommand DrawerCloseCommand { get; private set; }
 
-    public DayViewModel()
+    public ToDoBaseViewModel()
 	{
         FinishCommand = new DelegateCommand<TaskViewModel>(Finish);
         StarCommand = new DelegateCommand<TaskViewModel>(Star);

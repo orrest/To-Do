@@ -31,7 +31,6 @@ public partial class App : PrismApplication
 
         /*viewmodels*/
         containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
-        containerRegistry.RegisterForNavigation<DayView, DayViewModel>();
         containerRegistry.RegisterForNavigation<EmailView, EmailViewModel>();
         containerRegistry.RegisterForNavigation<LongTermView, LongTermViewModel>();
         containerRegistry.RegisterForNavigation<MonthView, MonthViewModel>();
