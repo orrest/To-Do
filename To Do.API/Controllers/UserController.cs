@@ -5,6 +5,7 @@ using System.Security.Claims;
 using To_Do.API.Entities;
 using To_Do.API.Models;
 using To_Do.Helpers;
+using To_Do.Services;
 using To_Do.Shared;
 
 namespace To_Do.API.Controllers
@@ -16,15 +17,18 @@ namespace To_Do.API.Controllers
         private readonly ILogger<UserController> logger;
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
+        private readonly IEmailSender emailSender;
 
         public UserController(
             ILogger<UserController> logger,
             UserManager<User> userManager,
-            RoleManager<Role> roleManager)
+            RoleManager<Role> roleManager,
+            IEmailSender emailSender)
         {
             this.logger = logger;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.emailSender = emailSender;
         }
 
         [HttpPost]
@@ -61,6 +65,45 @@ namespace To_Do.API.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> SendEmailConfirmationToken(
+            [FromBody] LoginDTO login,
+            [FromServices] ConfigurationManager configuration)
+        {
+            string userName = login.Email;
+            string password = login.Password;
+            var user = await userManager.FindByNameAsync(userName);
+            // TODO check user
+
+            var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            // TODO send email token
+            var applicationUrl = configuration.GetValue<string>("profiles:To_Do.API:applicationUrl");
+            var confirmationLink = $"{applicationUrl}/api/user/checkemailconfirmation/{user.Id}/{emailToken}";
+            await emailSender.SendEmailAsync(user.Email, "Email Confirmation", confirmationLink);
+
+            return Ok();
+        }
+
+        [HttpGet("{userId}/{emailToken}")]
+        public async Task<IActionResult> CheckEmailConfirmation(string userId, string emailToken)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return Ok(new RegisterResult() { Successful = false, Error = "No such user." });
+            }
+
+            var confirmationRes = await userManager.ConfirmEmailAsync(user, emailToken);
+            if (!confirmationRes.Succeeded)
+            {
+                return Ok(new RegisterResult() { Successful = false });
+            }
+
+            return Ok(new RegisterResult() { Successful = true } );
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Login(
             [FromBody] LoginDTO login, 
             [FromServices] IOptions<JwtOptions> jwtOptions)
@@ -71,6 +114,11 @@ namespace To_Do.API.Controllers
             if (user == null)
             {
                 return Ok(new LoginResult { Successful = false, Error = "Not registered user." });
+            }
+
+            if (!await userManager.IsEmailConfirmedAsync(user))
+            {
+                return Ok(new LoginResult { Successful = false, Error = "Email not confirmed." });
             }
 
             if (!await userManager.CheckPasswordAsync(user, password))
@@ -102,6 +150,7 @@ namespace To_Do.API.Controllers
         public async Task Logout()
         {
             // delete the jwt at client.
+            // TODO: block the user with the emailConfirmed property at server.
         }
     }
 }

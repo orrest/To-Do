@@ -6,6 +6,7 @@ using System.Text;
 using To_Do.API.Contexts;
 using To_Do.API.Entities;
 using To_Do.Helpers;
+using To_Do.Services;
 
 namespace To_Do.API
 {
@@ -54,7 +55,7 @@ namespace To_Do.API
                 .AddDefaultTokenProviders()
                 .AddRoleManager<RoleManager<Role>>()
                 .AddUserManager<UserManager<User>>();
-
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             /*Controllers*/
             builder.Services.AddControllers();
