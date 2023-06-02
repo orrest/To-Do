@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>To_Do.API</RootNamespace>
+    <UserSecretsId>04cb4bee-5961-44a4-8fc7-8b3f49c91b54</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Migrations\" />
     <Folder Include="Services\" />
   </ItemGroup>

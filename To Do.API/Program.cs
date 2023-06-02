@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using To_Do.API.Contexts;
 using To_Do.API.Entities;
+using To_Do.API.Helpers;
 using To_Do.Helpers;
 using To_Do.Services;
 
@@ -15,6 +16,8 @@ namespace To_Do.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var email = builder.Configuration[Constants.SENDER_EMAIL];
+            var key = builder.Configuration[Constants.SENDER_KEY];
 
             #region services
             /*Auto mapper*/
