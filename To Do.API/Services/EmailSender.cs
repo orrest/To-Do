@@ -11,21 +11,15 @@ public interface IEmailSender
 
 public class EmailSender : IEmailSender
 {
-    private readonly IConfiguration configuration;
-
-    public EmailSender(IConfiguration configuration)
-    {
-        this.configuration = configuration;
-    }
     public Task SendEmailAsync(string emailAddr, string subject, string htmlMessage)
     {
-        var email = configuration[Constants.SENDER_EMAIL];
-        var key = configuration[Constants.SENDER_KEY];
+        var email = Environment.GetEnvironmentVariable(Constants.SMTP_SENDER_EMAIL);
+        var key = Environment.GetEnvironmentVariable(Constants.SMTP_SENDER_KEY);
 
         SmtpClient client = new SmtpClient
         {
             Port = 587,
-            Host = "smtp.gmail.com", //or another email sender provider
+            Host = "smtp.qq.com", //or another email sender provider
             EnableSsl = true,
             DeliveryMethod = SmtpDeliveryMethod.Network,
             UseDefaultCredentials = false,

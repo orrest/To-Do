@@ -1,6 +1,8 @@
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
+using Prism.Services.Dialogs;
+using System;
 using System.Collections.ObjectModel;
 using To_Do.Helpers;
 using To_Do.Models;
@@ -10,6 +12,8 @@ namespace To_Do.ViewModels;
 public class MainViewModel : BindableBase
 {
     public DelegateCommand<MenuItem> NavigationCommand { get; private set; }
+    public DelegateCommand OpenUserPopupCommand { get; private set; }
+    public DelegateCommand OpenLoginDialogCommand { get; set; }
 
     public ObservableCollection<MenuItem> MenuItems { get; private set; }
 		= new ObservableCollection<MenuItem>();
@@ -22,19 +26,44 @@ public class MainViewModel : BindableBase
         set { selectedItem = value; RaisePropertyChanged(); }
     }
 
-    private readonly IRegionManager regionManager;
+    private bool isUserPopupOpen;
 
-    public MainViewModel(IRegionManager regionManager)
+    public bool IsUserPopupOpen
+    {
+        get { return isUserPopupOpen; }
+        set { isUserPopupOpen = value; RaisePropertyChanged(); }
+    }
+
+    private readonly IRegionManager regionManager;
+    private readonly IDialogService dialogService;
+
+    public MainViewModel(IRegionManager regionManager, IDialogService dialogService)
 	{
         NavigationCommand = new DelegateCommand<MenuItem>(Naivgate);
+        OpenUserPopupCommand = new DelegateCommand(OpenUserPopup);
+        OpenLoginDialogCommand = new DelegateCommand(OpenLoginDialog);
+
+        IsUserPopupOpen = false;
+
         InitMenuItems();
 
         this.regionManager = regionManager;
+        this.dialogService = dialogService;
     }
 
     private void Naivgate(MenuItem menu)
     {
         regionManager.RequestNavigate(Constants.MAIN_REGION, menu.ViewPath);
+    }
+
+    private void OpenUserPopup()
+    {
+        IsUserPopupOpen = true;
+    }
+
+    private void OpenLoginDialog()
+    {
+        dialogService.ShowDialog("LoginDialogView");
     }
 
     private void InitMenuItems()

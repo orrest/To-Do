@@ -6,7 +6,6 @@ using System.Text;
 using To_Do.API.Contexts;
 using To_Do.API.Entities;
 using To_Do.API.Helpers;
-using To_Do.Helpers;
 using To_Do.Services;
 
 namespace To_Do.API
@@ -16,8 +15,6 @@ namespace To_Do.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var email = builder.Configuration[Constants.SENDER_EMAIL];
-            var key = builder.Configuration[Constants.SENDER_KEY];
 
             #region services
             /*Auto mapper*/
@@ -26,17 +23,16 @@ namespace To_Do.API
             /*DbContexts*/
             builder.Services.AddDbContext<UserRoleDbContext>(option =>
             {
-                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+                var connectionString = Environment.GetEnvironmentVariable(Constants.CONNECTION_STRING);
                 option.UseSqlServer(connectionString);
             });
 
             /*Identity*/
-            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    var jwtOptions = builder.Configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>();
-                    var keyBytes = Encoding.UTF8.GetBytes(jwtOptions.SigningKey);
+                    var signingKey = Environment.GetEnvironmentVariable(Constants.JWT_SIGNINGKEY);
+                    var keyBytes = Encoding.UTF8.GetBytes(signingKey!);
                     var secKey = new SymmetricSecurityKey(keyBytes);
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {

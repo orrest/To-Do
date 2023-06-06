@@ -16,6 +16,11 @@ public partial class App : PrismApplication
         return Container.Resolve<MainView>();
     }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
         /*refit*/
@@ -38,6 +43,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<WeekView, WeekViewModel>();
 
         /*dialog*/
-        //containerRegistry.RegisterDialog<SomeDialog>();
+        containerRegistry.RegisterDialogWindow<Views.DialogWindow>();
+        containerRegistry.RegisterDialog<LoginDialogView, LoginDialogViewModel>();
     }
 }

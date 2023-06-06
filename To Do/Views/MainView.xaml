@@ -105,14 +105,84 @@
                 <StackPanel
                     Grid.Column="0"
                     Margin="0,5">
-                    <!--  Avarta  -->
-                    <Grid Margin="20,8">
+                    <!--  User Info  -->
+                    <Grid
+                        x:Name="userInfoRow"
+                        Margin="20,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Grid>
+
+                        <!--  Open Popup Behavior  -->
+                        <behavior:Interaction.Triggers>
+                            <behavior:EventTrigger
+                                EventName="MouseLeftButtonUp"
+                                SourceObject="{Binding userInfoRow}">
+                                <behavior:InvokeCommandAction Command="{Binding OpenUserPopupCommand}" />
+                            </behavior:EventTrigger>
+                        </behavior:Interaction.Triggers>
+
+                        <!--  User Popup  -->
+                        <Popup
+                            Width="150"
+                            IsOpen="{Binding IsUserPopupOpen}"
+                            StaysOpen="False">
+                            <materialDesign:Card>
+                                <ListBox>
+                                    <ListBoxItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
+                                                Margin="5"
+                                                VerticalAlignment="Center"
+                                                Kind="Refresh" />
+                                            <TextBlock
+                                                Margin="5"
+                                                VerticalAlignment="Center"
+                                                Text="重试同步" />
+                                        </StackPanel>
+                                    </ListBoxItem>
+                                    <ListBoxItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
+                                                Margin="5"
+                                                VerticalAlignment="Center"
+                                                Kind="AccountSettings" />
+                                            <TextBlock
+                                                Margin="5"
+                                                VerticalAlignment="Center"
+                                                Text="管理账户" />
+                                        </StackPanel>
+                                        <behavior:Interaction.Triggers>
+                                            <behavior:EventTrigger EventName="MouseLeftButtonUp">
+                                                <behavior:InvokeCommandAction Command="{Binding Path=DataContext.OpenLoginDialogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
+                                            </behavior:EventTrigger>
+                                        </behavior:Interaction.Triggers>
+                                    </ListBoxItem>
+                                    <ListBoxItem>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
+                                                Margin="5"
+                                                VerticalAlignment="Center"
+                                                Kind="Settings" />
+                                            <TextBlock
+                                                Margin="5"
+                                                VerticalAlignment="Center"
+                                                Text="设置" />
+                                        </StackPanel>
+                                    </ListBoxItem>
+                                </ListBox>
+                            </materialDesign:Card>
+                        </Popup>
+
+                        <!--  For Event Triggering  -->
+                        <Rectangle
+                            Grid.ColumnSpan="3"
+                            Fill="Transparent" />
+
+                        <!--  User Avatar  -->
+                        <Grid Grid.Column="0">
                             <Image
                                 Grid.Column="0"
                                 Width="60"
@@ -127,6 +197,7 @@
                             </Image>
                         </Grid>
 
+                        <!--  Sync Message  -->
                         <StackPanel
                             Grid.Column="2"
                             VerticalAlignment="Center">

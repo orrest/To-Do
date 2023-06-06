@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using To_Do.API.Entities;
-using To_Do.API.Models;
+using To_Do.API.Helpers;
 using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
@@ -47,7 +47,7 @@ namespace To_Do.API.Controllers
             {
                 var errors = result.Errors.Select(x => x.Description);
 
-                return Ok(new RegisterResult { Successful = false, Errors = errors });
+                return BadRequest(errors);
             }
 
             // Add new role to user
@@ -57,31 +57,38 @@ namespace To_Do.API.Controllers
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(x => x.Description);
-
-                return Ok(new RegisterResult { Successful = false, Errors = errors });
+                return BadRequest(errors);
             }
 
-            return Ok(new RegisterResult { Successful = true });
+            await SendEmailConfirmationTokenAsync(newUser.Email);
+
+            return Ok("Check your email to finish register.");
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendEmailConfirmationToken(
-            [FromBody] LoginDTO login,
-            [FromServices] ConfigurationManager configuration)
+        public async Task<IActionResult> SendEmailConfirmationTokenAsync(string userEmail)
         {
-            string userName = login.Email;
-            string password = login.Password;
+            var userName = userEmail;
             var user = await userManager.FindByNameAsync(userName);
-            // TODO check user
+            if (user == null)
+            {
+                return BadRequest("User not exists.");
+            }
+
+            var isEmailConfirmed = await userManager.IsEmailConfirmedAsync(user);
+            if (isEmailConfirmed)
+            {
+                return Ok("You already have your email confirmed!" );
+            }
 
             var emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            // TODO send email token
-            var applicationUrl = configuration.GetValue<string>("profiles:To_Do.API:applicationUrl");
+            var applicationUrl = Environment.GetEnvironmentVariable(Constants.APPLICATION_URL);
             var confirmationLink = $"{applicationUrl}/api/user/checkemailconfirmation/{user.Id}/{emailToken}";
-            await emailSender.SendEmailAsync(user.Email, "Email Confirmation", confirmationLink);
+            var emailContent = $"Click the link below to confirm the account:\n\n{confirmationLink}";
+            await emailSender.SendEmailAsync(user.Email, "Email Confirmation", emailContent);
 
-            return Ok();
+            return Ok("Check your email box to confirm!");
         }
 
         [HttpGet("{userId}/{emailToken}")]
@@ -91,44 +98,42 @@ namespace To_Do.API.Controllers
 
             if (user == null)
             {
-                return Ok(new RegisterResult() { Successful = false, Error = "No such user." });
+                return BadRequest("No such user.");
             }
 
             var confirmationRes = await userManager.ConfirmEmailAsync(user, emailToken);
             if (!confirmationRes.Succeeded)
             {
-                return Ok(new RegisterResult() { Successful = false });
+                return BadRequest("Confirm failed.");
             }
 
-            return Ok(new RegisterResult() { Successful = true } );
+            return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(
-            [FromBody] LoginDTO login, 
-            [FromServices] IOptions<JwtOptions> jwtOptions)
+        public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
             string userName = login.Email;
             string password = login.Password;
             var user = await userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                return Ok(new LoginResult { Successful = false, Error = "Not registered user." });
+                return BadRequest("Not registered user.");
             }
 
             if (!await userManager.IsEmailConfirmedAsync(user))
             {
-                return Ok(new LoginResult { Successful = false, Error = "Email not confirmed." });
+                return BadRequest("Email not confirmed.");
             }
 
             if (!await userManager.CheckPasswordAsync(user, password))
             {
-                return Ok(new LoginResult { Successful = false, Error = "Wrong email or password." });
+                return BadRequest("Wrong email or password.");
             }
 
-            if (!await userManager.IsLockedOutAsync(user))
+            if (await userManager.IsLockedOutAsync(user))
             {
-                return Ok(new LoginResult { Successful = false, Error = "The account is currently locked, try again later." });
+                return BadRequest("The account is currently locked, try again later.");
             }
 
             var claims = new List<Claim>
@@ -142,8 +147,9 @@ namespace To_Do.API.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            string jwtToken = JwtHelper.BuildToken(claims, jwtOptions.Value);
-            return Ok(new LoginResult { Successful = true, Token = jwtToken });
+            string jwtToken = JwtHelper.BuildToken(claims);
+
+            return Ok(jwtToken);
         }
 
         [HttpPost]
