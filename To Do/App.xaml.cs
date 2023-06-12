@@ -24,8 +24,9 @@ public partial class App : PrismApplication
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
         /*refit*/
-        var api = RestService.For<IToDoApi>("http://localhost:5000");
+        var api = RestService.For<IToDoApi>(SecretConstants.BASE_URL);
         containerRegistry.RegisterInstance(api);
+        containerRegistry.Register<IUserService, UserService>();
 
         /*automapper*/
         var config = new MapperConfiguration(cfg =>
@@ -43,7 +44,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<WeekView, WeekViewModel>();
 
         /*dialog*/
-        containerRegistry.RegisterDialogWindow<Views.DialogWindow>();
-        containerRegistry.RegisterDialog<LoginDialogView, LoginDialogViewModel>();
+        containerRegistry.RegisterDialogWindow<ToDoDialog>();
+        containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
     }
 }

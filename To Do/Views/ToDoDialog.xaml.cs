@@ -4,15 +4,15 @@ using System.Windows;
 namespace To_Do.Views
 {
     /// <summary>
-    /// DialogWindow.xaml 的交互逻辑
+    /// ToDoDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class DialogWindow : Window, IDialogWindow
+    public partial class ToDoDialog : Window, IDialogWindow
     {
-        public DialogWindow()
+        public ToDoDialog()
         {
             InitializeComponent();
         }
 
-        public IDialogResult Result { get; set; }
+        public IDialogResult? Result { get; set; }
     }
 }

@@ -5,15 +5,15 @@ using System;
 
 namespace To_Do.ViewModels
 {
-    class LoginDialogViewModel : BindableBase, IDialogAware
+    public class LoginViewModel : BindableBase, IDialogAware
     {
         public string Title => "";
 
-        public event Action<IDialogResult> RequestClose;
+        public event Action<IDialogResult>? RequestClose;
 
         public DelegateCommand CloseCommand { get; private set; }
 
-        public LoginDialogViewModel()
+        public LoginViewModel()
         {
             CloseCommand = new DelegateCommand(Close);
         }

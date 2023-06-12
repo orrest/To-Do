@@ -63,7 +63,7 @@ public class MainViewModel : BindableBase
 
     private void OpenLoginDialog()
     {
-        dialogService.ShowDialog("LoginDialogView");
+        dialogService.ShowDialog("LoginView");
     }
 
     private void InitMenuItems()

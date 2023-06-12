@@ -32,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\To Do.Shared\To Do.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\avatar.jpg" />
     <Resource Include="Images\todo.png" />
   </ItemGroup>
