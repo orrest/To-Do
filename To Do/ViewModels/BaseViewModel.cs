@@ -6,12 +6,7 @@ internal abstract class BaseViewModel : BindableBase
 {
     public bool IsLoading { get; set; }
 
-    public BaseViewModel()
-    {
-        InitializeWrapper();
-    }
-
-    private void InitializeWrapper()
+    protected void InitializeWrapper()
     {
         IsLoading = true;
         Initialize();

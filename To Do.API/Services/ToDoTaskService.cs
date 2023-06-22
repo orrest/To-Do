@@ -6,41 +6,46 @@ using To_Do.Shared;
 
 namespace To_Do.API.Services;
 
-public abstract class IToDoTaskService : Service<ToDoTaskAddingDTO, ToDoTask>
+public abstract class ITaskService : Service<TaskAddingDTO, ToDoTask>
 {
-    protected IToDoTaskService(IUnitOfWork unitOfWork, ILogger<Service<ToDoTaskAddingDTO, ToDoTask>> logger, IMapper mapper) : base(unitOfWork, logger, mapper)
-    {
-    }
+    protected ITaskService(
+        IUnitOfWork unitOfWork, 
+        ILogger<Service<TaskAddingDTO, ToDoTask>> logger, 
+        IMapper mapper
+    ) : base(unitOfWork, logger, mapper) {  }
 
-    public abstract Task<IList<ToDoTaskAddingDTO>> GetAsync(int type, int pageIndex, int pageSize);
+    public abstract Task<IList<TaskGettingDTO>> GetAsync(
+        Guid userId, TaskPagingDTO paging, int pageSize = 20);
 
-    public abstract Task<ToDoTaskAddingDTO> AddAsync(ToDoTaskAddingDTO mode, Guid userId);
+    public abstract Task<TaskAddingDTO> AddAsync(
+        TaskAddingDTO mode, Guid userId);
 }
 
-public class ToDoTaskService : IToDoTaskService
+public class ToDoTaskService : ITaskService
 {
-    public ToDoTaskService(IUnitOfWork unitOfWork, ILogger<Service<ToDoTaskAddingDTO, ToDoTask>> logger, IMapper mapper) : base(unitOfWork, logger, mapper)
+    public ToDoTaskService(IUnitOfWork unitOfWork, ILogger<Service<TaskAddingDTO, ToDoTask>> logger, IMapper mapper) : base(unitOfWork, logger, mapper)
     {
     }
 
-    public override async Task<IList<ToDoTaskAddingDTO>> GetAsync(int type, int pageIndex, int pageSize)
+    public override async Task<IList<TaskGettingDTO>> GetAsync(
+        Guid userId, TaskPagingDTO paging, int pageSize = 20)
     { 
         var repo = unitOfWork.GetRepository<ToDoTask>();
         
         var res = await repo.GetPagedListAsync(
-            predicate: tsk => tsk.TaskType.Equals(type),
-            pageIndex: pageIndex,
+            predicate: tsk => tsk.TaskType.Equals(paging.TaskType) && tsk.UserId.Equals(userId),
+            pageIndex: paging.PageIndex,
             pageSize: pageSize);
 
-        return mapper.Map<IList<ToDoTask>, IList<ToDoTaskAddingDTO>>(res.Items);
+        return mapper.Map<IList<ToDoTask>, IList<TaskGettingDTO>>(res.Items);
     }
 
-    public override Task<ToDoTaskAddingDTO?> AddAsync(ToDoTaskAddingDTO model)
+    public override Task<TaskAddingDTO?> AddAsync(TaskAddingDTO model)
     {
         throw new AccessViolationException("Do not use this.");
     }
 
-    public override async Task<ToDoTaskAddingDTO> AddAsync(ToDoTaskAddingDTO model, Guid userId)
+    public override async Task<TaskAddingDTO> AddAsync(TaskAddingDTO model, Guid userId)
     {
         var entity = mapper.Map<ToDoTask>(model);
         entity.UserId = userId;
@@ -52,7 +57,7 @@ public class ToDoTaskService : IToDoTaskService
         var ent = add.Entity;
 
         return res > 0 
-            ? mapper.Map<ToDoTaskAddingDTO>(ent)
+            ? mapper.Map<TaskAddingDTO>(ent)
             : throw new DbUpdateException("Insertion failed.");
     }
 }

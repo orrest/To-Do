@@ -1,3 +1,4 @@
+using AutoMapper;
 using Prism.Commands;
 using System.Collections.ObjectModel;
 using To_Do.Services;
@@ -7,9 +8,10 @@ namespace To_Do.ViewModels;
 
 internal abstract class ToDoBaseViewModel : BaseViewModel
 {
-	private string viewTitle;
-    private TaskType taskType;
-    public readonly IToDoTaskService service;
+    protected string viewTitle;
+    protected TaskType taskType;
+    protected readonly IMapper mapper;
+    protected readonly IToDoTaskService service;
 
     public string ViewTitle
 	{
@@ -42,18 +44,23 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     public DelegateCommand<string> AddTaskCommand { get; private set; }
 
     internal ToDoBaseViewModel(
-        string viewTitle, IToDoTaskService service, TaskType taskType
+        string viewTitle, 
+        IToDoTaskService service, 
+        TaskType taskType,
+        IMapper mapper
     ) : base() 
     {
         this.viewTitle = viewTitle;
         this.service = service;
         this.taskType = taskType;
-
+        this.mapper = mapper;
         FinishCommand = new DelegateCommand<TaskViewModel>(Finish);
         StarCommand = new DelegateCommand<TaskViewModel>(Star);
         DrawerOpenCommand = new DelegateCommand<TaskViewModel>(OpenDrawer);
         DrawerCloseCommand = new DelegateCommand(CloseDrawer);
         AddTaskCommand = new DelegateCommand<string>(AddTask);
+
+        InitializeWrapper();
 	}
 
     private void Finish(TaskViewModel task)
@@ -79,7 +86,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
 
     private async void AddTask(string taskDescription)
     {
-        var response = await service.AddAsync(new ToDoTaskAddingDTO()
+        var response = await service.AddAsync(new TaskAddingDTO()
         {
             TaskType = taskType,
             TaskDescription = taskDescription,

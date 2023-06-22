@@ -7,12 +7,20 @@ namespace To_Do.ViewModels;
 
 internal class TaskViewModel : BindableBase
 {
-    private string description;
+    private string taskDescription;
 
-    public string Description
+    public string TaskDescription
     {
-        get { return description; }
-        set { description = value; RaisePropertyChanged(); }
+        get { return taskDescription; }
+        set { taskDescription = value; RaisePropertyChanged(); }
+    }
+
+    private string taskMemo;
+
+    public string TaskMemo
+    {
+        get { return taskMemo; }
+        set { taskMemo = value; RaisePropertyChanged(); }
     }
 
     private bool isStared;
@@ -39,6 +47,14 @@ internal class TaskViewModel : BindableBase
         set { createTime = value; RaisePropertyChanged(); }
     }
 
+    private DateTime updateTime;
+
+    public DateTime UpdateTime
+    {
+        get { return updateTime; }
+        set { updateTime = value; RaisePropertyChanged(); }
+    }
+
     public List<string> Steps { get; set; }
-    public TaskType Category { get; set; }
+    public TaskType TaskType { get; set; }
 }

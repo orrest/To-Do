@@ -70,7 +70,7 @@ namespace To_Do.API
             builder.Services.AddUnitOfWork<ApplicationDbContext>();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient<IUserProvider, UserProvider>();
-            builder.Services.AddTransient<IToDoTaskService, ToDoTaskService>();
+            builder.Services.AddTransient<ITaskService, ToDoTaskService>();
             #endregion
 
             #region swagger

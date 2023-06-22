@@ -1,12 +1,14 @@
 ﻿using Refit;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using To_Do.Shared;
 
 namespace To_Do.Services;
 
-public interface IToDoTaskService
+internal interface IToDoTaskService
 {
-    Task<IApiResponse<ToDoTaskAddingDTO>> AddAsync([Body] ToDoTaskAddingDTO dto);
+    Task<IApiResponse<TaskAddingDTO>> AddAsync([Body] TaskAddingDTO dto);
+    Task<IApiResponse<IList<TaskGettingDTO>>> GetAsync(TaskPagingDTO paging);
 }
 
 internal class ToDoTaskService : IToDoTaskService
@@ -18,6 +20,9 @@ internal class ToDoTaskService : IToDoTaskService
         this.api = api;
     }
 
-    public Task<IApiResponse<ToDoTaskAddingDTO>> AddAsync([Body] ToDoTaskAddingDTO dto)
+    public Task<IApiResponse<TaskAddingDTO>> AddAsync([Body] TaskAddingDTO dto)
         => api.AddAsync(dto);
+
+    public Task<IApiResponse<IList<TaskGettingDTO>>> GetAsync(TaskPagingDTO paging)
+        => api.GetAsync(paging);
 }
