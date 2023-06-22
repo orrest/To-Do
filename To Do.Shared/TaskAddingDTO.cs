@@ -1,6 +1,6 @@
 ﻿namespace To_Do.Shared;
 
-public class ToDoTaskAddingDTO
+public class TaskAddingDTO
 {
     public TaskType TaskType { get; set; }
     public string TaskDescription { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace To_Do.Shared;
 
-public class ToDoTaskGettingDTO : TimeInfo
+public class TaskGettingDTO : TimeInfo
 {
     public long TaskId { get; set; }
     public int TaskType { get; set; }

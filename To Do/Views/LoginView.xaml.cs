@@ -16,17 +16,15 @@ namespace To_Do.Views
     public partial class LoginView : UserControl
     {
         private readonly IUserService userService;
-        private readonly IToDoTaskService toDoTaskService;
         private readonly SnackbarMessageQueue snackbarMessage;
 
         private readonly int LOGIN = 0;
         private readonly int REGISTER = 1;
-        
-        public LoginView(IUserService userService, IToDoTaskService toDoTaskService)
+
+        public LoginView(IUserService userService)
         {
             InitializeComponent();
             this.userService = userService;
-            this.toDoTaskService = toDoTaskService;
             snackbarMessage = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
             MessageBar.MessageQueue = snackbarMessage;
             Transitioner.SelectedIndex = LOGIN;
@@ -60,10 +58,8 @@ namespace To_Do.Views
             // response
             if (response.IsSuccessStatusCode)
             {
-                snackbarMessage.Enqueue("登录成功, 窗口即将关闭");
-                await Task.Delay(TimeSpan.FromSeconds(3));
+                snackbarMessage.Enqueue("登录成功");
                 await SecretHelper.SaveTokenAsync(response.Content);
-                CloseWindow();
             }
             else
             {

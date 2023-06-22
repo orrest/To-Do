@@ -1,3 +1,4 @@
+using AutoMapper;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -5,7 +6,8 @@ namespace To_Do.ViewModels;
 
 internal class MonthViewModel : ToDoBaseViewModel
 {
-    public MonthViewModel(IToDoTaskService service) : base("月任务", service, TaskType.MONTH)
+    public MonthViewModel(IToDoTaskService service, IMapper mapper) 
+        : base("月任务", service, TaskType.MONTH, mapper)
     {
 
     }

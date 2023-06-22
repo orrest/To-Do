@@ -6,6 +6,7 @@ using System.Windows;
 using To_Do.Helpers;
 using To_Do.Secrets;
 using To_Do.Services;
+using To_Do.Shared;
 using To_Do.ViewModels;
 using To_Do.Views;
 
@@ -43,7 +44,7 @@ public partial class App : PrismApplication
         /*automapper*/
         var config = new MapperConfiguration(cfg =>
         {
-            //cfg.CreateMap<ToDoModel, ToDoDto>().ReverseMap();
+            cfg.CreateMap<TaskViewModel, TaskGettingDTO>().ReverseMap();
         });
         containerRegistry.RegisterInstance(config.CreateMapper());
 
