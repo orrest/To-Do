@@ -1,11 +1,15 @@
+using Arch.EntityFrameworkCore.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using To_Do.API.Contexts;
 using To_Do.API.Entities;
 using To_Do.API.Helpers;
+using To_Do.API.Services;
 using To_Do.Services;
 
 namespace To_Do.API
@@ -16,12 +20,17 @@ namespace To_Do.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             #region services
             /*Auto mapper*/
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
             /*DbContexts*/
-            builder.Services.AddDbContext<UserRoleDbContext>(option =>
+            builder.Services.AddDbContext<ApplicationDbContext>(option =>
             {
                 var connectionString = Environment.GetEnvironmentVariable(Constants.CONNECTION_STRING);
                 option.UseSqlServer(connectionString);
@@ -50,7 +59,7 @@ namespace To_Do.API
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
                 options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             }).AddRoles<Role>()
-                .AddEntityFrameworkStores<UserRoleDbContext>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddRoleManager<RoleManager<Role>>()
                 .AddUserManager<UserManager<User>>();
@@ -58,6 +67,10 @@ namespace To_Do.API
 
             /*Controllers*/
             builder.Services.AddControllers();
+            builder.Services.AddUnitOfWork<ApplicationDbContext>();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddTransient<IUserProvider, UserProvider>();
+            builder.Services.AddTransient<IToDoTaskService, ToDoTaskService>();
             #endregion
 
             #region swagger

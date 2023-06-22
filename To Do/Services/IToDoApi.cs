@@ -1,14 +1,21 @@
 ﻿using Refit;
 using System.Threading.Tasks;
 using To_Do.Shared;
+using To_Do.Secrets;
 
 namespace To_Do.Services;
 
 internal interface IToDoApi
 {
     #region ToDo
-    [Get(SecretConstants.GET_TODO_BY_ID_API)]
-    Task<IApiResponse> Get(int id);
+    [Headers("Authorization: Bearer")]
+    [Post(SecretConstants.ADD_TODO_API)]
+    Task<IApiResponse<ToDoTaskAddingDTO>> AddAsync([Body] ToDoTaskAddingDTO dto);
+
+    [Headers("Authorization: Bearer")]
+    [Get(SecretConstants.GET_TODO_API)]
+    Task<IApiResponse<ToDoTaskGettingDTO>> GetAsync(int page);
+
     #endregion
 
     #region User

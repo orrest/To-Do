@@ -24,14 +24,15 @@
     <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Refit" Version="6.3.2" />
+    <PackageReference Include="Refit.Newtonsoft.Json" Version="6.3.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\To Do.Secrets\To Do.Secrets.csproj" />
     <ProjectReference Include="..\To Do.Shared\To Do.Shared.csproj" />
   </ItemGroup>
 

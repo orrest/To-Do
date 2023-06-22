@@ -3,6 +3,8 @@ using Prism.DryIoc;
 using Prism.Ioc;
 using Refit;
 using System.Windows;
+using To_Do.Helpers;
+using To_Do.Secrets;
 using To_Do.Services;
 using To_Do.ViewModels;
 using To_Do.Views;
@@ -13,7 +15,7 @@ public partial class App : PrismApplication
 {
     protected override Window CreateShell()
     {
-        return Container.Resolve<MainView>();
+        return Container.Resolve<MainWindow>();
     }
 
     protected override void OnInitialized()
@@ -24,9 +26,19 @@ public partial class App : PrismApplication
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
         /*refit*/
-        var api = RestService.For<IToDoApi>(SecretConstants.BASE_URL);
+        var apiUrl = SecretConstants.RELEASE_URL;
+        if (SecretConstants.IS_DEV)
+        {
+            apiUrl = SecretConstants.DEV_URL;
+        }
+        var api = RestService.For<IToDoApi>(apiUrl, new RefitSettings()
+        {
+            AuthorizationHeaderValueGetter = () => SecretHelper.GetTokenAsync(),
+            ContentSerializer = new NewtonsoftJsonContentSerializer()
+        });
         containerRegistry.RegisterInstance(api);
         containerRegistry.Register<IUserService, UserService>();
+        containerRegistry.Register<IToDoTaskService, ToDoTaskService>();
 
         /*automapper*/
         var config = new MapperConfiguration(cfg =>
@@ -36,7 +48,9 @@ public partial class App : PrismApplication
         containerRegistry.RegisterInstance(config.CreateMapper());
 
         /*viewmodels*/
+        containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
         containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
+        containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
         containerRegistry.RegisterForNavigation<EmailView, EmailViewModel>();
         containerRegistry.RegisterForNavigation<LongTermView, LongTermViewModel>();
         containerRegistry.RegisterForNavigation<MonthView, MonthViewModel>();

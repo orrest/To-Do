@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /To Do/SecretConstants.cs
+/To Do/Helpers/TokenHelper.cs
+/To Do.Secrets/To Do.Secrets.csproj
+/To Do.Secrets/SecretConstants.cs
+/To Do.Secrets/TokenHelper.cs
+/To Do.Secrets/SecretHelper.cs

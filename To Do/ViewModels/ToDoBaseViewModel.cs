@@ -1,15 +1,17 @@
 using Prism.Commands;
-using Prism.Mvvm;
 using System.Collections.ObjectModel;
-using To_Do.Models;
+using To_Do.Services;
+using To_Do.Shared;
 
 namespace To_Do.ViewModels;
 
-public class ToDoBaseViewModel : BindableBase
+internal abstract class ToDoBaseViewModel : BaseViewModel
 {
 	private string viewTitle;
+    private TaskType taskType;
+    public readonly IToDoTaskService service;
 
-	public string ViewTitle
+    public string ViewTitle
 	{
 		get { return viewTitle; }
 		set { viewTitle = value; RaisePropertyChanged(); }
@@ -34,18 +36,24 @@ public class ToDoBaseViewModel : BindableBase
 	}
 
 	public DelegateCommand<TaskViewModel> FinishCommand { get; private set; }
-	public DelegateCommand<TaskViewModel> DrawerOpenCommand { get; private set; }
-	public DelegateCommand<TaskViewModel> StarCommand { get; private set; }
+    public DelegateCommand<TaskViewModel> DrawerOpenCommand { get; private set; }
+    public DelegateCommand<TaskViewModel> StarCommand { get; private set; }
     public DelegateCommand DrawerCloseCommand { get; private set; }
+    public DelegateCommand<string> AddTaskCommand { get; private set; }
 
-    public ToDoBaseViewModel()
-	{
+    internal ToDoBaseViewModel(
+        string viewTitle, IToDoTaskService service, TaskType taskType
+    ) : base() 
+    {
+        this.viewTitle = viewTitle;
+        this.service = service;
+        this.taskType = taskType;
+
         FinishCommand = new DelegateCommand<TaskViewModel>(Finish);
         StarCommand = new DelegateCommand<TaskViewModel>(Star);
         DrawerOpenCommand = new DelegateCommand<TaskViewModel>(OpenDrawer);
         DrawerCloseCommand = new DelegateCommand(CloseDrawer);
-
-        FakeDataHelper.CreateTasks(Tasks);
+        AddTaskCommand = new DelegateCommand<string>(AddTask);
 	}
 
     private void Finish(TaskViewModel task)
@@ -67,6 +75,27 @@ public class ToDoBaseViewModel : BindableBase
     private void CloseDrawer()
     {
         IsDrawerOpen = false;
+    }
+
+    private async void AddTask(string taskDescription)
+    {
+        var response = await service.AddAsync(new ToDoTaskAddingDTO()
+        {
+            TaskType = taskType,
+            TaskDescription = taskDescription,
+            TaskMemo = "",
+            IsFinished = false,
+            IsStared = false
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 
 }

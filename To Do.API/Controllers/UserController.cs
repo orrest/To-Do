@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using To_Do.API.Entities;
 using To_Do.API.Helpers;
@@ -107,7 +106,7 @@ namespace To_Do.API.Controllers
                 return BadRequest("Confirm failed.");
             }
 
-            return Ok();
+            return Ok("Email Confirmed!");
         }
 
         [HttpPost]

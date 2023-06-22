@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace To_Do.Views
 {
     /// <summary>
-    /// MainView.xaml 的交互逻辑
+    /// SettingsView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainView : UserControl
+    public partial class SettingsView : UserControl
     {
-        public MainView()
+        public SettingsView()
         {
             InitializeComponent();
         }

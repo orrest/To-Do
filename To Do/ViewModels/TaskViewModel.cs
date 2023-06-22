@@ -1,11 +1,11 @@
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using To_Do.Models;
+using To_Do.Shared;
 
 namespace To_Do.ViewModels;
 
-public class TaskViewModel : BindableBase
+internal class TaskViewModel : BindableBase
 {
     private string description;
 
@@ -39,7 +39,6 @@ public class TaskViewModel : BindableBase
         set { createTime = value; RaisePropertyChanged(); }
     }
 
-
     public List<string> Steps { get; set; }
-    public TaskCategory Category { get; set; }
+    public TaskType Category { get; set; }
 }

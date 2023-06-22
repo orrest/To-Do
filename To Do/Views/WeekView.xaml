@@ -57,9 +57,7 @@
                 SelectedItem="{Binding SelectedTask}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type vm_models:TaskViewModel}">
-                        <Grid
-                            Height="60"
-                            Margin="0,2">
+                        <Grid Height="60" Margin="0,2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60" />
                                 <ColumnDefinition Width="*" />
@@ -71,12 +69,8 @@
                                 Grid.Column="0"
                                 IsChecked="{Binding IsFinished}">
                                 <behavior:Interaction.Triggers>
-                                    <behavior:EventTrigger
-                                        EventName="MouseLeftButtonUp"
-                                        SourceObject="{Binding ElementName=leftIcon}">
-                                        <behavior:InvokeCommandAction
-                                            Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}" />
+                                    <behavior:EventTrigger EventName="MouseLeftButtonUp" SourceObject="{Binding ElementName=leftIcon}">
+                                        <behavior:InvokeCommandAction Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}" />
                                     </behavior:EventTrigger>
                                 </behavior:Interaction.Triggers>
                             </todo:IndicationCheckIcon>
@@ -87,12 +81,8 @@
                                 VerticalAlignment="Center"
                                 Text="{Binding Description}">
                                 <behavior:Interaction.Triggers>
-                                    <behavior:EventTrigger
-                                        EventName="MouseLeftButtonUp"
-                                        SourceObject="{Binding ElementName=description}">
-                                        <behavior:InvokeCommandAction
-                                            Command="{Binding DataContext.DrawerOpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
+                                    <behavior:EventTrigger EventName="MouseLeftButtonUp" SourceObject="{Binding ElementName=description}">
+                                        <behavior:InvokeCommandAction Command="{Binding DataContext.DrawerOpenCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
                                     </behavior:EventTrigger>
                                 </behavior:Interaction.Triggers>
                             </TextBlock>
@@ -102,12 +92,8 @@
                                 Grid.Column="2"
                                 IsChecked="{Binding IsStared}">
                                 <behavior:Interaction.Triggers>
-                                    <behavior:EventTrigger
-                                        EventName="MouseLeftButtonUp"
-                                        SourceObject="{Binding ElementName=starIcon}">
-                                        <behavior:InvokeCommandAction
-                                            Command="{Binding Path=DataContext.StarCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
+                                    <behavior:EventTrigger EventName="MouseLeftButtonUp" SourceObject="{Binding ElementName=starIcon}">
+                                        <behavior:InvokeCommandAction Command="{Binding Path=DataContext.StarCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
                                     </behavior:EventTrigger>
                                 </behavior:Interaction.Triggers>
                             </todo:CheckIcon>
@@ -117,11 +103,19 @@
             </ListBox>
             <!--  View: Bottom Adding Content Bar  -->
             <TextBox
+                x:Name="AddingTaskBox"
                 Grid.Row="2"
                 Margin="40,0"
                 VerticalAlignment="Center"
                 FontSize="16"
-                Style="{StaticResource SubViewBottomTextBox}" />
+                Style="{StaticResource SubViewBottomTextBox}">
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Key="Return"
+                        Command="{Binding AddTaskCommand}"
+                        CommandParameter="{Binding Text, ElementName=AddingTaskBox}" />
+                </TextBox.InputBindings>
+            </TextBox>
         </Grid>
 
         <!--  Right drawer  -->
@@ -129,9 +123,7 @@
             <!--  Drawer: Layout  -->
             <DockPanel Margin="10,0">
                 <!--  Drawer: Content  -->
-                <StackPanel
-                    Width="340"
-                    DockPanel.Dock="Top">
+                <StackPanel Width="340" DockPanel.Dock="Top">
                     <!--  Drawer: Close Drawer Button  -->
                     <todo:IndicationButton
                         Margin="5"
@@ -154,9 +146,7 @@
                                     Text="{Binding SelectedTask.Description}" />
                                 <todo:CheckIcon HorizontalAlignment="Right" />
                             </Grid>
-                            <Grid
-                                Height="30"
-                                Margin="10">
+                            <Grid Height="30" Margin="10">
                                 <todo:IndicationCheckIcon HorizontalAlignment="Left" />
                                 <TextBox
                                     Width="240"
@@ -164,17 +154,13 @@
                                     Padding="5,0"
                                     HorizontalAlignment="Center"
                                     Text="添加步骤" />
-                                <todo:IndicationButton
-                                    HorizontalAlignment="Right"
-                                    IconKind="DotsVertical" />
+                                <todo:IndicationButton HorizontalAlignment="Right" IconKind="DotsVertical" />
                             </Grid>
                         </StackPanel>
                     </materialDesign:Card>
                     <!--  Drawer: Memo Row  -->
                     <materialDesign:Card Margin="0,5">
-                        <TextBox
-                            Padding="10,10,0,50"
-                            materialDesign:HintAssist.Hint="添加备注" />
+                        <TextBox Padding="10,10,0,50" materialDesign:HintAssist.Hint="添加备注" />
                     </materialDesign:Card>
                 </StackPanel>
                 <!--  Drawer: Bottom Row  -->
