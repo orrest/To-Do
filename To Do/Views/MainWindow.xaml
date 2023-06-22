@@ -1,0 +1,99 @@
+﻿<Window
+    x:Class="To_Do.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:To_Do.Helpers"
+    xmlns:local="clr-namespace:To_Do"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    Width="1020"
+    Height="600"
+    MinWidth="1020"
+    MinHeight="600"
+    AllowsTransparency="True"
+    Background="Transparent"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="14"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    WindowStyle="None"
+    mc:Ignorable="d"
+        Loaded="Window_Loaded">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" />
+    </WindowChrome.WindowChrome>
+
+    <Border
+        Background="{DynamicResource MaterialDesignDarkBackground}"
+        BorderBrush="Gray"
+        BorderThickness="1"
+        CornerRadius="4">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--  Title bar  -->
+            <materialDesign:ColorZone
+                x:Name="TitleBar"
+                materialDesign:ElevationAssist.Elevation="Dp4"
+                Background="{StaticResource MaterialDesignDarkBackground}"
+                CornerRadius="8,8,0,0"
+                Mode="PrimaryMid"
+                MouseDown="TitleBar_MouseDown"
+                PreviewMouseDoubleClick="TitleBar_PreviewMouseDoubleClick">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            Width="24"
+                            Height="24"
+                            Margin="10,0"
+                            Source="/Images/todo.png" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="ToDo" />
+                    </StackPanel>
+
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            Name="btnMin"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Click="btnMin_Click"
+                            Content="{materialDesign:PackIcon Kind=WindowMinimize}"
+                            Style="{StaticResource MaterialDesignFlatMidBgButton}" />
+                        <Button
+                            Name="btnMax"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Click="btnMax_Click"
+                            Content="{materialDesign:PackIcon Kind=WindowMaximize}"
+                            Style="{StaticResource MaterialDesignFlatMidBgButton}" />
+                        <Button
+                            Name="btnClose"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Click="btnClose_Click"
+                            Content="{materialDesign:PackIcon Kind=WindowClose}"
+                            Style="{StaticResource MaterialDesignFlatMidBgButton}" />
+                    </StackPanel>
+                </DockPanel>
+            </materialDesign:ColorZone>
+
+            <!--  Content  -->
+            <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static helpers:Constants.MAIN_CONTENT_REGION}" />
+
+        </Grid>
+    </Border>
+</Window>

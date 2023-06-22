@@ -1,4 +1,4 @@
-using Prism.Commands;
+Ôªøusing Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
@@ -9,14 +9,15 @@ using To_Do.Models;
 
 namespace To_Do.ViewModels;
 
-public class MainViewModel : BindableBase
+public class MainViewModel : BindableBase, INavigationAware
 {
     public DelegateCommand<MenuItem> NavigationCommand { get; private set; }
     public DelegateCommand OpenUserPopupCommand { get; private set; }
-    public DelegateCommand OpenLoginDialogCommand { get; set; }
+    public DelegateCommand OpenLoginDialogCommand { get; private set; }
+    public DelegateCommand OpenSettingsViewCommand { get; private set; }
 
     public ObservableCollection<MenuItem> MenuItems { get; private set; }
-		= new ObservableCollection<MenuItem>();
+        = new ObservableCollection<MenuItem>();
 
     private MenuItem? selectedItem;
 
@@ -38,10 +39,11 @@ public class MainViewModel : BindableBase
     private readonly IDialogService dialogService;
 
     public MainViewModel(IRegionManager regionManager, IDialogService dialogService)
-	{
+    {
         NavigationCommand = new DelegateCommand<MenuItem>(Naivgate);
         OpenUserPopupCommand = new DelegateCommand(OpenUserPopup);
         OpenLoginDialogCommand = new DelegateCommand(OpenLoginDialog);
+        OpenSettingsViewCommand = new DelegateCommand(OpenSettingsView);
 
         IsUserPopupOpen = false;
 
@@ -53,7 +55,7 @@ public class MainViewModel : BindableBase
 
     private void Naivgate(MenuItem menu)
     {
-        regionManager.RequestNavigate(Constants.MAIN_REGION, menu.ViewPath);
+        regionManager.RequestNavigate(Constants.SUB_CONTENT_REGION, menu.ViewPath);
     }
 
     private void OpenUserPopup()
@@ -66,42 +68,63 @@ public class MainViewModel : BindableBase
         dialogService.ShowDialog("LoginView");
     }
 
+    private void OpenSettingsView()
+    {
+        regionManager.RequestNavigate(Constants.MAIN_CONTENT_REGION,
+            Constants.SETTINGS_VIEW);
+    }
+
     private void InitMenuItems()
     {
         MenuItems.Add(new MenuItem
         {
             Icon = "ExclamationThick",
             Color = "#7b8791",
-            Title = "÷ÿ“™",
+            Title = "ÈáçË¶Å",
             ViewPath = Constants.URGENT_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarWeekOutline",
             Color = "#78b1ad",
-            Title = "÷‹»ŒŒÒ",
+            Title = "Âë®‰ªªÂä°",
             ViewPath = Constants.WEEK_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarMonthOutline",
             Color = "#84b09d",
-            Title = "‘¬»ŒŒÒ",
+            Title = "Êúà‰ªªÂä°",
             ViewPath = Constants.MONTH_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarCheckOutline",
             Color = "#bac8d4",
-            Title = "≥§∆⁄»ŒŒÒ",
+            Title = "ÈïøÊúü‰ªªÂä°",
             ViewPath = Constants.LONGTERM_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "EmailArrowLeftOutline",
             Color = "#9b2a46",
-            Title = "µÁ◊”” º˛",
+            Title = "ÁîµÂ≠êÈÇÆ‰ª∂",
             ViewPath = Constants.EMAIL_VIEW
         });
+    }
+
+    public bool IsNavigationTarget(NavigationContext navigationContext)
+    {
+        return true;
+    }
+
+    public void OnNavigatedFrom(NavigationContext navigationContext)
+    {
+
+    }
+
+    public void OnNavigatedTo(NavigationContext navigationContext)
+    {
+
     }
 }

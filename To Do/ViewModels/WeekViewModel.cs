@@ -1,9 +1,12 @@
+using To_Do.Services;
+using To_Do.Shared;
+
 namespace To_Do.ViewModels;
 
 public class WeekViewModel : ToDoBaseViewModel
 {
-    public WeekViewModel() : base()
+    public WeekViewModel(IToDoTaskService service) 
+        : base("周任务", service, TaskType.WEEK)
     {
-        ViewTitle = "周任务";
     }
 }

@@ -2,14 +2,18 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using To_Do.Models;
+using To_Do.Services;
+using To_Do.Shared;
 
 namespace To_Do.ViewModels;
 
 public class ToDoBaseViewModel : BindableBase
 {
 	private string viewTitle;
+    private int taskType;
+    private readonly IToDoTaskService service;
 
-	public string ViewTitle
+    public string ViewTitle
 	{
 		get { return viewTitle; }
 		set { viewTitle = value; RaisePropertyChanged(); }
@@ -37,13 +41,20 @@ public class ToDoBaseViewModel : BindableBase
 	public DelegateCommand<TaskViewModel> DrawerOpenCommand { get; private set; }
 	public DelegateCommand<TaskViewModel> StarCommand { get; private set; }
     public DelegateCommand DrawerCloseCommand { get; private set; }
+    public DelegateCommand<string> AddTaskCommand { get; private set; }
 
-    public ToDoBaseViewModel()
-	{
+    public ToDoBaseViewModel(
+        string viewTitle, IToDoTaskService service, int taskType
+    ) {
+        this.viewTitle = viewTitle;
+        this.service = service;
+        this.taskType = taskType;
+
         FinishCommand = new DelegateCommand<TaskViewModel>(Finish);
         StarCommand = new DelegateCommand<TaskViewModel>(Star);
         DrawerOpenCommand = new DelegateCommand<TaskViewModel>(OpenDrawer);
         DrawerCloseCommand = new DelegateCommand(CloseDrawer);
+        AddTaskCommand = new DelegateCommand<string>(AddTask);
 
         FakeDataHelper.CreateTasks(Tasks);
 	}
@@ -67,6 +78,27 @@ public class ToDoBaseViewModel : BindableBase
     private void CloseDrawer()
     {
         IsDrawerOpen = false;
+    }
+
+    private async void AddTask(string taskDescription)
+    {
+        var response = await service.AddAsync(new ToDoTaskAddingDTO()
+        {
+            TaskType = taskType,
+            TaskDescription = taskDescription,
+            TaskMemo = "",
+            IsFinished = false,
+            IsStared = false
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 
 }

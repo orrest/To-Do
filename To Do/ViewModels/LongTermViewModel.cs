@@ -1,9 +1,11 @@
+using To_Do.Services;
+using To_Do.Shared;
+
 namespace To_Do.ViewModels;
 
 public class LongTermViewModel : ToDoBaseViewModel
 {
-    public LongTermViewModel() : base()
+    public LongTermViewModel(IToDoTaskService service) : base("长期任务", service, TaskType.LONGTERM)
     {
-        ViewTitle = "长期任务";
     }
 }

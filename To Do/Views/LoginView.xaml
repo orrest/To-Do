@@ -16,7 +16,7 @@
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
     <Grid>
-        <materialDesign:Transitioner x:Name="Transitioner">
+        <materialDesign:Transitioner x:Name="Transitioner" SelectedIndex="0">
             <materialDesign:TransitionerSlide>
                 <StackPanel Margin="15">
                     <TextBlock

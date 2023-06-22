@@ -1,9 +1,12 @@
+using To_Do.Services;
+using To_Do.Shared;
+
 namespace To_Do.ViewModels;
 
 public class MonthViewModel : ToDoBaseViewModel
 {
-    public MonthViewModel() : base()
+    public MonthViewModel(IToDoTaskService service) : base("月任务", service, TaskType.MONTH)
     {
-        ViewTitle = "月任务";
+
     }
 }

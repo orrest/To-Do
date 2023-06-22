@@ -1,12 +1,10 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -18,16 +16,17 @@ namespace To_Do.Views
     public partial class LoginView : UserControl
     {
         private readonly IUserService userService;
+        private readonly IToDoTaskService toDoTaskService;
         private readonly SnackbarMessageQueue snackbarMessage;
 
         private readonly int LOGIN = 0;
         private readonly int REGISTER = 1;
         
-        public LoginView(IUserService userService)
+        public LoginView(IUserService userService, IToDoTaskService toDoTaskService)
         {
             InitializeComponent();
             this.userService = userService;
-
+            this.toDoTaskService = toDoTaskService;
             snackbarMessage = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
             MessageBar.MessageQueue = snackbarMessage;
             Transitioner.SelectedIndex = LOGIN;
@@ -56,32 +55,20 @@ namespace To_Do.Views
             }
 
             var response = await userService.LoginAsync(
-                new LoginDTO(email, SHA2Hash(pwd)));
+                new LoginDTO(email, SecretHelper.SHA2Hash(pwd)));
 
             // response
             if (response.IsSuccessStatusCode)
             {
                 snackbarMessage.Enqueue("登录成功, 窗口即将关闭");
                 await Task.Delay(TimeSpan.FromSeconds(3));
-                await SaveTokenToUserFile(response.Content);
+                await SecretHelper.SaveTokenAsync(response.Content);
                 CloseWindow();
             }
             else
             {
                 snackbarMessage.Enqueue("登录失败, 请重试");
             }
-        }
-
-        /// <summary>
-        /// TODO TokenHelper.cs
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private async Task SaveTokenToUserFile(string? token)
-        {
-            string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            string filePath = Path.Combine(userFolderPath, "ToDoToken.txt");
-            await File.WriteAllTextAsync(filePath, token);
         }
 
         private void CloseWindow()
@@ -110,8 +97,8 @@ namespace To_Do.Views
                 return;
             }
 
-            pwd = SHA2Hash(pwd);
-            cfmPwd = SHA2Hash(cfmPwd);
+            pwd = SecretHelper.SHA2Hash(pwd);
+            cfmPwd = SecretHelper.SHA2Hash(cfmPwd);
 
             // TODO Loading
             var response = await userService.RegisterAsync(
@@ -126,20 +113,6 @@ namespace To_Do.Views
             {
                 snackbarMessage.Enqueue("注册失败, 请重试");
             }
-        }
-
-        private string SHA2Hash(string input)
-        {
-            input += SecretConstants.SALT;
-
-            var sha = SHA256.Create();
-
-            var inputBytes = Encoding.UTF8.GetBytes(input);
-            var hashBytes = sha.ComputeHash(inputBytes);
-            var hashStr = BitConverter.ToString(hashBytes);
-            hashStr += SecretConstants.SALT;
-
-            return hashStr.Replace("-", "");
         }
 
         private void ToRegisterViewBtn_Click(object sender, RoutedEventArgs e)

@@ -27,11 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\To Do.Secrets\To Do.Secrets.csproj" />
     <ProjectReference Include="..\To Do.Shared\To Do.Shared.csproj" />
   </ItemGroup>
 
