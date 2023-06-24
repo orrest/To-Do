@@ -4,7 +4,7 @@ using To_Do.Shared;
 
 namespace To_Do.Services;
 
-public interface IUserService
+internal interface IUserService
 {
     Task<IApiResponse<string>> LoginAsync([Body] LoginDTO dto);
     Task<IApiResponse> RegisterAsync([Body] RegisterDTO dto);
