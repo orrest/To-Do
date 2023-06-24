@@ -11,11 +11,11 @@ internal interface IToDoApi
     #region ToDo
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.ADD_TODO_API)]
-    Task<IApiResponse<TaskAddingDTO>> AddAsync([Body] TaskAddingDTO dto);
+    Task<IApiResponse<TaskDTO>> AddAsync([Body] TaskDTO dto);
 
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_TODO_API)]
-    Task<IApiResponse<IList<TaskGettingDTO>>> GetAsync([Body] TaskPagingDTO paging);
+    Task<IApiResponse<IList<TaskDTO>>> GetAsync([Body] TaskPagingDTO paging);
 
     #endregion
 

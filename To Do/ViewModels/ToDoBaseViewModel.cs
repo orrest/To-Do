@@ -86,7 +86,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
 
     private async void AddTask(string taskDescription)
     {
-        var task = new TaskAddingDTO()
+        var task = new TaskDTO()
         {
             TaskType = taskType,
             TaskDescription = taskDescription,
@@ -99,7 +99,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
 
         if (response.IsSuccessStatusCode)
         {
-            var tskVm = mapper.Map<TaskAddingDTO, TaskViewModel>(task);
+            var tskVm = mapper.Map<TaskDTO, TaskViewModel>(response.Content);
             Tasks.Add(tskVm);
         }
         else

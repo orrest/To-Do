@@ -20,16 +20,16 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IList<TaskGettingDTO>> Get(
+    public async Task<IList<TaskDTO>> Get(
         [FromBody] TaskPagingDTO paging)
         => await service.GetAsync(userId, paging);
 
     [HttpGet("page_index/{pageIndex}")]
-    public async Task<IList<TaskAddingDTO>> GetPage(int pageIndex, int pageSize = 20)
+    public async Task<IList<TaskDTO>> GetPage(int pageIndex, int pageSize = 20)
         => await service.GetPagedListAsync(pageIndex, pageSize);
 
     [HttpPost]
-    public async Task<TaskAddingDTO> Add([FromBody] TaskAddingDTO model)
+    public async Task<TaskDTO> Add([FromBody] TaskDTO model)
         => await service.AddAsync(model, userId);
 
     [HttpDelete("{id}")]
@@ -37,6 +37,6 @@ public class TaskController : ControllerBase
         => await service.DeleteAsync(id);
 
     [HttpPost]
-    public async Task<bool> Update([FromBody] TaskAddingDTO model)
+    public async Task<bool> Update([FromBody] TaskDTO model)
         => await service.UpdateAsync(model);
 }

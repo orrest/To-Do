@@ -44,7 +44,7 @@ public partial class App : PrismApplication
         /*automapper*/
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<TaskViewModel, TaskGettingDTO>().ReverseMap();
+            cfg.CreateMap<TaskViewModel, TaskDTO>().ReverseMap();
         });
         containerRegistry.RegisterInstance(config.CreateMapper());
 

@@ -25,7 +25,7 @@ internal class WeekViewModel : ToDoBaseViewModel
         if (response.IsSuccessStatusCode)
         {
             var tasks = response.Content;
-            var vms = mapper.Map<IList<TaskGettingDTO>, IList<TaskViewModel>>(tasks!);
+            var vms = mapper.Map<IList<TaskDTO>, IList<TaskViewModel>>(tasks!);
             Tasks.AddRange(vms);
         }
         else

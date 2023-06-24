@@ -7,8 +7,8 @@ namespace To_Do.Services;
 
 internal interface IToDoTaskService
 {
-    Task<IApiResponse<TaskAddingDTO>> AddAsync([Body] TaskAddingDTO dto);
-    Task<IApiResponse<IList<TaskGettingDTO>>> GetAsync(TaskPagingDTO paging);
+    Task<IApiResponse<TaskDTO>> AddAsync([Body] TaskDTO dto);
+    Task<IApiResponse<IList<TaskDTO>>> GetAsync(TaskPagingDTO paging);
 }
 
 internal class ToDoTaskService : IToDoTaskService
@@ -20,9 +20,9 @@ internal class ToDoTaskService : IToDoTaskService
         this.api = api;
     }
 
-    public Task<IApiResponse<TaskAddingDTO>> AddAsync([Body] TaskAddingDTO dto)
+    public Task<IApiResponse<TaskDTO>> AddAsync([Body] TaskDTO dto)
         => api.AddAsync(dto);
 
-    public Task<IApiResponse<IList<TaskGettingDTO>>> GetAsync(TaskPagingDTO paging)
+    public Task<IApiResponse<IList<TaskDTO>>> GetAsync(TaskPagingDTO paging)
         => api.GetAsync(paging);
 }

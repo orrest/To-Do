@@ -6,28 +6,28 @@ using To_Do.Shared;
 
 namespace To_Do.API.Services;
 
-public abstract class ITaskService : Service<TaskAddingDTO, ToDoTask>
+public abstract class ITaskService : Service<TaskDTO, ToDoTask>
 {
     protected ITaskService(
         IUnitOfWork unitOfWork, 
-        ILogger<Service<TaskAddingDTO, ToDoTask>> logger, 
+        ILogger<Service<TaskDTO, ToDoTask>> logger, 
         IMapper mapper
     ) : base(unitOfWork, logger, mapper) {  }
 
-    public abstract Task<IList<TaskGettingDTO>> GetAsync(
+    public abstract Task<IList<TaskDTO>> GetAsync(
         Guid userId, TaskPagingDTO paging, int pageSize = 20);
 
-    public abstract Task<TaskAddingDTO> AddAsync(
-        TaskAddingDTO mode, Guid userId);
+    public abstract Task<TaskDTO> AddAsync(
+        TaskDTO mode, Guid userId);
 }
 
 public class ToDoTaskService : ITaskService
 {
-    public ToDoTaskService(IUnitOfWork unitOfWork, ILogger<Service<TaskAddingDTO, ToDoTask>> logger, IMapper mapper) : base(unitOfWork, logger, mapper)
+    public ToDoTaskService(IUnitOfWork unitOfWork, ILogger<Service<TaskDTO, ToDoTask>> logger, IMapper mapper) : base(unitOfWork, logger, mapper)
     {
     }
 
-    public override async Task<IList<TaskGettingDTO>> GetAsync(
+    public override async Task<IList<TaskDTO>> GetAsync(
         Guid userId, TaskPagingDTO paging, int pageSize = 20)
     { 
         var repo = unitOfWork.GetRepository<ToDoTask>();
@@ -37,15 +37,15 @@ public class ToDoTaskService : ITaskService
             pageIndex: paging.PageIndex,
             pageSize: pageSize);
 
-        return mapper.Map<IList<ToDoTask>, IList<TaskGettingDTO>>(res.Items);
+        return mapper.Map<IList<ToDoTask>, IList<TaskDTO>>(res.Items);
     }
 
-    public override Task<TaskAddingDTO?> AddAsync(TaskAddingDTO model)
+    public override Task<TaskDTO?> AddAsync(TaskDTO model)
     {
         throw new AccessViolationException("Do not use this.");
     }
 
-    public override async Task<TaskAddingDTO> AddAsync(TaskAddingDTO model, Guid userId)
+    public override async Task<TaskDTO> AddAsync(TaskDTO model, Guid userId)
     {
         var entity = mapper.Map<ToDoTask>(model);
         entity.UserId = userId;
@@ -57,7 +57,7 @@ public class ToDoTaskService : ITaskService
         var ent = add.Entity;
 
         return res > 0 
-            ? mapper.Map<TaskAddingDTO>(ent)
+            ? mapper.Map<TaskDTO>(ent)
             : throw new DbUpdateException("Insertion failed.");
     }
 }

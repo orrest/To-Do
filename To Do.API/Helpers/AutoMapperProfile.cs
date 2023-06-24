@@ -6,7 +6,6 @@ public class AutoMapperProfile : MapperConfigurationExpression
 {
     public AutoMapperProfile()
     {
-        CreateMap<ToDoTask, TaskAddingDTO>().ReverseMap();
-        CreateMap<ToDoTask, TaskGettingDTO>().ReverseMap();
+        CreateMap<ToDoTask, TaskDTO>().ReverseMap();
     }
 }
