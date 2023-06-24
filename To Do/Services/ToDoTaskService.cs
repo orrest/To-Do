@@ -5,7 +5,7 @@ using To_Do.Shared;
 
 namespace To_Do.Services;
 
-public interface IToDoTaskService
+internal interface IToDoTaskService
 {
     Task<IApiResponse<TaskAddingDTO>> AddAsync([Body] TaskAddingDTO dto);
     Task<IApiResponse<IList<TaskGettingDTO>>> GetAsync(TaskPagingDTO paging);
