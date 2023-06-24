@@ -7,6 +7,14 @@ namespace To_Do.ViewModels;
 
 internal class TaskViewModel : BindableBase
 {
+    private long taskId;
+
+    public long TaskId
+    {
+        get { return taskId; }
+        set { taskId = value; RaisePropertyChanged(); }
+    }
+
     private string taskDescription;
 
     public string TaskDescription

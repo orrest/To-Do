@@ -1,6 +1,7 @@
 using AutoMapper;
 using Prism.Commands;
 using System.Collections.ObjectModel;
+using System.Linq;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -42,6 +43,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     public DelegateCommand<TaskViewModel> StarCommand { get; private set; }
     public DelegateCommand DrawerCloseCommand { get; private set; }
     public DelegateCommand<string> AddTaskCommand { get; private set; }
+    public DelegateCommand DeleteTaskCommand { get; private set; }
 
     internal ToDoBaseViewModel(
         string viewTitle, 
@@ -59,6 +61,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         DrawerOpenCommand = new DelegateCommand<TaskViewModel>(OpenDrawer);
         DrawerCloseCommand = new DelegateCommand(CloseDrawer);
         AddTaskCommand = new DelegateCommand<string>(AddTask);
+        DeleteTaskCommand = new DelegateCommand(DeleteTask);
 
         InitializeWrapper();
 	}
@@ -104,8 +107,22 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         }
         else
         {
-
+            // TODO snackbar mq
         }
     }
 
+    private async void DeleteTask()
+    {
+        var response = await service.DeleteAsync(selectedTask.TaskId);
+        if (response.IsSuccessStatusCode)
+        {
+            Tasks.Remove(selectedTask);
+            SelectedTask = null;
+            IsDrawerOpen = false;
+        }
+        else
+        {
+            // TODO snackbar mq
+        }
+    }
 }

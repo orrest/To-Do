@@ -178,7 +178,13 @@
                     <todo:IndicationButton
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        IconKind="Trash" />
+                        IconKind="Trash">
+                        <behavior:Interaction.Triggers>
+                            <behavior:EventTrigger EventName="MouseLeftButtonUp">
+                                <behavior:InvokeCommandAction Command="{Binding DeleteTaskCommand}" />
+                            </behavior:EventTrigger>
+                        </behavior:Interaction.Triggers>
+                    </todo:IndicationButton>
                 </Grid>
             </DockPanel>
         </materialDesign:DrawerHost.RightDrawerContent>
