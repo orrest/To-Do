@@ -19,6 +19,8 @@ public abstract class ITaskService : Service<TaskDTO, ToDoTask>
 
     public abstract Task<TaskDTO> AddAsync(
         TaskDTO mode, Guid userId);
+
+    public abstract Task<bool> UpdateAsync(TaskDTO model, Guid userId);
 }
 
 public class ToDoTaskService : ITaskService
@@ -42,7 +44,7 @@ public class ToDoTaskService : ITaskService
 
     public override Task<TaskDTO?> AddAsync(TaskDTO model)
     {
-        throw new AccessViolationException("Do not use this.");
+        throw new AccessViolationException("Use `AddAsync(TaskDTO model, Guid userId)` instead.");
     }
 
     public override async Task<TaskDTO> AddAsync(TaskDTO model, Guid userId)
@@ -59,5 +61,21 @@ public class ToDoTaskService : ITaskService
         return res > 0 
             ? mapper.Map<TaskDTO>(ent)
             : throw new DbUpdateException("Insertion failed.");
+    }
+
+    public override async Task<bool> UpdateAsync(TaskDTO model, Guid userId)
+    {
+        var entity = mapper.Map<ToDoTask>(model);
+        entity.UserId = userId;
+
+        unitOfWork.GetRepository<ToDoTask>().Update(entity);
+        var res = await unitOfWork.SaveChangesAsync();
+
+        return res > 0 ? true : false;
+    }
+
+    public override async Task<bool> UpdateAsync(TaskDTO model)
+    {
+        throw new AccessViolationException("Use `UpdateAsync(TaskDTO model, Guid userId)` instead.");
     }
 }

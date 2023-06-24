@@ -11,10 +11,10 @@ internal class WeekViewModel : ToDoBaseViewModel
     public WeekViewModel(IToDoTaskService service, IMapper mapper) 
         : base("÷‹»ŒŒÒ", service, TaskType.WEEK, mapper)
     {
-
+        Initialize();
     }
 
-    public override async void Initialize()
+    public async void Initialize()
     {
         var response = await service.GetAsync(new TaskPagingDTO()
         {

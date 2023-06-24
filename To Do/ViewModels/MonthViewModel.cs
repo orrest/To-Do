@@ -12,8 +12,4 @@ internal class MonthViewModel : ToDoBaseViewModel
 
     }
 
-    public override void Initialize()
-    {
-        throw new System.NotImplementedException();
-    }
 }

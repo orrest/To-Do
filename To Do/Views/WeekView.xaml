@@ -135,15 +135,19 @@
                             </behavior:EventTrigger>
                         </behavior:Interaction.Triggers>
                     </todo:IndicationButton>
-                    <!--  Drawer: Title Row  -->
+                    <!--  Drawer: Description Row  -->
                     <materialDesign:Card Margin="0,5">
                         <StackPanel>
                             <Grid Margin="10">
                                 <todo:IndicationCheckIcon HorizontalAlignment="Left" />
-                                <TextBlock
+                                <TextBox
                                     HorizontalAlignment="Center"
                                     FontSize="18"
-                                    Text="{Binding SelectedTask.TaskDescription}" />
+                                    Text="{Binding SelectedTask.TaskDescription, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Return" Command="{Binding UpdateTaskCommand}" />
+                                    </TextBox.InputBindings>
+                                </TextBox>
                                 <todo:CheckIcon HorizontalAlignment="Right" />
                             </Grid>
                             <Grid Height="30" Margin="10">

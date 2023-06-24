@@ -38,5 +38,5 @@ public class TaskController : ControllerBase
 
     [HttpPost]
     public async Task<bool> Update([FromBody] TaskDTO model)
-        => await service.UpdateAsync(model);
+        => await service.UpdateAsync(model, userId);
 }

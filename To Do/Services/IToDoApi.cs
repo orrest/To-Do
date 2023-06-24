@@ -18,6 +18,10 @@ internal interface IToDoApi
     Task<IApiResponse<bool>> DeleteAsync(long id);
 
     [Headers("Authorization: Bearer")]
+    [Post(SecretConstants.UPD_TODO_API)]
+    Task<IApiResponse<bool>> UpdateAsync([Body] TaskDTO dto);
+
+    [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_TODO_API)]
     Task<IApiResponse<IList<TaskDTO>>> GetAsync([Body] TaskPagingDTO paging);
 

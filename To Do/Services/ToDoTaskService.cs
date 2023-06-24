@@ -9,6 +9,7 @@ internal interface IToDoTaskService
 {
     Task<IApiResponse<TaskDTO>> AddAsync([Body] TaskDTO dto);
     Task<IApiResponse<bool>> DeleteAsync(long id);
+    Task<IApiResponse<bool>> UpdateAsync([Body] TaskDTO dto);
     Task<IApiResponse<IList<TaskDTO>>> GetAsync(TaskPagingDTO paging);
 }
 
@@ -26,6 +27,9 @@ internal class ToDoTaskService : IToDoTaskService
 
     public Task<IApiResponse<bool>> DeleteAsync(long id)
         => api.DeleteAsync(id);
+
+    public Task<IApiResponse<bool>> UpdateAsync([Body] TaskDTO dto)
+        => api.UpdateAsync(dto);
 
     public Task<IApiResponse<IList<TaskDTO>>> GetAsync(TaskPagingDTO paging)
         => api.GetAsync(paging);

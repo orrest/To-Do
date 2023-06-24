@@ -1,7 +1,6 @@
 using AutoMapper;
 using Prism.Commands;
 using System.Collections.ObjectModel;
-using System.Linq;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -44,8 +43,9 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     public DelegateCommand DrawerCloseCommand { get; private set; }
     public DelegateCommand<string> AddTaskCommand { get; private set; }
     public DelegateCommand DeleteTaskCommand { get; private set; }
+    public DelegateCommand UpdateTaskCommand { get; private set; }
 
-    internal ToDoBaseViewModel(
+    public ToDoBaseViewModel(
         string viewTitle, 
         IToDoTaskService service, 
         TaskType taskType,
@@ -62,8 +62,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         DrawerCloseCommand = new DelegateCommand(CloseDrawer);
         AddTaskCommand = new DelegateCommand<string>(AddTask);
         DeleteTaskCommand = new DelegateCommand(DeleteTask);
-
-        InitializeWrapper();
+        UpdateTaskCommand = new DelegateCommand(UpdateTask);
 	}
 
     private void Finish(TaskViewModel task)
@@ -123,6 +122,29 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         else
         {
             // TODO snackbar mq
+        }
+    }
+
+    private async void UpdateTask()
+    {
+        var response = await service.UpdateAsync(new TaskDTO()
+        {
+            TaskId = SelectedTask.TaskId,
+            TaskDescription = SelectedTask.TaskDescription,
+            TaskMemo = SelectedTask.TaskMemo,
+            CreateTime = SelectedTask.CreateTime,
+            UpdateTime = SelectedTask.UpdateTime,
+            TaskType = SelectedTask.TaskType,
+            IsFinished = SelectedTask.IsFinished,
+            IsStared = SelectedTask.IsStared
+        });
+        if (response.IsSuccessStatusCode)
+        {
+
+        }
+        else
+        {
+
         }
     }
 }

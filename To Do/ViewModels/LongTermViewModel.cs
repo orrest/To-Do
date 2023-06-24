@@ -11,8 +11,4 @@ internal class LongTermViewModel : ToDoBaseViewModel
     {
     }
 
-    public override void Initialize()
-    {
-        throw new System.NotImplementedException();
-    }
 }

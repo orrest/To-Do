@@ -20,7 +20,7 @@ namespace To_Do.Views
         private readonly int LOGIN = 0;
         private readonly int REGISTER = 1;
 
-        public LoginView(IUserService userService)
+        internal LoginView(IUserService userService)
         {
             InitializeComponent();
             this.userService = userService;
