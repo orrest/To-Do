@@ -4,6 +4,32 @@
     xmlns:local="clr-namespace:To_Do.Controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
+    <Style TargetType="{x:Type local:TitleBar}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:TitleBar}">
+                    <StackPanel
+                        Margin="{TemplateBinding Margin}"
+                        Background="Transparent"
+                        Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="30"
+                            Height="30"
+                            Margin="0,4,0,0"
+                            VerticalAlignment="Center"
+                            Kind="{TemplateBinding IconKind}" />
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="{TemplateBinding FontSize}"
+                            FontWeight="Bold"
+                            Text="{TemplateBinding Title}" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="MenuItemStyle" TargetType="{x:Type ListBoxItem}">
         <Setter Property="Template">
             <Setter.Value>

@@ -29,22 +29,12 @@
             </Grid.RowDefinitions>
 
             <!--  View: Title bar  -->
-            <StackPanel
+            <todo:TitleBar
+                Title="{Binding ViewTitle}"
+                Grid.Row="0"
                 Margin="40,0"
-                Background="Transparent"
-                Orientation="Horizontal">
-                <materialDesign:PackIcon
-                    Width="30"
-                    Height="30"
-                    VerticalAlignment="Center"
-                    Kind="CalendarTodayOutline" />
-                <TextBlock
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Center"
-                    FontSize="30"
-                    FontWeight="Bold"
-                    Text="{Binding ViewTitle}" />
-            </StackPanel>
+                FontSize="26"
+                IconKind="CalendarTodayOutline" />
 
             <!--  View: Task List  -->
             <ListBox
