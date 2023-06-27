@@ -25,7 +25,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="90" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="100" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <!--  View: Title bar  -->
@@ -67,13 +67,9 @@
                             <todo:IndicationCheckIcon
                                 x:Name="FinishingCheckIcon"
                                 Grid.Column="0"
-                                IsChecked="{Binding IsFinished}">
-                                <behavior:Interaction.Triggers>
-                                    <behavior:EventTrigger EventName="MouseLeftButtonUp" SourceObject="{Binding ElementName=FinishingCheckIcon}">
-                                        <behavior:InvokeCommandAction Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}" />
-                                    </behavior:EventTrigger>
-                                </behavior:Interaction.Triggers>
-                            </todo:IndicationCheckIcon>
+                                Command="{Binding DataContext.FinishCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=DataContext}"
+                                IsChecked="{Binding IsFinished}" />
                             <!--  Task List: Central task content  -->
                             <TextBlock
                                 x:Name="DescriptionTextBlock"
@@ -102,20 +98,20 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <!--  View: Bottom Adding Content Bar  -->
-            <TextBox
+            <todo:AddingTextBox
                 x:Name="AddingTaskBox"
                 Grid.Row="2"
-                Margin="40,0"
+                Margin="40,10,40,30"
                 VerticalAlignment="Center"
                 FontSize="16"
-                Style="{StaticResource SubViewBottomTextBox}">
+                TextWrapping="Wrap">
                 <TextBox.InputBindings>
                     <KeyBinding
                         Key="Return"
                         Command="{Binding AddTaskCommand}"
                         CommandParameter="{Binding Text, ElementName=AddingTaskBox}" />
                 </TextBox.InputBindings>
-            </TextBox>
+            </todo:AddingTextBox>
         </Grid>
 
         <!--  Right drawer  -->
@@ -182,13 +178,8 @@
                     <todo:IndicationButton
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        IconKind="Trash">
-                        <behavior:Interaction.Triggers>
-                            <behavior:EventTrigger EventName="MouseLeftButtonUp">
-                                <behavior:InvokeCommandAction Command="{Binding DeleteTaskCommand}" />
-                            </behavior:EventTrigger>
-                        </behavior:Interaction.Triggers>
-                    </todo:IndicationButton>
+                        Command="{Binding DeleteTaskCommand}"
+                        IconKind="Trash" />
                 </Grid>
             </DockPanel>
         </materialDesign:DrawerHost.RightDrawerContent>
