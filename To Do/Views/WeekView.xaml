@@ -83,21 +83,17 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
             <!--  View: Bottom Adding Content Bar  -->
             <todo:AddingTextBox
                 x:Name="AddingTaskBox"
                 Grid.Row="2"
                 Margin="40,10,40,30"
                 VerticalAlignment="Center"
+                Command="{Binding AddTaskCommand}"
                 FontSize="16"
-                TextWrapping="Wrap">
-                <TextBox.InputBindings>
-                    <KeyBinding
-                        Key="Return"
-                        Command="{Binding AddTaskCommand}"
-                        CommandParameter="{Binding Text, ElementName=AddingTaskBox}" />
-                </TextBox.InputBindings>
-            </todo:AddingTextBox>
+                Text="{Binding TaskDescriptionText, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
         </Grid>
 
         <!--  Right drawer  -->

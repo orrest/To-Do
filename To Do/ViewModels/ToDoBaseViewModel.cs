@@ -37,11 +37,19 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
 		set { isDrawerOpen = value; RaisePropertyChanged(); }
 	}
 
-	public DelegateCommand<TaskViewModel> FinishCommand { get; private set; }
+    private string taskDescriptionText;
+
+    public string TaskDescriptionText
+    {
+        get { return taskDescriptionText; }
+        set { taskDescriptionText = value; RaisePropertyChanged(); }
+    }
+
+    public DelegateCommand<TaskViewModel> FinishCommand { get; private set; }
     public DelegateCommand<TaskViewModel> DrawerOpenCommand { get; private set; }
     public DelegateCommand<TaskViewModel> StarCommand { get; private set; }
     public DelegateCommand DrawerCloseCommand { get; private set; }
-    public DelegateCommand<string> AddTaskCommand { get; private set; }
+    public DelegateCommand AddTaskCommand { get; private set; }
     public DelegateCommand DeleteTaskCommand { get; private set; }
     public DelegateCommand UpdateTaskCommand { get; private set; }
 
@@ -60,7 +68,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         StarCommand = new DelegateCommand<TaskViewModel>(Star);
         DrawerOpenCommand = new DelegateCommand<TaskViewModel>(OpenDrawer);
         DrawerCloseCommand = new DelegateCommand(CloseDrawer);
-        AddTaskCommand = new DelegateCommand<string>(AddTask);
+        AddTaskCommand = new DelegateCommand(AddTask);
         DeleteTaskCommand = new DelegateCommand(DeleteTask);
         UpdateTaskCommand = new DelegateCommand(UpdateTask);
 	}
@@ -86,12 +94,12 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         IsDrawerOpen = false;
     }
 
-    private async void AddTask(string taskDescription)
+    private async void AddTask()
     {
         var task = new TaskDTO()
         {
             TaskType = taskType,
-            TaskDescription = taskDescription,
+            TaskDescription = TaskDescriptionText,
             TaskMemo = "",
             IsFinished = false,
             IsStared = false
@@ -103,6 +111,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         {
             var tskVm = mapper.Map<TaskDTO, TaskViewModel>(response.Content);
             Tasks.Add(tskVm);
+            TaskDescriptionText = "";
         }
         else
         {
