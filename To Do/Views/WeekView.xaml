@@ -86,13 +86,9 @@
                             <todo:CheckIcon
                                 x:Name="StarIcon"
                                 Grid.Column="2"
-                                IsChecked="{Binding IsStared}">
-                                <behavior:Interaction.Triggers>
-                                    <behavior:EventTrigger EventName="MouseLeftButtonUp" SourceObject="{Binding ElementName=StarIcon}">
-                                        <behavior:InvokeCommandAction Command="{Binding Path=DataContext.StarCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}" />
-                                    </behavior:EventTrigger>
-                                </behavior:Interaction.Triggers>
-                            </todo:CheckIcon>
+                                Command="{Binding Path=DataContext.StarCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}}"
+                                IsChecked="{Binding IsStared}" />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
