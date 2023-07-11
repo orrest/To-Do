@@ -17,4 +17,16 @@ public static class EventAggregatorExtensions
         aggregator.GetEvent<MessageEvent>().Subscribe(action, ThreadOption.UIThread);
     }
     #endregion
+
+    #region Loading event
+    public static void PublishLoading(this IEventAggregator aggregator, bool isLoading)
+    {
+        aggregator.GetEvent<LoadingEvent>().Publish(isLoading);
+    }
+
+    public static void SubscribeLoading(this IEventAggregator aggregator, Action<bool> action)
+    {
+        aggregator.GetEvent<LoadingEvent>().Subscribe(action);
+    }
+    #endregion
 }

@@ -18,6 +18,7 @@ public class MainViewModel : BindableBase, INavigationAware
     private MenuItem? selectedItem;
     private bool isUserPopupOpen = false;
     private ISnackbarMessageQueue messageQueue;
+    private bool isLoading;
 
     public DelegateCommand<MenuItem> NavigationCommand { get; private set; }
     public DelegateCommand OpenLoginDialogCommand { get; private set; }
@@ -44,6 +45,12 @@ public class MainViewModel : BindableBase, INavigationAware
         set { messageQueue = value; }
     }
 
+    public bool IsLoading
+    {
+        get { return isLoading; }
+        set { isLoading = value; RaisePropertyChanged(); }
+    }
+
     public MainViewModel(
         IRegionManager regionManager,
         IDialogService dialogService,
@@ -63,6 +70,10 @@ public class MainViewModel : BindableBase, INavigationAware
         aggregator.GetEvent<MessageEvent>().Subscribe((message) =>
         {
             messageQueue.Enqueue(message);
+        });
+        aggregator.GetEvent<LoadingEvent>().Subscribe((loading) =>
+        {
+            IsLoading = loading;
         });
     }
 

@@ -196,5 +196,18 @@
             Grid.Column="1"
             Margin="0,0,0,120"
             MessageQueue="{Binding MessageQueue}" />
+        <materialDesign:Card
+            Grid.Column="1"
+            Width="80"
+            Height="80"
+            Padding="4"
+            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ProgressBar
+                Width="50"
+                Height="50"
+                IsIndeterminate="True"
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Value="50" />
+        </materialDesign:Card>
     </Grid>
 </UserControl>

@@ -16,7 +16,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     private TaskViewModel? selectedTask;
     private TaskStepViewModel? currentSelectedStep;
     private bool isDrawerOpen;
-    private string taskDescriptionText;
+    private string taskDescriptionText = "";
     private ObservableCollection<TaskStepViewModel> currentTaskSteps = new ObservableCollection<TaskStepViewModel>();
     protected string viewTitle;
     protected TaskType taskType;
@@ -96,7 +96,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         TaskType taskType,
         IMapper mapper,
         IEventAggregator aggregator
-    ) : base() 
+    ) : base(aggregator) 
     {
         this.viewTitle = viewTitle;
         this.service = service;
@@ -121,6 +121,8 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     /// </summary>
     public async void Initialize()
     {
+        OpenLoading();
+
         var response = await service.GetAsync(new TaskPagingDTO()
         {
             TaskType = taskType,
@@ -140,6 +142,8 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         {
             aggregator.PublishMessage(viewTitle, response.Error?.Content);
         }
+
+        CloseLoading();
     }
 
     private void Finish()
