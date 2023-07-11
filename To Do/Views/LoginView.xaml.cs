@@ -14,13 +14,13 @@ namespace To_Do.Views
     /// </summary>
     public partial class LoginView : UserControl
     {
-        private readonly IUserService userService;
+        private readonly IToDoApi userService;
         private readonly SnackbarMessageQueue snackbarMessage;
 
         private readonly int LOGIN = 0;
         private readonly int REGISTER = 1;
 
-        public LoginView(IUserService userService)
+        public LoginView(IToDoApi userService)
         {
             InitializeComponent();
             this.userService = userService;

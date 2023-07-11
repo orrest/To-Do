@@ -10,6 +10,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:To_Do.Models"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:vm="clr-namespace:To_Do.ViewModels"
+    d:DataContext="{d:DesignInstance vm:MainWindowViewModel,
+                                     IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -20,114 +23,110 @@
         </Grid.ColumnDefinitions>
         <!--  Navigation panel  -->
         <StackPanel Grid.Column="0" Margin="0,5">
-            <!--  User Info  -->
-            <Grid x:Name="UserInfoRow" Margin="20,8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
 
-                <!--  Open Popup Behavior  -->
-                <behavior:Interaction.Triggers>
-                    <behavior:EventTrigger EventName="MouseLeftButtonUp" SourceObject="{Binding ElementName=UserInfoRow}">
-                        <behavior:InvokeCommandAction Command="{Binding OpenUserPopupCommand}" />
-                    </behavior:EventTrigger>
-                </behavior:Interaction.Triggers>
+            <!--  User Popup  -->
+            <materialDesign:PopupBox
+                Width="300"
+                materialDesign:RippleAssist.IsDisabled="True"
+                IsPopupOpen="{Binding IsUserPopupOpen}"
+                StaysOpen="True">
+                <materialDesign:PopupBox.ToggleContent>
+                    <!--  User Info  -->
+                    <Grid x:Name="UserInfoRow" Margin="20,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                <!--  User Popup  -->
-                <Popup
-                    Width="150"
-                    IsOpen="{Binding IsUserPopupOpen}"
-                    StaysOpen="False">
-                    <materialDesign:Card>
-                        <ListBox>
-                            <ListBoxItem>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        Kind="Refresh" />
-                                    <TextBlock
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        Text="重试同步" />
-                                </StackPanel>
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        Kind="AccountSettings" />
-                                    <TextBlock
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        Text="管理账户" />
-                                </StackPanel>
+                        <!--  For Event Triggering  -->
+                        <Rectangle Grid.ColumnSpan="3" Fill="Transparent" />
+
+                        <!--  User Avatar  -->
+                        <Grid Grid.Column="0">
+                            <Image
+                                Grid.Column="0"
+                                Width="60"
+                                Height="60"
+                                Source="/Images/avatar.jpg">
+                                <Image.Clip>
+                                    <EllipseGeometry
+                                        Center="30, 30"
+                                        RadiusX="30"
+                                        RadiusY="30" />
+                                </Image.Clip>
+                            </Image>
+                        </Grid>
+
+                        <!--  Sync Message  -->
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                            <TextBlock
+                                Margin="0,2"
+                                FontWeight="Bold"
+                                Text="Me" />
+                            <StackPanel Margin="0,2" Orientation="Horizontal">
+                                <Grid
+                                    Width="8"
+                                    Height="8"
+                                    Margin="5,0">
+                                    <Border Background="Orange" CornerRadius="5" />
+                                </Grid>
+                                <TextBlock FontSize="11" Text="已同步于..." />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:PopupBox.ToggleContent>
+                <materialDesign:Card>
+                    <ListBox>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Kind="Refresh" />
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="重试同步" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Kind="AccountSettings" />
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="管理账户" />
+                            </StackPanel>
+                            <behavior:Interaction.Triggers>
+                                <behavior:EventTrigger EventName="MouseLeftButtonUp">
+                                    <behavior:InvokeCommandAction Command="{Binding Path=DataContext.OpenLoginDialogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
+                                </behavior:EventTrigger>
+                            </behavior:Interaction.Triggers>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Kind="Settings" />
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="设置" />
                                 <behavior:Interaction.Triggers>
                                     <behavior:EventTrigger EventName="MouseLeftButtonUp">
-                                        <behavior:InvokeCommandAction Command="{Binding Path=DataContext.OpenLoginDialogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
+                                        <behavior:InvokeCommandAction Command="{Binding Path=DataContext.OpenSettingsViewCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
                                     </behavior:EventTrigger>
                                 </behavior:Interaction.Triggers>
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        Kind="Settings" />
-                                    <TextBlock
-                                        Margin="5"
-                                        VerticalAlignment="Center"
-                                        Text="设置" />
-                                    <behavior:Interaction.Triggers>
-                                        <behavior:EventTrigger EventName="MouseLeftButtonUp">
-                                            <behavior:InvokeCommandAction Command="{Binding Path=DataContext.OpenSettingsViewCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}" />
-                                        </behavior:EventTrigger>
-                                    </behavior:Interaction.Triggers>
-                                </StackPanel>
-                            </ListBoxItem>
-                        </ListBox>
-                    </materialDesign:Card>
-                </Popup>
-
-                <!--  For Event Triggering  -->
-                <Rectangle Grid.ColumnSpan="3" Fill="Transparent" />
-
-                <!--  User Avatar  -->
-                <Grid Grid.Column="0">
-                    <Image
-                        Grid.Column="0"
-                        Width="60"
-                        Height="60"
-                        Source="/Images/avatar.jpg">
-                        <Image.Clip>
-                            <EllipseGeometry
-                                Center="30, 30"
-                                RadiusX="30"
-                                RadiusY="30" />
-                        </Image.Clip>
-                    </Image>
-                </Grid>
-
-                <!--  Sync Message  -->
-                <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                    <TextBlock
-                        Margin="0,2"
-                        FontWeight="Bold"
-                        Text="Me" />
-                    <StackPanel Margin="0,2" Orientation="Horizontal">
-                        <Grid
-                            Width="8"
-                            Height="8"
-                            Margin="5,0">
-                            <Border Background="Orange" CornerRadius="5" />
-                        </Grid>
-                        <TextBlock FontSize="11" Text="已同步于..." />
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                </materialDesign:Card>
+            </materialDesign:PopupBox>
 
             <!--  Search box  -->
             <Grid Margin="20,8">

@@ -1,6 +1,6 @@
 ﻿namespace To_Do.API.Entities;
 
-public class ToDoTaskStep : TimeInfo
+public class TaskStepEntity : TimeInfo
 {
     public long StepId { get; set; }
     public long TaskId { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MaterialDesignThemes.Wpf;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -26,7 +27,7 @@ public class AddingTextBox : TextBox
             typeof(AddingTextBox),
             new FrameworkPropertyMetadata((object)null));
 
-    public ICommand Command
+    public ICommand ReturnCommand
     {
         get { return (ICommand)GetValue(CommandProperty); }
         set { SetValue(CommandProperty, value); }
@@ -34,7 +35,7 @@ public class AddingTextBox : TextBox
 
     public static readonly DependencyProperty CommandProperty =
         DependencyProperty.Register(
-            "Command",
+            "ReturnCommand",
             typeof(ICommand),
             typeof(AddingTextBox));
 
@@ -48,7 +49,7 @@ public class AddingTextBox : TextBox
     {
         if (e.Key.Equals(Key.Return))
         {
-            ICommand command = Command;
+            ICommand command = ReturnCommand;
             if (command == null) return;
 
             if (command.CanExecute(null))
@@ -57,5 +58,35 @@ public class AddingTextBox : TextBox
 
         base.OnKeyDown(e);
     }
+    #endregion
+
+    #region Hint
+    public string Hint
+    {
+        get { return (string)GetValue(HintProperty); }
+        set { SetValue(HintProperty, value); }
+    }
+
+    public static readonly DependencyProperty HintProperty =
+        DependencyProperty.Register(
+            "Hint",
+            typeof(string),
+            typeof(AddingTextBox),
+            new PropertyMetadata(string.Empty));
+    #endregion
+
+    #region IconSize
+    public double IconSize
+    {
+        get { return (double)GetValue(IconSizeProperty); }
+        set { SetValue(IconSizeProperty, value); }
+    }
+
+    public static readonly DependencyProperty IconSizeProperty =
+        DependencyProperty.Register(
+            "IconSize",
+            typeof(double),
+            typeof(AddingTextBox),
+            new PropertyMetadata(30.0));
     #endregion
 }

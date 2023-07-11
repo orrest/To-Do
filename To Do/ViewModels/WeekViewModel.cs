@@ -8,12 +8,13 @@ namespace To_Do.ViewModels;
 
 internal class WeekViewModel : ToDoBaseViewModel
 {
-    public WeekViewModel(IToDoTaskService service, IMapper mapper) 
+    public WeekViewModel(IToDoApi service, IMapper mapper) 
         : base("÷‹»ŒŒÒ", service, TaskType.WEEK, mapper)
     {
         Initialize();
     }
 
+    // TODO refactor to basevm
     public async void Initialize()
     {
         var response = await service.GetAsync(new TaskPagingDTO()

@@ -11,8 +11,8 @@ public class ApplicationDbContext: IdentityDbContext<User, Role, Guid>
         // intend to be empty.
     }
 
-    public virtual DbSet<ToDoTask> Tasks { get; set; }
-    public virtual DbSet<ToDoTaskStep> TaskSteps { get; set; }
+    public virtual DbSet<TaskEntity> Tasks { get; set; }
+    public virtual DbSet<TaskStepEntity> TaskSteps { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -20,17 +20,17 @@ public class ApplicationDbContext: IdentityDbContext<User, Role, Guid>
 
         builder.Entity<User>(b =>
         {
-            b.HasMany<ToDoTask>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
+            b.HasMany<TaskEntity>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
         });
 
-        builder.Entity<ToDoTask>(b =>
+        builder.Entity<TaskEntity>(b =>
         {
             b.HasKey(tsk => tsk.TaskId);
             b.ToTable("ToDoTasks");
-            b.HasMany<ToDoTaskStep>().WithOne().HasForeignKey(tsk => tsk.TaskId).IsRequired();
+            b.HasMany<TaskStepEntity>().WithOne().HasForeignKey(tsk => tsk.TaskId).IsRequired();
         });
 
-        builder.Entity<ToDoTaskStep>(b =>
+        builder.Entity<TaskStepEntity>(b =>
         {
             b.HasKey(step => step.StepId);
             b.ToTable("ToDoTaskSteps");

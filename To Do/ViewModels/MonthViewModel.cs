@@ -6,7 +6,7 @@ namespace To_Do.ViewModels;
 
 internal class MonthViewModel : ToDoBaseViewModel
 {
-    public MonthViewModel(IToDoTaskService service, IMapper mapper) 
+    public MonthViewModel(IToDoApi service, IMapper mapper) 
         : base("ÔÂÈÎÎñ", service, TaskType.MONTH, mapper)
     {
 

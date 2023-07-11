@@ -11,23 +11,21 @@ namespace To_Do.ViewModels;
 
 public class MainViewModel : BindableBase, INavigationAware
 {
+    private MenuItem? selectedItem;
+    private bool isUserPopupOpen = false;
+
     public DelegateCommand<MenuItem> NavigationCommand { get; private set; }
-    public DelegateCommand OpenUserPopupCommand { get; private set; }
     public DelegateCommand OpenLoginDialogCommand { get; private set; }
     public DelegateCommand OpenSettingsViewCommand { get; private set; }
 
     public ObservableCollection<MenuItem> MenuItems { get; private set; }
         = new ObservableCollection<MenuItem>();
 
-    private MenuItem? selectedItem;
-
     public MenuItem? SelectedItem
     {
         get { return selectedItem; }
         set { selectedItem = value; RaisePropertyChanged(); }
     }
-
-    private bool isUserPopupOpen;
 
     public bool IsUserPopupOpen
     {
@@ -41,11 +39,8 @@ public class MainViewModel : BindableBase, INavigationAware
     public MainViewModel(IRegionManager regionManager, IDialogService dialogService)
     {
         NavigationCommand = new DelegateCommand<MenuItem>(Naivgate);
-        OpenUserPopupCommand = new DelegateCommand(OpenUserPopup);
         OpenLoginDialogCommand = new DelegateCommand(OpenLoginDialog);
         OpenSettingsViewCommand = new DelegateCommand(OpenSettingsView);
-
-        IsUserPopupOpen = false;
 
         InitMenuItems();
 
@@ -58,13 +53,9 @@ public class MainViewModel : BindableBase, INavigationAware
         regionManager.RequestNavigate(Constants.SUB_CONTENT_REGION, menu.ViewPath);
     }
 
-    private void OpenUserPopup()
-    {
-        IsUserPopupOpen = true;
-    }
-
     private void OpenLoginDialog()
     {
+        IsUserPopupOpen = false;
         dialogService.ShowDialog("LoginView");
     }
 

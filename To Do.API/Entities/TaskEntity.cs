@@ -2,7 +2,7 @@
 
 namespace To_Do.API.Entities;
 
-public class ToDoTask : TimeInfo
+public class TaskEntity : TimeInfo
 {
     public long TaskId { get; set; }
     public Guid UserId { get; set; }
