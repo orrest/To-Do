@@ -1,4 +1,5 @@
 using AutoMapper;
+using Prism.Events;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -6,8 +7,8 @@ namespace To_Do.ViewModels;
 
 internal class MonthViewModel : ToDoBaseViewModel
 {
-    public MonthViewModel(IToDoApi service, IMapper mapper) 
-        : base("月任务", service, TaskType.MONTH, mapper)
+    public MonthViewModel(IToDoApi service, IMapper mapper, IEventAggregator aggregator) 
+        : base("月任务", service, TaskType.MONTH, mapper, aggregator)
     {
 
     }

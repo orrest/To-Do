@@ -1,4 +1,5 @@
 using AutoMapper;
+using Prism.Events;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -6,8 +7,8 @@ namespace To_Do.ViewModels;
 
 internal class LongTermViewModel : ToDoBaseViewModel
 {
-    public LongTermViewModel(IToDoApi service, IMapper mapper) 
-        : base("长期任务", service, TaskType.LONGTERM, mapper)
+    public LongTermViewModel(IToDoApi service, IMapper mapper, IEventAggregator aggregator) 
+        : base("长期任务", service, TaskType.LONGTERM, mapper, aggregator)
     {
     }
 

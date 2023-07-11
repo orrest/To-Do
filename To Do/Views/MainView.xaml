@@ -192,5 +192,9 @@
         </StackPanel>
         <!--  Content control  -->
         <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static helpers:Constants.SUB_CONTENT_REGION}" />
+        <materialDesign:Snackbar
+            Grid.Column="1"
+            Margin="0,0,0,120"
+            MessageQueue="{Binding MessageQueue}" />
     </Grid>
 </UserControl>

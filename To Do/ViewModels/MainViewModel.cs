@@ -1,18 +1,23 @@
-﻿using Prism.Commands;
+﻿using MaterialDesignThemes.Wpf;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
-using System;
 using System.Collections.ObjectModel;
-using To_Do.Helpers;
+using To_Do.Events;
 using To_Do.Models;
 
 namespace To_Do.ViewModels;
 
 public class MainViewModel : BindableBase, INavigationAware
 {
+    private readonly IRegionManager regionManager;
+    private readonly IDialogService dialogService;
+    private readonly IEventAggregator aggregator;
     private MenuItem? selectedItem;
     private bool isUserPopupOpen = false;
+    private ISnackbarMessageQueue messageQueue;
 
     public DelegateCommand<MenuItem> NavigationCommand { get; private set; }
     public DelegateCommand OpenLoginDialogCommand { get; private set; }
@@ -33,10 +38,16 @@ public class MainViewModel : BindableBase, INavigationAware
         set { isUserPopupOpen = value; RaisePropertyChanged(); }
     }
 
-    private readonly IRegionManager regionManager;
-    private readonly IDialogService dialogService;
+    public ISnackbarMessageQueue MessageQueue
+    {
+        get { return messageQueue; }
+        set { messageQueue = value; }
+    }
 
-    public MainViewModel(IRegionManager regionManager, IDialogService dialogService)
+    public MainViewModel(
+        IRegionManager regionManager,
+        IDialogService dialogService,
+        IEventAggregator aggregator)
     {
         NavigationCommand = new DelegateCommand<MenuItem>(Naivgate);
         OpenLoginDialogCommand = new DelegateCommand(OpenLoginDialog);
@@ -46,11 +57,18 @@ public class MainViewModel : BindableBase, INavigationAware
 
         this.regionManager = regionManager;
         this.dialogService = dialogService;
+        this.aggregator = aggregator;
+        messageQueue = new SnackbarMessageQueue();
+
+        aggregator.GetEvent<MessageEvent>().Subscribe((message) =>
+        {
+            messageQueue.Enqueue(message);
+        });
     }
 
     private void Naivgate(MenuItem menu)
     {
-        regionManager.RequestNavigate(Constants.SUB_CONTENT_REGION, menu.ViewPath);
+        regionManager.RequestNavigate(Helpers.Constants.SUB_CONTENT_REGION, menu.ViewPath);
     }
 
     private void OpenLoginDialog()
@@ -61,8 +79,8 @@ public class MainViewModel : BindableBase, INavigationAware
 
     private void OpenSettingsView()
     {
-        regionManager.RequestNavigate(Constants.MAIN_CONTENT_REGION,
-            Constants.SETTINGS_VIEW);
+        regionManager.RequestNavigate(Helpers.Constants.MAIN_CONTENT_REGION,
+            Helpers.Constants.SETTINGS_VIEW);
     }
 
     private void InitMenuItems()
@@ -72,35 +90,35 @@ public class MainViewModel : BindableBase, INavigationAware
             Icon = "ExclamationThick",
             Color = "#7b8791",
             Title = "重要",
-            ViewPath = Constants.URGENT_VIEW
+            ViewPath = Helpers.Constants.URGENT_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarWeekOutline",
             Color = "#78b1ad",
             Title = "周任务",
-            ViewPath = Constants.WEEK_VIEW
+            ViewPath = Helpers.Constants.WEEK_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarMonthOutline",
             Color = "#84b09d",
             Title = "月任务",
-            ViewPath = Constants.MONTH_VIEW
+            ViewPath = Helpers.Constants.MONTH_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarCheckOutline",
             Color = "#bac8d4",
             Title = "长期任务",
-            ViewPath = Constants.LONGTERM_VIEW
+            ViewPath = Helpers.Constants.LONGTERM_VIEW
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "EmailArrowLeftOutline",
             Color = "#9b2a46",
             Title = "电子邮件",
-            ViewPath = Constants.EMAIL_VIEW
+            ViewPath = Helpers.Constants.EMAIL_VIEW
         });
     }
 

@@ -1,8 +1,10 @@
 using AutoMapper;
 using Prism.Commands;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -19,6 +21,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     protected string viewTitle;
     protected TaskType taskType;
     protected readonly IMapper mapper;
+    private readonly IEventAggregator aggregator;
     protected readonly IToDoApi service;
 
     /// <summary>
@@ -91,13 +94,15 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         string viewTitle, 
         IToDoApi service, 
         TaskType taskType,
-        IMapper mapper
+        IMapper mapper,
+        IEventAggregator aggregator
     ) : base() 
     {
         this.viewTitle = viewTitle;
         this.service = service;
         this.taskType = taskType;
         this.mapper = mapper;
+        this.aggregator = aggregator;
         FinishTaskCommand = new DelegateCommand(Finish);
         StarTaskCommand = new DelegateCommand(Star);
         DrawerOpenCommand = new DelegateCommand<TaskViewModel>(OpenDrawer);
@@ -107,8 +112,36 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         UpdateTaskCommand = new DelegateCommand(UpdateTask);
         AddStepCommand = new DelegateCommand<string>(AddStep);
         DeleteStepCommand = new DelegateCommand(DeleteStep);
+
+        Initialize();
     }
-    
+
+    /// <summary>
+    /// When open the view, loading the tasks.
+    /// </summary>
+    public async void Initialize()
+    {
+        var response = await service.GetAsync(new TaskPagingDTO()
+        {
+            TaskType = taskType,
+            PageIndex = 0
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+            var tasks = response.Content;
+            var vms = mapper.Map<IList<TaskDTO>, IList<TaskViewModel>>(tasks!);
+            Tasks.AddRange(vms);
+
+            // could be removed.
+            aggregator.PublishMessage(viewTitle, response.StatusCode.ToString());
+        }
+        else
+        {
+            aggregator.PublishMessage(viewTitle, response.Error?.Content);
+        }
+    }
+
     private void Finish()
     {
 		SelectedTask!.IsFinished = !SelectedTask.IsFinished;
