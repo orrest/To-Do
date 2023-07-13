@@ -321,9 +321,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:LoadingProgressBar}">
                     <materialDesign:Card
-                        Width="80"
-                        Height="80"
                         Padding="4"
+                        Opacity="0.3"
                         Visibility="{TemplateBinding IsLoading,
                                                      Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ProgressBar

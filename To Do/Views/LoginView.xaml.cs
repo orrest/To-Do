@@ -51,6 +51,8 @@ namespace To_Do.Views
                 return;
             }
 
+            ProgressBar.IsLoading = true;
+
             var response = await userService.LoginAsync(
                 new LoginDTO(email, SecretHelper.SHA2Hash(pwd)));
 
@@ -64,6 +66,8 @@ namespace To_Do.Views
             {
                 snackbarMessage.Enqueue("登录失败, 请重试");
             }
+
+            ProgressBar.IsLoading = false;
         }
 
         private void CloseWindow()
@@ -95,6 +99,8 @@ namespace To_Do.Views
             pwd = SecretHelper.SHA2Hash(pwd);
             cfmPwd = SecretHelper.SHA2Hash(cfmPwd);
 
+            ProgressBar.IsLoading = true;
+
             // TODO Loading
             var response = await userService.RegisterAsync(
                 new RegisterDTO(email, pwd, cfmPwd));
@@ -108,6 +114,8 @@ namespace To_Do.Views
             {
                 snackbarMessage.Enqueue("注册失败, 请重试");
             }
+
+            ProgressBar.IsLoading = false;
         }
 
         private void ToRegisterViewBtn_Click(object sender, RoutedEventArgs e)

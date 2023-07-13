@@ -6,7 +6,11 @@
     xmlns:local="clr-namespace:To_Do.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:todo="clr-namespace:To_Do.Controls"
+    xmlns:vms="clr-namespace:To_Do.ViewModels"
     Width="300"
+    d:DataContext="{d:DesignInstance vms:LoginViewModel,
+                                     IsDesignTimeCreatable=True}"
     Background="#242426"
     FontFamily="{DynamicResource MaterialDesignFont}"
     TextElement.FontSize="18"
@@ -149,5 +153,6 @@
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
         <materialDesign:Snackbar x:Name="MessageBar" />
+        <todo:LoadingProgressBar x:Name="ProgressBar" />
     </Grid>
 </UserControl>
