@@ -92,6 +92,9 @@
                 Source="/Images/emptylist.png"
                 Visibility="{Binding IsEmptyList, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
+            <!--  Progress Bar  -->
+            <todo:LoadingProgressBar Grid.Row="1" IsLoading="{Binding IsLoading}" />
+
             <!--  View: Bottom Adding Content Bar  -->
             <todo:AddingTextBox
                 x:Name="AddingTaskBox"
