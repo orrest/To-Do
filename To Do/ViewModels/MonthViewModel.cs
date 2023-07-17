@@ -8,9 +8,5 @@ namespace To_Do.ViewModels;
 internal class MonthViewModel : ToDoBaseViewModel
 {
     public MonthViewModel(IToDoApi service, IMapper mapper, IEventAggregator aggregator) 
-        : base("月任务", service, TaskType.MONTH, mapper, aggregator)
-    {
-
-    }
-
+        : base("月任务", service, TaskType.MONTH, mapper, aggregator) {  }
 }

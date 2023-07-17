@@ -84,6 +84,14 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
+            <!--  Empty Image  -->
+            <Image
+                Grid.Row="1"
+                Width="180"
+                Panel.ZIndex="-100"
+                Source="/Images/emptylist.png"
+                Visibility="{Binding IsEmptyList, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
             <!--  View: Bottom Adding Content Bar  -->
             <todo:AddingTextBox
                 x:Name="AddingTaskBox"
