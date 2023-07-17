@@ -51,6 +51,14 @@ public class MainViewModel : BindableBase, INavigationAware
         set { isLoading = value; RaisePropertyChanged(); }
     }
 
+    /// <summary>
+    /// For d:DesignInstance
+    /// </summary>
+    public MainViewModel()
+    {
+            
+    }
+
     public MainViewModel(
         IRegionManager regionManager,
         IDialogService dialogService,
