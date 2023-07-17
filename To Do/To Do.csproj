@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="Images\avatar.jpg" />
+    <None Remove="Images\emptylist.png" />
     <None Remove="Images\todo.png" />
   </ItemGroup>
 
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <Resource Include="Images\avatar.jpg" />
+    <Resource Include="Images\emptylist.png" />
     <Resource Include="Images\todo.png" />
   </ItemGroup>
 

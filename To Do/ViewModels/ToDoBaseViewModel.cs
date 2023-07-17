@@ -23,6 +23,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     protected readonly IMapper mapper;
     private readonly IEventAggregator aggregator;
     protected readonly IToDoApi service;
+    private bool isEmptyList;
 
     /// <summary>
     /// 任务步骤的缓存, 实际操作这个集合
@@ -88,6 +89,12 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         get { return taskDescriptionText; }
         set { taskDescriptionText = value; RaisePropertyChanged(); }
     }
+
+    public bool IsEmptyList
+    {
+        get { return isEmptyList; }
+        set { isEmptyList = value; RaisePropertyChanged(); }
+    }
     #endregion
 
     public ToDoBaseViewModel(
@@ -113,6 +120,8 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         AddStepCommand = new DelegateCommand<string>(AddStep);
         DeleteStepCommand = new DelegateCommand(DeleteStep);
 
+        this.IsEmptyList = true;
+
         Initialize();
     }
 
@@ -135,8 +144,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
             var vms = mapper.Map<IList<TaskDTO>, IList<TaskViewModel>>(tasks!);
             Tasks.AddRange(vms);
 
-            // could be removed.
-            aggregator.PublishMessage(viewTitle, response.StatusCode.ToString());
+            IsEmptyList = Tasks.Count == 0;
         }
         else
         {
