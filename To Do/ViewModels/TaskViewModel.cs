@@ -1,6 +1,9 @@
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
+using System.Threading.Tasks;
+using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
 
@@ -59,6 +62,7 @@ public class TaskViewModel : BindableBase
 
     private DateTime updateTime;
     private readonly IToDoApi service;
+    private readonly IEventAggregator aggregator;
 
     public DateTime UpdateTime
     {
@@ -71,32 +75,43 @@ public class TaskViewModel : BindableBase
 
     public DelegateCommand FinishTaskCommand { get; private set; }
     public DelegateCommand StarTaskCommand { get; private set; }
-    public DelegateCommand UpdateTaskCommand { get; private set; }
 
     public TaskViewModel()
     {
         
     }
 
-    public TaskViewModel(IToDoApi service)
+    public TaskViewModel(
+        IToDoApi service, 
+        IEventAggregator aggregator)
     {
         FinishTaskCommand = new DelegateCommand(Finish);
         StarTaskCommand = new DelegateCommand(Star);
-        UpdateTaskCommand = new DelegateCommand(UpdateTask);
         this.service = service;
+        this.aggregator = aggregator;
     }
 
-    private void Finish()
+    private async void Finish()
     {
         IsFinished = !IsFinished;
+        var res = await UpdateTask();
+        if (!res)
+        {
+            aggregator.PublishMessage("TaskViewModel", $"Task#{TaskId} 更新失败");
+        }
     }
 
-    private void Star()
+    private async void Star()
     {
         IsStared = !IsStared;
+        var res = await UpdateTask();
+        if (!res)
+        {
+            aggregator.PublishMessage("TaskViewModel", $"Task#{TaskId} 更新失败");
+        }
     }
 
-    private async void UpdateTask()
+    private async Task<bool> UpdateTask()
     {
         var response = await service.UpdateAsync(new TaskDTO()
         {
@@ -109,13 +124,6 @@ public class TaskViewModel : BindableBase
             IsFinished = IsFinished,
             IsStared = IsStared
         });
-        if (response.IsSuccessStatusCode)
-        {
-
-        }
-        else
-        {
-
-        }
+        return response.IsSuccessStatusCode;
     }
 }

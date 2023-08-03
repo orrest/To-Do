@@ -129,7 +129,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
             var tasks = response.Content;
             foreach (var dto in tasks)
             {
-                Tasks.Insert(0, new TaskViewModel(service)
+                Tasks.Insert(0, new TaskViewModel(service, aggregator)
                 {
                     TaskId = dto.TaskId,
                     TaskDescription = dto.TaskDescription,
@@ -198,7 +198,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         if (response.IsSuccessStatusCode)
         {
             var dto = response.Content;
-            Tasks.Insert(0, new TaskViewModel(service)
+            Tasks.Insert(0, new TaskViewModel(service, aggregator)
             {
                 TaskId = dto.TaskId,
                 TaskDescription = dto.TaskDescription,
