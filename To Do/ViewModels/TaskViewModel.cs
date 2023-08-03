@@ -3,6 +3,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
@@ -75,6 +76,7 @@ public class TaskViewModel : BindableBase
 
     public DelegateCommand FinishTaskCommand { get; private set; }
     public DelegateCommand StarTaskCommand { get; private set; }
+    public DelegateCommand UpdateTaskCommand { get; private set; }
 
     public TaskViewModel()
     {
@@ -87,6 +89,7 @@ public class TaskViewModel : BindableBase
     {
         FinishTaskCommand = new DelegateCommand(Finish);
         StarTaskCommand = new DelegateCommand(Star);
+        UpdateTaskCommand = new DelegateCommand(Update);
         this.service = service;
         this.aggregator = aggregator;
     }
@@ -95,20 +98,24 @@ public class TaskViewModel : BindableBase
     {
         IsFinished = !IsFinished;
         var res = await UpdateTask();
-        if (!res)
-        {
-            aggregator.PublishMessage("TaskViewModel", $"Task#{TaskId} 更新失败");
-        }
+        OnUpdateFailed(res);
     }
 
     private async void Star()
     {
         IsStared = !IsStared;
         var res = await UpdateTask();
-        if (!res)
-        {
-            aggregator.PublishMessage("TaskViewModel", $"Task#{TaskId} 更新失败");
-        }
+        OnUpdateFailed(res);
+    }
+
+    /// <summary>
+    /// Triggered when update TaskDescription Returned.
+    /// </summary>
+    private async void Update()
+    {
+        var res = await UpdateTask();
+        OnUpdateFailed(res);
+        Keyboard.ClearFocus();
     }
 
     private async Task<bool> UpdateTask()
@@ -125,5 +132,13 @@ public class TaskViewModel : BindableBase
             IsStared = IsStared
         });
         return response.IsSuccessStatusCode;
+    }
+
+    private void OnUpdateFailed(bool res)
+    {
+        if (!res)
+        {
+            aggregator.PublishMessage("TaskViewModel", $"Task#{TaskId} 更新失败");
+        }
     }
 }
