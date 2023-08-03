@@ -125,7 +125,6 @@ public class TaskViewModel : BindableBase
             TaskId = TaskId,
             TaskDescription = TaskDescription,
             TaskMemo = TaskMemo,
-            CreateTime = CreateTime,
             UpdateTime = UpdateTime,
             TaskType = TaskType,
             IsFinished = IsFinished,

@@ -96,7 +96,7 @@ public class TaskDrawerViewModel : BaseViewModel
             var steps = response.Content;
             foreach (var dto in steps)
             {
-                Steps.Add(new TaskStepViewModel(task, service, (step) => Steps.Remove(step))
+                Steps.Add(new TaskStepViewModel(task, service, (step) => Steps.Remove(step), aggregator)
                 {
                     StepId = dto.StepId,
                     TaskId = dto.TaskId,
@@ -137,7 +137,7 @@ public class TaskDrawerViewModel : BaseViewModel
         if (response.IsSuccessStatusCode)
         {
             var dto = response.Content;
-            Steps.Add(new TaskStepViewModel(task, service, (step) => Steps.Remove(step))
+            Steps.Add(new TaskStepViewModel(task, service, (step) => Steps.Remove(step), aggregator)
             {
                 StepId = dto.StepId,
                 TaskId = dto.TaskId,

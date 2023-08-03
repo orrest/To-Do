@@ -1,7 +1,12 @@
 ﻿using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using To_Do.Helpers;
 using To_Do.Services;
+using To_Do.Shared;
 
 namespace To_Do.ViewModels;
 
@@ -54,25 +59,30 @@ public class TaskStepViewModel : BindableBase
     private TaskViewModel task;
     private readonly IToDoApi service;
     private readonly Action<TaskStepViewModel> deleteAction;
+    private readonly IEventAggregator aggregator;
 
     public DelegateCommand DeleteStepCommand { get; private set; }
+    public DelegateCommand UpdateStepCommand { get; private set; }
 
     public TaskStepViewModel(
         TaskViewModel task,
         IToDoApi service,
-        Action<TaskStepViewModel> deleteAction)
+        Action<TaskStepViewModel> deleteAction, 
+        IEventAggregator aggregator)
     {
         this.task = task;
         this.service = service;
         this.deleteAction = deleteAction;
-        DeleteStepCommand = new DelegateCommand(DeleteStep);
+        this.aggregator = aggregator;
+        DeleteStepCommand = new DelegateCommand(Delete);
+        UpdateStepCommand = new DelegateCommand(Update);
     }
 
     public TaskStepViewModel()
     {
     }
 
-    private async void DeleteStep()
+    private async void Delete()
     {
         var response = await service.DeleteStepAsync(StepId);
         if (response.IsSuccessStatusCode)
@@ -81,7 +91,31 @@ public class TaskStepViewModel : BindableBase
         }
     }
 
-    private void UpdateStep()
+    /// <summary>
+    /// Triggered when 
+    /// </summary>
+    private async void Update()
     {
+        var res = await UpdateStep();
+        if (!res)
+        {
+            aggregator.PublishMessage("TaskStepViewModel", 
+                $"Step#{StepId} 更新失败");
+        }
+        Keyboard.ClearFocus();
+    }
+
+    private async Task<bool> UpdateStep()
+    {
+        var response = await service.UpdateStepAsync(new TaskStepDTO()
+        {
+            StepId = StepId,
+            TaskId = TaskId,
+            StepDescription = StepDescription,
+            StepOrder = StepOrder,
+            IsFinished = IsFinished,
+            UpdateTime = DateTime.Now
+        });
+        return response.IsSuccessStatusCode;
     }
 }

@@ -76,13 +76,10 @@
                                     Grid.Column="1"
                                     Margin="10,0"
                                     CaretBrush="White"
-                                    Text="{Binding StepDescription}"
+                                    Text="{Binding StepDescription, UpdateSourceTrigger=PropertyChanged}"
                                     TextWrapping="Wrap">
                                     <TextBox.InputBindings>
-                                        <KeyBinding
-                                            Key="Return"
-                                            Command="{Binding UpdateStepCommand}"
-                                            CommandParameter="{Binding Path=Text, ElementName=StepDescriptionTextBox}" />
+                                        <KeyBinding Key="Return" Command="{Binding UpdateStepCommand}" />
                                     </TextBox.InputBindings>
                                 </TextBox>
                                 <!--  Step Deleting Popup  -->
