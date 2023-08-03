@@ -1,13 +1,10 @@
-﻿using AutoMapper;
-using Prism.DryIoc;
+﻿using Prism.DryIoc;
 using Prism.Ioc;
 using Refit;
-using System.Collections.Generic;
 using System.Windows;
 using To_Do.Helpers;
 using To_Do.Secrets;
 using To_Do.Services;
-using To_Do.Shared;
 using To_Do.ViewModels;
 using To_Do.Views;
 
@@ -40,15 +37,6 @@ public partial class App : PrismApplication
         });
         containerRegistry.RegisterInstance(api);
 
-        /*automapper*/
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap<TaskViewModel, TaskDTO>().ReverseMap();
-            cfg.CreateMap<TaskStepViewModel, TaskStepDTO>().ReverseMap();
-            //cfg.CreateMap<IList<TaskStepDTO>, IList<TaskStepViewModel>>().ReverseMap();
-        });
-        containerRegistry.RegisterInstance(config.CreateMapper());
-
         /*viewmodels*/
         containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
         containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
@@ -58,6 +46,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<MonthView, MonthViewModel>();
         containerRegistry.RegisterForNavigation<UrgentView, UrgentViewModel>();
         containerRegistry.RegisterForNavigation<WeekView, WeekViewModel>();
+        containerRegistry.RegisterForNavigation<TaskDrawerView, TaskDrawerViewModel>();
 
         /*dialog*/
         containerRegistry.RegisterDialogWindow<ToDoDialog>();

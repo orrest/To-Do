@@ -4,7 +4,7 @@ using To_Do.Events;
 
 namespace To_Do.ViewModels;
 
-internal abstract class BaseViewModel : BindableBase
+public abstract class BaseViewModel : BindableBase
 {
     private readonly IEventAggregator aggregator;
 
