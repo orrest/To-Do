@@ -69,7 +69,10 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <!--  Step Check Icon  -->
-                                <todo:IndicationCheckIcon Grid.Column="0" />
+                                <todo:IndicationCheckIcon
+                                    Grid.Column="0"
+                                    Command="{Binding UpdateStepCommand}"
+                                    IsChecked="{Binding IsFinished}" />
                                 <!--  Step Description  -->
                                 <TextBox
                                     x:Name="StepDescriptionTextBox"

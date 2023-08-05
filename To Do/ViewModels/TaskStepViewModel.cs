@@ -96,6 +96,7 @@ public class TaskStepViewModel : BindableBase
     /// </summary>
     private async void Update()
     {
+        IsFinished = !IsFinished;
         var res = await UpdateStep();
         if (!res)
         {
