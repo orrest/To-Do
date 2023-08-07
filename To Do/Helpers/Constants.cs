@@ -10,6 +10,6 @@ public class Constants
     public static readonly string WEEK_VIEW = "WeekView";
     public static readonly string MONTH_VIEW = "MonthView";
     public static readonly string LONGTERM_VIEW = "LongTermView";
-    public static readonly string EMAIL_VIEW = "EmailView";
+    public static readonly string COUNTDOWN_VIEW = "CountdownView";
     public static readonly string URGENT_VIEW = "UrgentView";
 }

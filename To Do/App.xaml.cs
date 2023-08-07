@@ -41,7 +41,7 @@ public partial class App : PrismApplication
         containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
         containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
         containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
-        containerRegistry.RegisterForNavigation<EmailView, EmailViewModel>();
+        containerRegistry.RegisterForNavigation<CountdownView, CountdownViewModel>();
         containerRegistry.RegisterForNavigation<LongTermView, LongTermViewModel>();
         containerRegistry.RegisterForNavigation<MonthView, MonthViewModel>();
         containerRegistry.RegisterForNavigation<UrgentView, UrgentViewModel>();

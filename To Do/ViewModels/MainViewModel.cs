@@ -134,10 +134,10 @@ public class MainViewModel : BindableBase, INavigationAware
         });
         MenuItems.Add(new MenuItem
         {
-            Icon = "EmailArrowLeftOutline",
+            Icon = "TimerStarOutline",
             Color = "#9b2a46",
-            Title = "电子邮件",
-            ViewPath = Helpers.Constants.EMAIL_VIEW
+            Title = "倒计时",
+            ViewPath = Helpers.Constants.COUNTDOWN_VIEW
         });
     }
 

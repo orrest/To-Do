@@ -18,9 +18,9 @@ namespace To_Do.Views
     /// <summary>
     /// EmailView.xaml 的交互逻辑
     /// </summary>
-    public partial class EmailView : UserControl
+    public partial class CountdownView : UserControl
     {
-        public EmailView()
+        public CountdownView()
         {
             InitializeComponent();
         }

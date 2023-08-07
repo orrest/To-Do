@@ -12,16 +12,6 @@ namespace To_Do.ViewModels;
 internal abstract class ToDoBaseViewModel : BaseViewModel
 {
     /// <summary>
-    /// 当前视图的标题
-    /// </summary>
-    protected string viewTitle;
-    public string ViewTitle
-    {
-        get { return viewTitle; }
-        set { viewTitle = value; RaisePropertyChanged(); }
-    }
-
-    /// <summary>
     /// 鼠标选中的Task
     /// </summary>
     private TaskViewModel? selectedTask;
