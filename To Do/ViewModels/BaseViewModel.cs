@@ -6,6 +6,16 @@ namespace To_Do.ViewModels;
 
 public abstract class BaseViewModel : BindableBase
 {
+    /// <summary>
+    /// 当前视图的标题
+    /// </summary>
+    protected string viewTitle;
+    public string ViewTitle
+    {
+        get { return viewTitle; }
+        set { viewTitle = value; RaisePropertyChanged(); }
+    }
+
     private readonly IEventAggregator aggregator;
 
     public BaseViewModel(IEventAggregator aggregator)
