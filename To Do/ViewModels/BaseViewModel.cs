@@ -16,11 +16,23 @@ public abstract class BaseViewModel : BindableBase
         set { viewTitle = value; RaisePropertyChanged(); }
     }
 
-    private readonly IEventAggregator aggregator;
+    private bool isEmptyList;
+    public bool IsEmptyList
+    {
+        get { return isEmptyList; }
+        set { isEmptyList = value; RaisePropertyChanged(); }
+    }
+
+    protected IEventAggregator aggregator;
 
     public BaseViewModel(IEventAggregator aggregator)
     {
         this.aggregator = aggregator;
+    }
+
+    public virtual void LoadingItems()
+    {
+
     }
 
     public void OpenLoading()

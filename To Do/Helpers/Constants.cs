@@ -12,4 +12,6 @@ public class Constants
     public static readonly string LONGTERM_VIEW = "LongTermView";
     public static readonly string COUNTDOWN_VIEW = "CountdownView";
     public static readonly string URGENT_VIEW = "UrgentView";
+
+    public static readonly string COUNTDOWN_CREATE_DIALOG = "CountdownCreateDialog";
 }

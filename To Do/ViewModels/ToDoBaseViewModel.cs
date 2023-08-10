@@ -56,13 +56,6 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     /// </summary>
     private Dictionary<TaskViewModel, TaskDrawerViewModel> drawerVms;
 
-    private bool isEmptyList;
-    public bool IsEmptyList
-    {
-        get { return isEmptyList; }
-        set { isEmptyList = value; RaisePropertyChanged(); }
-    }
-
     private bool isLoading;
     public bool IsLoading
     {
@@ -101,10 +94,10 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         IsLoading = true;
         IsEmptyList = false;
 
-        LoadingTasks();
+        LoadingItems();
     }
 
-    public async void LoadingTasks()
+    public override async void LoadingItems()
     {
         OpenLoading();
 

@@ -19,140 +19,143 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
-    <Grid>
-        <materialDesign:Transitioner x:Name="Transitioner" SelectedIndex="0">
-            <materialDesign:TransitionerSlide>
-                <StackPanel Margin="15">
-                    <TextBlock
-                        Margin="0,20"
-                        HorizontalAlignment="Center"
-                        FontSize="24"
-                        FontWeight="Bold"
-                        Text="登录账户" />
+    <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp8">
+        <Grid>
+            <materialDesign:Transitioner x:Name="Transitioner" SelectedIndex="0">
+                <materialDesign:TransitionerSlide>
+                    <StackPanel Margin="15">
+                        <TextBlock
+                            Margin="0,20"
+                            HorizontalAlignment="Center"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            Text="登录账户" />
 
-                    <TextBox
-                        x:Name="LoginEmail"
-                        Margin="10"
-                        materialDesign:HintAssist.Hint="请输入邮箱" />
+                        <TextBox
+                            x:Name="LoginEmail"
+                            Margin="10"
+                            materialDesign:HintAssist.Hint="请输入邮箱" />
 
-                    <PasswordBox
-                        x:Name="LoginPassword"
-                        Margin="10"
-                        materialDesign:HintAssist.Hint="请输入密码" />
+                        <PasswordBox
+                            x:Name="LoginPassword"
+                            Margin="10"
+                            materialDesign:HintAssist.Hint="请输入密码" />
 
-                    <Button
-                        x:Name="LoginBtn"
-                        Height="30"
-                        Margin="10,20"
-                        Background="#7081ca"
-                        BorderThickness="0"
-                        Click="LoginBtn_Click"
-                        Content="登录">
-                        <Button.ContentTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Grid Background="AliceBlue" Opacity="0" />
-                                    <TextBlock Text="{Binding ElementName=LoginBtn, Path=Content}" />
-                                </Grid>
-                            </DataTemplate>
-                        </Button.ContentTemplate>
-                    </Button>
-
-                    <DockPanel LastChildFill="False">
                         <Button
-                            x:Name="ToRegisterViewBtn"
-                            Click="ToRegisterViewBtn_Click"
-                            Content="注册账号"
-                            DockPanel.Dock="Left"
-                            Foreground="#fbfbfb"
-                            Style="{StaticResource MaterialDesignFlatLightButton}" />
+                            x:Name="LoginBtn"
+                            Height="30"
+                            Margin="10,20"
+                            Background="#7081ca"
+                            BorderThickness="0"
+                            Click="LoginBtn_Click"
+                            Content="登录">
+                            <Button.ContentTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid Background="AliceBlue" Opacity="0" />
+                                        <TextBlock Text="{Binding ElementName=LoginBtn, Path=Content}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </Button.ContentTemplate>
+                        </Button>
+
+                        <DockPanel LastChildFill="False">
+                            <Button
+                                x:Name="ToRegisterViewBtn"
+                                Click="ToRegisterViewBtn_Click"
+                                Content="注册账号"
+                                DockPanel.Dock="Left"
+                                Foreground="#fbfbfb"
+                                Style="{StaticResource MaterialDesignFlatLightButton}" />
+                            <Button
+                                Content="忘记密码?"
+                                DockPanel.Dock="Right"
+                                Foreground="#fbfbfb"
+                                Style="{StaticResource MaterialDesignFlatLightButton}" />
+                        </DockPanel>
+
                         <Button
-                            Content="忘记密码?"
-                            DockPanel.Dock="Right"
-                            Foreground="#fbfbfb"
-                            Style="{StaticResource MaterialDesignFlatLightButton}" />
-                    </DockPanel>
+                            x:Name="CloseBtn"
+                            Width="60"
+                            Height="30"
+                            Margin="10,20"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="Black"
+                            BorderThickness="0"
+                            Click="CloseBtn_Click"
+                            Content="关闭" />
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
 
-                    <Button
-                        x:Name="CloseBtn"
-                        Width="60"
-                        Height="30"
-                        Margin="10,20"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Background="Black"
-                        BorderThickness="0"
-                        Click="CloseBtn_Click"
-                        Content="关闭" />
-                </StackPanel>
-            </materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide>
+                    <StackPanel Margin="15">
+                        <TextBlock
+                            Margin="0,20"
+                            HorizontalAlignment="Center"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            Text="注册账户" />
 
-            <materialDesign:TransitionerSlide>
-                <StackPanel Margin="15">
-                    <TextBlock
-                        Margin="0,20"
-                        HorizontalAlignment="Center"
-                        FontSize="24"
-                        FontWeight="Bold"
-                        Text="注册账户" />
+                        <TextBox
+                            x:Name="RegisterEmail"
+                            Margin="10"
+                            materialDesign:HintAssist.Hint="请输入邮箱" />
 
-                    <TextBox
-                        x:Name="RegisterEmail"
-                        Margin="10"
-                        materialDesign:HintAssist.Hint="请输入邮箱" />
+                        <PasswordBox
+                            x:Name="RegisterPassword"
+                            Margin="10"
+                            materialDesign:HintAssist.Hint="请输入密码" />
 
-                    <PasswordBox
-                        x:Name="RegisterPassword"
-                        Margin="10"
-                        materialDesign:HintAssist.Hint="请输入密码" />
+                        <PasswordBox
+                            x:Name="RegisterConfirmPassword"
+                            Margin="10"
+                            materialDesign:HintAssist.Hint="请确认密码" />
 
-                    <PasswordBox
-                        x:Name="RegisterConfirmPassword"
-                        Margin="10"
-                        materialDesign:HintAssist.Hint="请确认密码" />
-
-                    <Button
-                        x:Name="RegisterBtn"
-                        Height="30"
-                        Margin="10,20"
-                        Background="#7081ca"
-                        BorderThickness="0"
-                        Click="RegisterBtn_Click"
-                        Content="注册">
-                        <Button.ContentTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Grid Background="AliceBlue" Opacity="0" />
-                                    <TextBlock Text="{Binding ElementName=RegisterBtn, Path=Content}" />
-                                </Grid>
-                            </DataTemplate>
-                        </Button.ContentTemplate>
-                    </Button>
-
-                    <DockPanel LastChildFill="False">
                         <Button
-                            x:Name="ToLoginViewBtn"
-                            Click="ToLoginViewBtn_Click"
-                            Content="登录账号"
-                            DockPanel.Dock="Left"
-                            Foreground="#fbfbfb"
-                            Style="{StaticResource MaterialDesignFlatLightButton}" />
-                    </DockPanel>
+                            x:Name="RegisterBtn"
+                            Height="30"
+                            Margin="10,20"
+                            Background="#7081ca"
+                            BorderThickness="0"
+                            Click="RegisterBtn_Click"
+                            Content="注册">
+                            <Button.ContentTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid Background="AliceBlue" Opacity="0" />
+                                        <TextBlock Text="{Binding ElementName=RegisterBtn, Path=Content}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </Button.ContentTemplate>
+                        </Button>
 
-                    <Button
-                        Width="60"
-                        Height="30"
-                        Margin="10,20"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Background="Black"
-                        BorderThickness="0"
-                        Click="CloseBtn_Click"
-                        Content="关闭" />
-                </StackPanel>
-            </materialDesign:TransitionerSlide>
-        </materialDesign:Transitioner>
-        <materialDesign:Snackbar x:Name="MessageBar" />
-        <todo:LoadingProgressBar x:Name="ProgressBar" />
-    </Grid>
+                        <DockPanel LastChildFill="False">
+                            <Button
+                                x:Name="ToLoginViewBtn"
+                                Click="ToLoginViewBtn_Click"
+                                Content="登录账号"
+                                DockPanel.Dock="Left"
+                                Foreground="#fbfbfb"
+                                Style="{StaticResource MaterialDesignFlatLightButton}" />
+                        </DockPanel>
+
+                        <Button
+                            Width="60"
+                            Height="30"
+                            Margin="10,20"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="Black"
+                            BorderThickness="0"
+                            Click="CloseBtn_Click"
+                            Content="关闭" />
+                    </StackPanel>
+                </materialDesign:TransitionerSlide>
+            </materialDesign:Transitioner>
+            <materialDesign:Snackbar x:Name="MessageBar" />
+            <todo:LoadingProgressBar x:Name="ProgressBar" />
+        </Grid>
+    </materialDesign:Card>
+
 </UserControl>
