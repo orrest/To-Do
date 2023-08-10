@@ -5,10 +5,193 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:To_Do.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:todo="clr-namespace:To_Do.Controls"
+    xmlns:vm="clr-namespace:To_Do.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:CountdownViewModel,
+                                     IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Margin="0,4,0,-4">
-        <TextBlock Margin="0,4,0,-4" Text="倒计时" />
+
+
+    <!--  View  -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  View: Title bar  -->
+        <todo:TitleBar
+            Title="{Binding ViewTitle}"
+            Grid.Row="0"
+            Margin="15,0"
+            FontSize="26"
+            IconKind="TimerStartOutline" />
+
+        <!--  View : Countdowns List  -->
+        <ScrollViewer
+            Grid.Row="1"
+            Margin="45,0"
+            VerticalScrollBarVisibility="Hidden">
+            <StackPanel>
+                <!--  Unfinished countdowns  -->
+                <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding UnfinishedCountdowns}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:CountdownItemViewModel}">
+                            <Grid Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="4*" />
+                                    <RowDefinition Height="4*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <md:PackIcon
+                                    Grid.Row="0"
+                                    Grid.RowSpan="4"
+                                    Grid.Column="0"
+                                    Width="25"
+                                    Height="25"
+                                    Margin="15,10"
+                                    Kind="{Binding Icon}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Left"
+                                    FontSize="18"
+                                    FontWeight="Heavy"
+                                    Text="{Binding Description}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                    Foreground="Gray"
+                                    Text="{Binding Progress, StringFormat=进度 {0}%}" />
+                                <ProgressBar
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Height="20"
+                                    Margin="0,5"
+                                    Background="#295c57"
+                                    BorderThickness="0"
+                                    Foreground="#4ba89f"
+                                    Value="{Binding Progress}" />
+                                <GridSplitter
+                                    Grid.Row="2"
+                                    Grid.ColumnSpan="2"
+                                    Height="1"
+                                    Margin="120,0,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    Background="DimGray" />
+
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <GridSplitter Height="10" />
+                <!--  Finished countdowns  -->
+                <Expander>
+                    <Expander.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Text="已完成" />
+                        </DataTemplate>
+                    </Expander.HeaderTemplate>
+                    <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding FinishedCountdowns}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:CountdownItemViewModel}">
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="4*" />
+                                        <RowDefinition Height="4*" />
+                                        <RowDefinition Height="1*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <md:PackIcon
+                                        Grid.Row="0"
+                                        Grid.RowSpan="4"
+                                        Grid.Column="0"
+                                        Width="25"
+                                        Height="25"
+                                        Margin="15,10"
+                                        Kind="{Binding Icon}" />
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        FontSize="18"
+                                        FontWeight="Heavy"
+                                        Text="{Binding Description}" />
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Foreground="Gray"
+                                        Text="{Binding Progress, StringFormat=进度 {0}%}" />
+                                    <ProgressBar
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Height="20"
+                                        Margin="0,5"
+                                        Background="#295c57"
+                                        BorderThickness="0"
+                                        Foreground="#4ba89f"
+                                        Value="{Binding Progress}" />
+                                    <GridSplitter
+                                        Grid.Row="2"
+                                        Grid.ColumnSpan="2"
+                                        Height="1"
+                                        Margin="120,0,0,0"
+                                        HorizontalAlignment="Stretch"
+                                        Background="DimGray" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!--  Create Button  -->
+        <Button
+            Grid.Row="1"
+            Margin="0,0,50,50"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            md:ButtonAssist.CornerRadius="15"
+            Command="{Binding CreateCommand}">
+            <StackPanel Orientation="Horizontal">
+                <md:PackIcon VerticalAlignment="Center" Kind="Add" />
+                <GridSplitter Width="10" Background="Transparent" />
+                <TextBlock VerticalAlignment="Center" Text="新建" />
+            </StackPanel>
+        </Button>
+
+        <!--  Empty Image  -->
+        <Image
+            Grid.Row="1"
+            Width="180"
+            Panel.ZIndex="-100"
+            Source="/Images/emptylist.png"
+            Visibility="{Binding IsEmptyList, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <!--  Progress Bar  -->
+        <todo:LoadingProgressBar Grid.Row="1" IsLoading="{Binding IsLoading}" />
+
+
     </Grid>
 </UserControl>

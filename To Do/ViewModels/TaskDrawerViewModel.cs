@@ -78,10 +78,10 @@ public class TaskDrawerViewModel : BaseViewModel
         AddStepCommand = new DelegateCommand(AddStep);
         DeleteTaskCommand = new DelegateCommand(DeleteTask);
 
-        LoadingSteps();
+        LoadingItems();
     }
 
-    public async void LoadingSteps()
+    public override async void LoadingItems()
     {
         OpenLoading();
 

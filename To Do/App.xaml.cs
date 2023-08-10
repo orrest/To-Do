@@ -51,5 +51,6 @@ public partial class App : PrismApplication
         /*dialog*/
         containerRegistry.RegisterDialogWindow<ToDoDialog>();
         containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
+        containerRegistry.RegisterDialog<CountdownCreateDialog, CountdownCreateDialogViewModel>();
     }
 }
