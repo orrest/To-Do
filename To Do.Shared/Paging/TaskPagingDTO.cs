@@ -1,9 +1,7 @@
-﻿using To_Do.Shared.Paging;
-
-namespace To_Do.Shared;
+﻿namespace To_Do.Shared.Paging;
 
 public class TaskPagingDTO : PagingBase
 {
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
     public TaskType TaskType { get; set; }
 }

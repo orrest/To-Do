@@ -4,12 +4,16 @@ using Prism.Events;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
+using To_Do.Services;
+using To_Do.Shared;
+using To_Do.Shared.Paging;
 
 namespace To_Do.ViewModels;
 
 public class CountdownViewModel : BaseViewModel
 {
     private readonly IDialogService dialog;
+    private readonly IToDoApi service;
 
     /// <summary>
     /// 已完成的倒计时项的集合
@@ -33,123 +37,59 @@ public class CountdownViewModel : BaseViewModel
 
     public CountdownViewModel(
         IDialogService dialog,
-        IEventAggregator aggregator
+        IEventAggregator aggregator,
+        IToDoApi service
     ) : base(aggregator)
     {
         this.ViewTitle = "倒计时";
         this.IsEmptyList = true;
         this.aggregator = aggregator;
         this.dialog = dialog;
-
+        this.service = service;
         CreateCommand = new DelegateCommand(Create);
         LoadingItems();
     }
 
-    public override void LoadingItems()
+    public override async void LoadingItems()
     {
-        AddTestData();
+        var response = await service.GetAsync(new CountdownPagingDTO()
+        {
+            PageIndex = 0
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+            var dtos = response.Content;
+            var now = DateTime.Now;
+            foreach (var dto in dtos)
+            {
+                // finished
+                if (now.Date > dto.EndDate.Date)
+                {
+                    FinishedCountdowns.Add(new CountdownItemViewModel(dto));
+                }
+                else
+                {
+                    UnfinishedCountdowns.Add(new CountdownItemViewModel(dto));
+                }
+            }
+        }
     }
 
     private void Create()
     {
-        dialog.ShowDialog(Helpers.Constants.COUNTDOWN_CREATE_DIALOG);
-    }
-
-
-    private void AddTestData()
-    {
-        UnfinishedCountdowns.Add(new CountdownItemViewModel()
+        dialog.ShowDialog(Helpers.Constants.COUNTDOWN_CREATE_DIALOG, result =>
         {
-            Id = 1,
-            Icon = Enum.GetName(PackIconKind.Leaf),
-            Description = "秋至",
-            Progress = 10.0,
-            EndDate = DateTime.Now.AddDays(5),
-            StartDate = DateTime.Now,
-            IsStared = true,
-            IsOver = false,
-            CreateTime = DateTime.Now,
-            UpdateTime = DateTime.Now
-        });
-        UnfinishedCountdowns.Add(new CountdownItemViewModel()
-        {
-            Id = 1,
-            Icon = Enum.GetName(PackIconKind.Leaf),
-            Description = "秋至",
-            Progress = 20.0,
-
-            EndDate = DateTime.Now.AddDays(5),
-            StartDate = DateTime.Now,
-            IsStared = true,
-            IsOver = false,
-            CreateTime = DateTime.Now,
-            UpdateTime = DateTime.Now
-        });
-        UnfinishedCountdowns.Add(new CountdownItemViewModel()
-        {
-            Id = 1,
-            Icon = Enum.GetName(PackIconKind.Leaf),
-            Description = "秋至",
-            Progress = 50.0,
-            EndDate = DateTime.Now.AddDays(5),
-            StartDate = DateTime.Now,
-            IsStared = true,
-            IsOver = false,
-            CreateTime = DateTime.Now,
-            UpdateTime = DateTime.Now
-        });
-        UnfinishedCountdowns.Add(new CountdownItemViewModel()
-        {
-            Id = 1,
-            Icon = Enum.GetName(PackIconKind.Leaf),
-            Progress = 0.0,
-            Description = "秋至",
-            EndDate = DateTime.Now.AddDays(5),
-            StartDate = DateTime.Now,
-            IsStared = true,
-            IsOver = false,
-            CreateTime = DateTime.Now,
-            UpdateTime = DateTime.Now
-        });
-
-        FinishedCountdowns.Add(new CountdownItemViewModel()
-        {
-            Id = 1,
-            Icon = Enum.GetName(PackIconKind.Leaf),
-            Description = "秋至",
-            EndDate = DateTime.Now.AddDays(5),
-            StartDate = DateTime.Now,
-            IsStared = true,
-            Progress = 0.0,
-            IsOver = false,
-            CreateTime = DateTime.Now,
-            UpdateTime = DateTime.Now
-        });
-        FinishedCountdowns.Add(new CountdownItemViewModel()
-        {
-            Id = 1,
-            Icon = Enum.GetName(PackIconKind.Leaf),
-            Description = "秋至",
-            EndDate = DateTime.Now.AddDays(5),
-            Progress = 0.0,
-            StartDate = DateTime.Now,
-            IsStared = true,
-            IsOver = false,
-            CreateTime = DateTime.Now,
-            UpdateTime = DateTime.Now
-        });
-        FinishedCountdowns.Add(new CountdownItemViewModel()
-        {
-            Id = 1,
-            Icon = Enum.GetName(PackIconKind.Leaf),
-            Description = "秋至",
-            Progress = 0.0,
-            EndDate = DateTime.Now.AddDays(5),
-            StartDate = DateTime.Now,
-            IsStared = true,
-            IsOver = false,
-            CreateTime = DateTime.Now,
-            UpdateTime = DateTime.Now
+            switch (result.Result)
+            {
+                case ButtonResult.OK:
+                    var dto = result.Parameters
+                        .GetValue<CountdownDTO>("Countdown");
+                    UnfinishedCountdowns.Add(new CountdownItemViewModel(dto));
+                    break;
+                default: 
+                    break;
+            }
         });
     }
 }

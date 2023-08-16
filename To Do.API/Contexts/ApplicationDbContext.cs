@@ -21,6 +21,7 @@ public class ApplicationDbContext: IdentityDbContext<User, Role, Guid>
         builder.Entity<User>(b =>
         {
             b.HasMany<TaskEntity>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
+            b.HasMany<CountdownEntity>().WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
         });
 
         builder.Entity<TaskEntity>(b =>
@@ -34,6 +35,12 @@ public class ApplicationDbContext: IdentityDbContext<User, Role, Guid>
         {
             b.HasKey(step => step.StepId);
             b.ToTable("ToDoTaskSteps");
+        });
+
+        builder.Entity<CountdownEntity>(b =>
+        {
+            b.HasKey(cd => cd.CountdownId);
+            b.ToTable("Countdowns");
         });
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Prism.Mvvm;
 using System;
+using To_Do.Shared;
 
 namespace To_Do.ViewModels
 {
@@ -42,13 +43,6 @@ namespace To_Do.ViewModels
 			set { startDate = value; RaisePropertyChanged(); }
 		}
 
-		private bool isStared;
-		public bool IsStared
-		{
-			get { return isStared; }
-			set { isStared = value; RaisePropertyChanged(); }
-		}
-
 		private DateTime createTime;
 		public DateTime CreateTime
 		{
@@ -84,14 +78,32 @@ namespace To_Do.ViewModels
 			set { progress = value; RaisePropertyChanged(); }
 		}
 
-		public CountdownItemViewModel()
+		private double CalcProgress()
+		{
+			var now = DateTime.Now;
+			if (now.Date > EndDate.Date) return 100.0;
+            return 100 * (now.Date - StartDate.Date) / (EndDate.Date - StartDate.Date);
+        }
+
+        public CountdownItemViewModel()
         {
             Enum.GetName(PackIconKind.Add);
 			this.IsOver = DateTime.Now >= EndDate;
-			this.Progress = (DateTime.Now.Date - StartDate.Date)
-				/ (EndDate.Date - StartDate.Date);
+			this.Progress = CalcProgress();
         }
 
-
+        public CountdownItemViewModel(CountdownDTO dto)
+        {
+			this.Id = dto.Id;
+			this.Icon = dto.Icon;
+			this.Description = dto.Description;
+			this.EndDate = dto.EndDate;
+			this.StartDate = dto.StartDate;
+			this.CreateTime = dto.CreateTime;
+			this.UpdateTime = dto.UpdateTime;
+			var now = DateTime.Now;
+			this.IsOver = now.Date > EndDate.Date;
+			this.Progress = CalcProgress();
+        }
     }
 }

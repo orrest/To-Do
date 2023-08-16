@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using To_Do.Shared;
 using To_Do.Secrets;
 using System.Collections.Generic;
+using To_Do.Shared.Paging;
 
 namespace To_Do.Services;
 
@@ -42,6 +43,24 @@ public interface IToDoApi
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_TODO_API)]
     Task<IApiResponse<IList<TaskDTO>>> GetAsync([Body] TaskPagingDTO paging);
+    #endregion
+
+    #region Countdowns
+    [Headers("Authorization: Bearer")]
+    [Post(SecretConstants.ADD_COUNTDOWN_API)]
+    Task<IApiResponse<CountdownDTO>> AddAsync([Body] CountdownDTO dto);
+
+    [Headers("Authorization: Bearer")]
+    [Delete(SecretConstants.DEL_COUNTDOWN_API)]
+    Task<IApiResponse<bool>> DeleteCountdownAsync(long id);
+
+    [Headers("Authorization: Bearer")]
+    [Post(SecretConstants.UPD_COUNTDOWN_API)]
+    Task<IApiResponse<bool>> UpdateAsync([Body] CountdownDTO dto);
+
+    [Headers("Authorization: Bearer")]
+    [Post(SecretConstants.GET_COUNTDOWN_API)]
+    Task<IApiResponse<IList<CountdownDTO>>> GetAsync([Body] CountdownPagingDTO paging);
     #endregion
 
     #region User

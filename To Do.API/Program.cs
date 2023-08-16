@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using To_Do.API.Contexts;
@@ -72,6 +71,7 @@ namespace To_Do.API
             builder.Services.AddTransient<IUserProvider, UserProvider>();
             builder.Services.AddTransient<TasksService>();
             builder.Services.AddTransient<TaskStepsService>();
+            builder.Services.AddTransient<CountdownService>();
             #endregion
 
             #region swagger

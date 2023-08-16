@@ -14,4 +14,7 @@ public class Constants
     public static readonly string URGENT_VIEW = "UrgentView";
 
     public static readonly string COUNTDOWN_CREATE_DIALOG = "CountdownCreateDialog";
+
+    public static readonly string COUNTDOWN_DATEPICK_DATE = "日期";
+    public static readonly string COUNTDOWN_DATEPICK_DAYS = "天数";
 }

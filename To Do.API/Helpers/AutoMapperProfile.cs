@@ -8,5 +8,6 @@ public class AutoMapperProfile : MapperConfigurationExpression
     {
         CreateMap<TaskEntity, TaskDTO>().ReverseMap();
         CreateMap<TaskStepEntity, TaskStepDTO>().ReverseMap();
+        CreateMap<CountdownEntity, CountdownDTO>().ReverseMap();
     }
 }

@@ -7,29 +7,29 @@ using To_Do.Shared.Paging;
 
 namespace To_Do.API.Services;
 
-public abstract class ITasksService<ENT, DTO> : IService<ENT, DTO>
+public abstract class ICountdownService<ENT, DTO> : IService<ENT, DTO>
     where ENT : class
     where DTO : class
 {
-    public ITasksService(
+    public ICountdownService(
         IUnitOfWork unitOfWork,
         IMapper mapper) : base(unitOfWork, mapper)
     {
     }
 
-    public abstract Task<IList<TaskDTO>> GetAsync(TaskPagingDTO paging);
+    public abstract Task<IList<CountdownDTO>> GetAsync(CountdownPagingDTO paging);
 
-    public abstract Task<TaskDTO> AddAsync(
-        TaskDTO model,
+    public abstract Task<CountdownDTO> AddAsync(
+        CountdownDTO model,
         Guid userId);
 
     public abstract Task<bool> UpdateAsync(
-        TaskDTO model,
+        CountdownDTO model,
         Guid userId);
 
     public virtual async Task<bool> DeleteAsync(long id)
     {
-        var repo = unitOfWork.GetRepository<TaskEntity>();
+        var repo = unitOfWork.GetRepository<CountdownEntity>();
         var entity = await repo.FindAsync(id);
         repo.Delete(entity);
         var res = await unitOfWork.SaveChangesAsync();
@@ -38,47 +38,45 @@ public abstract class ITasksService<ENT, DTO> : IService<ENT, DTO>
     }
 }
 
-public class TasksService : ITasksService<TaskEntity, TaskDTO>
+public class CountdownService : ICountdownService<CountdownEntity, CountdownDTO>
 {
-    public TasksService(
+    public CountdownService(
         IUnitOfWork unitOfWork,
         IMapper mapper) : base(unitOfWork, mapper)
     {
     }
 
-    public override async Task<IList<TaskDTO>> GetAsync(TaskPagingDTO paging)
+    public override async Task<IList<CountdownDTO>> GetAsync(CountdownPagingDTO paging)
     {
         var res = await repo.GetPagedListAsync(
-            predicate: tsk => tsk.TaskType.Equals(paging.TaskType) && tsk.UserId.Equals(paging.UserId),
+            predicate: cd => cd.UserId.Equals(paging.UserId),
             pageIndex: paging.PageIndex,
             pageSize: paging.PageSize);
 
-        return mapper.Map<IList<TaskEntity>, IList<TaskDTO>>(res.Items);
+        return mapper.Map<IList<CountdownEntity>, IList<CountdownDTO>>(res.Items);
     }
 
-    public override async Task<TaskDTO> AddAsync(
-        TaskDTO model,
+    public override async Task<CountdownDTO> AddAsync(
+        CountdownDTO model,
         Guid userId)
     {
-        var entity = mapper.Map<TaskEntity>(model);
+        var entity = mapper.Map<CountdownEntity>(model);
         entity.UserId = userId;
-        entity.CreateTime = DateTime.Now;
-        entity.UpdateTime = DateTime.Now;
 
         var add = await repo.InsertAsync(entity);
         var res = await unitOfWork.SaveChangesAsync();
         var ent = add.Entity;
 
-        return res > 0 
-            ? mapper.Map<TaskDTO>(ent)
+        return res > 0
+            ? mapper.Map<CountdownDTO>(ent)
             : throw new DbUpdateException("Insertion failed.");
     }
 
     public override async Task<bool> UpdateAsync(
-        TaskDTO model,
+        CountdownDTO model,
         Guid userId)
     {
-        var entity = mapper.Map<TaskEntity>(model);
+        var entity = mapper.Map<CountdownEntity>(model);
         entity.UserId = userId;
         entity.UpdateTime = DateTime.Now;
 

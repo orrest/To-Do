@@ -104,7 +104,7 @@
                             <TextBlock
                                 FontSize="18"
                                 FontWeight="Bold"
-                                Text="已完成" />
+                                Text="已结束" />
                         </DataTemplate>
                     </Expander.HeaderTemplate>
                     <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding FinishedCountdowns}">
@@ -176,7 +176,10 @@
             Command="{Binding CreateCommand}">
             <StackPanel Orientation="Horizontal">
                 <md:PackIcon VerticalAlignment="Center" Kind="Add" />
-                <GridSplitter Width="10" Background="Transparent" />
+                <GridSplitter
+                    Width="10"
+                    Background="Transparent"
+                    IsEnabled="False" />
                 <TextBlock VerticalAlignment="Center" Text="新建" />
             </StackPanel>
         </Button>
