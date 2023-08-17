@@ -56,14 +56,6 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     /// Drawer的ViewModel, 打开抽屉时动态初始化
     /// </summary>
     private Dictionary<TaskViewModel, TaskDrawerViewModel> drawerVms;
-
-    private bool isLoading;
-    public bool IsLoading
-    {
-        get { return isLoading; }
-        set { isLoading = value; RaisePropertyChanged(); }
-    }
-
     public ObservableCollection<TaskViewModel> Tasks { get; private set; }
     public DelegateCommand DrawerOpenCommand { get; private set; }
     public DelegateCommand AddTaskCommand { get; private set; }
@@ -73,7 +65,9 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     private readonly IEventAggregator aggregator;
     protected readonly IToDoApi service;
 
-
+    public ToDoBaseViewModel()
+    {
+    }
     public ToDoBaseViewModel(
         string viewTitle, 
         IToDoApi service, 
@@ -131,7 +125,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         }
         else
         {
-            aggregator.PublishMessage(viewTitle, response.Error?.Content);
+            aggregator.PublishMessage(viewTitle, "加载数据失败，请检查登录状态");
         }
 
         CloseLoading();

@@ -1,6 +1,5 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
-using To_Do.Events;
 
 namespace To_Do.ViewModels;
 
@@ -23,7 +22,19 @@ public abstract class BaseViewModel : BindableBase
         set { isEmptyList = value; RaisePropertyChanged(); }
     }
 
+    private bool isLoading;
+    public bool IsLoading
+    {
+        get { return isLoading; }
+        set { isLoading = value; RaisePropertyChanged(); }
+    }
+
     protected IEventAggregator aggregator;
+
+    public BaseViewModel()
+    {
+        
+    }
 
     public BaseViewModel(IEventAggregator aggregator)
     {
@@ -37,11 +48,11 @@ public abstract class BaseViewModel : BindableBase
 
     public void OpenLoading()
     {
-        aggregator.GetEvent<LoadingEvent>().Publish(true);
+        IsLoading = true;
     }
 
     public void CloseLoading()
     {
-        aggregator.GetEvent<LoadingEvent>().Publish(false);
+        IsLoading = false;
     }
 }

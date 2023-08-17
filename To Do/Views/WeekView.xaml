@@ -12,6 +12,8 @@
     xmlns:todo="clr-namespace:To_Do.Controls"
     xmlns:vm_models="clr-namespace:To_Do.ViewModels"
     d:Background="Black"
+    d:DataContext="{d:DesignInstance vm_models:WeekViewModel,
+                                     IsDesignTimeCreatable=True}"
     d:DesignHeight="600"
     d:DesignWidth="1020"
     Background="Transparent"

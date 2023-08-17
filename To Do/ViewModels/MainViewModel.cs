@@ -79,10 +79,6 @@ public class MainViewModel : BindableBase, INavigationAware
         {
             messageQueue.Enqueue(message);
         });
-        aggregator.GetEvent<LoadingEvent>().Subscribe((loading) =>
-        {
-            IsLoading = loading;
-        });
     }
 
     private void Naivgate(MenuItem menu)
