@@ -51,8 +51,9 @@ public abstract class BaseViewModel : BindableBase
         IsLoading = true;
     }
 
-    public void CloseLoading()
+    public void CloseLoading(bool hasContent)
     {
         IsLoading = false;
+        IsEmptyList = !hasContent;
     }
 }

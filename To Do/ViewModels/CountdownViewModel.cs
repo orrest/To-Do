@@ -4,6 +4,7 @@ using Prism.Events;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
+using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
 using To_Do.Shared.Paging;
@@ -52,6 +53,7 @@ public class CountdownViewModel : BaseViewModel
 
     public override async void LoadingItems()
     {
+        OpenLoading();
         var response = await service.GetAsync(new CountdownPagingDTO()
         {
             PageIndex = 0
@@ -73,6 +75,12 @@ public class CountdownViewModel : BaseViewModel
                     UnfinishedCountdowns.Add(new CountdownItemViewModel(dto));
                 }
             }
+            CloseLoading(dtos.Count > 0);
+        }
+        else
+        {
+            aggregator.PublishMessage(ViewTitle, "获取数据失败");
+            CloseLoading(false);
         }
     }
 

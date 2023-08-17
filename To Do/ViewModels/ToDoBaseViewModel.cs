@@ -120,15 +120,13 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
                 });
             }
 
-            IsLoading = false;
-            IsEmptyList = Tasks.Count == 0;
+            CloseLoading(tasks.Count > 0);
         }
         else
         {
             aggregator.PublishMessage(viewTitle, "¼ÓÔØÊý¾ÝÊ§°Ü£¬Çë¼ì²éµÇÂ¼×´Ì¬");
+            CloseLoading(false);
         }
-
-        CloseLoading();
     }
 
     private void OpenDrawer()
@@ -188,6 +186,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
                 TaskType = dto.TaskType
             });
             InputTaskDescriptionText = "";
+            IsEmptyList = false;
         }
         else
         {

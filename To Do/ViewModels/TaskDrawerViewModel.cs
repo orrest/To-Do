@@ -108,14 +108,13 @@ public class TaskDrawerViewModel : BaseViewModel
                 });
                 Steps.OrderBy(vm => vm.StepOrder);
             }
-
+            CloseLoading(steps.Count > 0);
         }
         else
         {
             aggregator.PublishMessage(task.TaskDescription, response.Error?.Content);
+            CloseLoading(false);
         }
-
-        CloseLoading();
     }
 
     /// <summary>

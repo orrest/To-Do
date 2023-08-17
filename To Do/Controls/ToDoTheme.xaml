@@ -316,22 +316,51 @@
         <Setter Property="Foreground" Value="#808d97" />
     </Style>
 
-    <Style TargetType="{x:Type local:LoadingProgressBar}">
+    <Style TargetType="{x:Type local:PagingButtons}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:LoadingProgressBar}">
-                    <materialDesign:Card
-                        Padding="4"
-                        Opacity="0.3"
-                        Visibility="{TemplateBinding IsLoading,
-                                                     Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <ProgressBar
-                            Width="50"
-                            Height="50"
-                            IsIndeterminate="True"
-                            Style="{StaticResource MaterialDesignCircularProgressBar}"
-                            Value="50" />
-                    </materialDesign:Card>
+                <ControlTemplate TargetType="{x:Type local:PagingButtons}">
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Margin="5,0"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{TemplateBinding PageRefreshCommand}">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Padding="0"
+                                Foreground="WhiteSmoke"
+                                Kind="Refresh" />
+                        </Button>
+                        <Button
+                            Margin="5,0"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{TemplateBinding PageBackCommand}">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Padding="0"
+                                Foreground="WhiteSmoke"
+                                Kind="ChevronLeft" />
+                        </Button>
+                        <Button
+                            Margin="5,0"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{TemplateBinding PageForwardCommand}">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Padding="0"
+                                Foreground="WhiteSmoke"
+                                Kind="ChevronRight" />
+                        </Button>
+                    </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
