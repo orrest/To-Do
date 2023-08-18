@@ -57,6 +57,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     /// </summary>
     private Dictionary<TaskViewModel, TaskDrawerViewModel> drawerVms;
     public ObservableCollection<TaskViewModel> Tasks { get; private set; }
+    public PagingButtonsViewModel PagingVm { get; private set; }
     public DelegateCommand DrawerOpenCommand { get; private set; }
     public DelegateCommand AddTaskCommand { get; private set; }
 
@@ -65,9 +66,8 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     private readonly IEventAggregator aggregator;
     protected readonly IToDoApi service;
 
-    public ToDoBaseViewModel()
-    {
-    }
+    public ToDoBaseViewModel() {  }
+
     public ToDoBaseViewModel(
         string viewTitle, 
         IToDoApi service, 
@@ -104,7 +104,15 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
 
         if (response.IsSuccessStatusCode)
         {
-            var tasks = response.Content;
+            var page = response.Content;
+            var tasks = page.Items;
+            PagingVm = new PagingButtonsViewModel()
+            {
+                CurrentPage = page.IndexFrom,
+                TotalPages = page.TotalPages,
+                IsBackwardEnable = page.HasPreviousPage,
+                IsForwardEnable = page.HasNextPage
+            };
             foreach (var dto in tasks)
             {
                 Tasks.Insert(0, new TaskViewModel(service, aggregator)
@@ -124,7 +132,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         }
         else
         {
-            aggregator.PublishMessage(viewTitle, "¼ÓÔØÊý¾ÝÊ§°Ü£¬Çë¼ì²éµÇÂ¼×´Ì¬");
+            aggregator.PublishMessage(viewTitle, $"¼ÓÔØÊý¾ÝÊ§°Ü {response.StatusCode}");
             CloseLoading(false);
         }
     }

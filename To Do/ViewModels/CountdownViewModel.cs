@@ -61,7 +61,7 @@ public class CountdownViewModel : BaseViewModel
 
         if (response.IsSuccessStatusCode)
         {
-            var dtos = response.Content;
+            var dtos = response.Content.Items;
             var now = DateTime.Now;
             foreach (var dto in dtos)
             {

@@ -14,14 +14,14 @@ public class PagingButtons : Control
     }
 
 
-    public ICommand PageBackCommand
+    public ICommand PageBackwardCommand
     {
-        get { return (ICommand)GetValue(PageBackCommandProperty); }
-        set { SetValue(PageBackCommandProperty, value); }
+        get { return (ICommand)GetValue(PageBackwardCommandProperty); }
+        set { SetValue(PageBackwardCommandProperty, value); }
     }
-    public static readonly DependencyProperty PageBackCommandProperty =
+    public static readonly DependencyProperty PageBackwardCommandProperty =
         DependencyProperty.Register(
-            "PageBackCommand",
+            "PageBackwardCommand",
             typeof(ICommand),
             typeof(PagingButtons),
             new PropertyMetadata(null));
@@ -55,4 +55,42 @@ public class PagingButtons : Control
             new PropertyMetadata(null));
 
 
+
+    public bool IsRefreshEnable
+    {
+        get { return (bool)GetValue(IsRefreshEnableProperty); }
+        set { SetValue(IsRefreshEnableProperty, value); }
+    }
+    public static readonly DependencyProperty IsRefreshEnableProperty =
+        DependencyProperty.Register(
+            "IsRefreshEnable",
+            typeof(bool),
+            typeof(PagingButtons),
+            new PropertyMetadata(null));
+
+
+    public bool IsBackwardEnable
+    {
+        get { return (bool)GetValue(IsBackwardEnableProperty); }
+        set { SetValue(IsBackwardEnableProperty, value); }
+    }
+    public static readonly DependencyProperty IsBackwardEnableProperty =
+        DependencyProperty.Register(
+            "IsBackwardEnable",
+            typeof(bool),
+            typeof(PagingButtons),
+            new PropertyMetadata(null));
+
+
+    public bool IsForwardEnable
+    {
+        get { return (bool)GetValue(IsForwardEnableProperty); }
+        set { SetValue(IsForwardEnableProperty, value); }
+    }
+    public static readonly DependencyProperty IsForwardEnableProperty =
+        DependencyProperty.Register(
+            "IsForwardEnable",
+            typeof(bool),
+            typeof(PagingButtons),
+            new PropertyMetadata(null));
 }

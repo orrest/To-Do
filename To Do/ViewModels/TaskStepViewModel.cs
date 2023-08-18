@@ -78,9 +78,7 @@ public class TaskStepViewModel : BindableBase
         UpdateStepCommand = new DelegateCommand(Update);
     }
 
-    public TaskStepViewModel()
-    {
-    }
+    public TaskStepViewModel() {  }
 
     private async void Delete()
     {
@@ -115,6 +113,7 @@ public class TaskStepViewModel : BindableBase
             StepDescription = StepDescription,
             StepOrder = StepOrder,
             IsFinished = IsFinished,
+            CreateTime = CreateTime,
             UpdateTime = DateTime.Now
         });
         return response.IsSuccessStatusCode;

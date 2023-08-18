@@ -93,7 +93,7 @@ public class TaskDrawerViewModel : BaseViewModel
 
         if (response.IsSuccessStatusCode)
         {
-            var steps = response.Content;
+            var steps = response.Content.Items;
             foreach (var dto in steps)
             {
                 Steps.Add(new TaskStepViewModel(task, service, (step) => Steps.Remove(step), aggregator)

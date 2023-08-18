@@ -4,6 +4,7 @@ using To_Do.Shared;
 using To_Do.Secrets;
 using System.Collections.Generic;
 using To_Do.Shared.Paging;
+using Arch.EntityFrameworkCore.UnitOfWork.Collections;
 
 namespace To_Do.Services;
 
@@ -24,7 +25,7 @@ public interface IToDoApi
 
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_STEPS_API)]
-    Task<IApiResponse<IList<TaskStepDTO>>> GetStepsAsync([Body] TaskStepPagingDTO paging);
+    Task<IApiResponse<PagedList<TaskStepDTO>>> GetStepsAsync([Body] TaskStepPagingDTO paging);
     #endregion
 
     #region ToDo
@@ -42,7 +43,7 @@ public interface IToDoApi
 
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_TODO_API)]
-    Task<IApiResponse<IList<TaskDTO>>> GetAsync([Body] TaskPagingDTO paging);
+    Task<IApiResponse<PagedList<TaskDTO>>> GetAsync([Body] TaskPagingDTO paging); // Can't IPagedList
     #endregion
 
     #region Countdowns
@@ -60,7 +61,7 @@ public interface IToDoApi
 
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_COUNTDOWN_API)]
-    Task<IApiResponse<IList<CountdownDTO>>> GetAsync([Body] CountdownPagingDTO paging);
+    Task<IApiResponse<PagedList<CountdownDTO>>> GetAsync([Body] CountdownPagingDTO paging);
     #endregion
 
     #region User

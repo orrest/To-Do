@@ -326,7 +326,8 @@
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
-                            Command="{TemplateBinding PageRefreshCommand}">
+                            Command="{TemplateBinding PageRefreshCommand}"
+                            IsEnabled="{TemplateBinding IsRefreshEnable}">
                             <materialDesign:PackIcon
                                 Width="24"
                                 Height="24"
@@ -339,7 +340,8 @@
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
-                            Command="{TemplateBinding PageBackCommand}">
+                            Command="{TemplateBinding PageBackwardCommand}"
+                            IsEnabled="{TemplateBinding IsBackwardEnable}">
                             <materialDesign:PackIcon
                                 Width="24"
                                 Height="24"
@@ -352,7 +354,8 @@
                             Padding="0"
                             Background="Transparent"
                             BorderThickness="0"
-                            Command="{TemplateBinding PageForwardCommand}">
+                            Command="{TemplateBinding PageForwardCommand}"
+                            IsEnabled="{TemplateBinding IsForwardEnable}">
                             <materialDesign:PackIcon
                                 Width="24"
                                 Height="24"

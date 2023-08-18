@@ -4,47 +4,41 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using To_Do.API.Entities;
-using To_Do.API.Services;
 using To_Do.Shared;
-using To_Do.Shared.Paging;
 
 namespace To_Do.API.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("/api/countdowns/[action]")]
-public class CountdownController : ControllerBase
+[Route("/api/steps/[action]")]
+public class TaskStepController : ControllerBase
 {
-    private readonly Guid userId;
     private readonly IUnitOfWork unitOfWork;
     private readonly IMapper mapper;
-    private IRepository<CountdownEntity> repo;
+    private IRepository<TaskStepEntity> repo;
 
-    public CountdownController(
+    public TaskStepController(
         IUnitOfWork unitOfWork,
-        IMapper mapper,
-        IUserProvider userProvider)
+        IMapper mapper)
     {
-        userId = userProvider.GetUserId();
         this.unitOfWork = unitOfWork;
         this.mapper = mapper;
-        this.repo = unitOfWork.GetRepository<CountdownEntity>();
+        this.repo = unitOfWork.GetRepository<TaskStepEntity>();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Get(
-        [FromBody] CountdownPagingDTO paging)
+    public async Task<IActionResult> Get([FromBody] TaskStepPagingDTO paging)
     {
         try
         {
             var res = await repo.GetPagedListAsync(
-                 predicate: cd => cd.UserId.Equals(userId),
-                 pageIndex: paging.PageIndex,
-                 pageSize: paging.PageSize);
+            predicate: step => step.TaskId.Equals(paging.TaskId),
+            pageIndex: paging.PageIndex,
+            pageSize: paging.PageSize);
 
-            var mappedRes = PagedList.From(
-                res,
-                items => mapper.Map<IEnumerable<CountdownEntity>, IEnumerable<CountdownDTO>>(items));
+            var mappedRes = PagedList.From(res, items =>
+                mapper.Map<IEnumerable<TaskStepEntity>, IEnumerable<TaskStepDTO>>(items));
+
             return Ok(mappedRes);
         }
         catch (Exception ex)
@@ -54,20 +48,16 @@ public class CountdownController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] CountdownDTO model)
+    public async Task<IActionResult> Add([FromBody] TaskStepDTO model)
     {
         try
         {
-            var entity = mapper.Map<CountdownEntity>(model);
-            entity.UserId = userId;
+            var entity = mapper.Map<TaskStepEntity>(model);
 
             var add = await repo.InsertAsync(entity);
             var res = await unitOfWork.SaveChangesAsync();
-            var ent = add.Entity;
 
-            return res > 0
-                ? Ok(mapper.Map<CountdownDTO>(ent))
-                : BadRequest("添加失败");
+            return Ok(mapper.Map<TaskStepDTO>(add.Entity));
         }
         catch (Exception ex)
         {
@@ -80,7 +70,6 @@ public class CountdownController : ControllerBase
     {
         try
         {
-            var repo = unitOfWork.GetRepository<CountdownEntity>();
             var entity = await repo.FindAsync(id);
             repo.Delete(entity);
             var res = await unitOfWork.SaveChangesAsync();
@@ -94,14 +83,11 @@ public class CountdownController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update([FromBody] CountdownDTO model)
+    public async Task<IActionResult> Update([FromBody] TaskStepDTO model)
     {
         try
         {
-            var entity = mapper.Map<CountdownEntity>(model);
-            entity.UserId = userId;
-            entity.UpdateTime = DateTime.Now;
-
+            var entity = mapper.Map<TaskStepEntity>(model);
             repo.Update(entity);
             var res = await unitOfWork.SaveChangesAsync();
 
