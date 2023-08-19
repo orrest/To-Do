@@ -3,6 +3,7 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
@@ -60,7 +61,9 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     public PagingButtonsViewModel PagingVm { get; private set; }
     public DelegateCommand DrawerOpenCommand { get; private set; }
     public DelegateCommand AddTaskCommand { get; private set; }
-
+    public DelegateCommand PageBackCommand { get; private set; }
+    public DelegateCommand PageForwardCommand { get; private set; }
+    public DelegateCommand PageRefreshCommand { get; private set; }
 
     protected TaskType taskType;
     private readonly IEventAggregator aggregator;
@@ -80,6 +83,9 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         Tasks = new ObservableCollection<TaskViewModel>();
         DrawerOpenCommand = new DelegateCommand(OpenDrawer);
         AddTaskCommand = new DelegateCommand(AddTask);
+        PageRefreshCommand = new DelegateCommand(PagingRefresh);
+        PageForwardCommand = new DelegateCommand(PagingForward);
+        PageBackCommand = new DelegateCommand(PagingBackward);
 
         this.viewTitle = viewTitle;
         this.service = service;
@@ -89,33 +95,37 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         IsLoading = true;
         IsEmptyList = false;
 
+        PagingVm = new PagingButtonsViewModel();
+
         LoadingItems();
     }
 
     public override async void LoadingItems()
+    {
+        await FetchTasks(PagingButtonsViewModel.FIRST_PAGE);
+    }
+
+    private async Task FetchTasks(int pageIndex)
     {
         OpenLoading();
 
         var response = await service.GetAsync(new TaskPagingDTO()
         {
             TaskType = taskType,
-            PageIndex = 0
+            PageIndex = pageIndex
         });
 
         if (response.IsSuccessStatusCode)
         {
             var page = response.Content;
+
+            PagingVm.SetPageInfo(page);
+
+            Tasks.Clear();
             var tasks = page.Items;
-            PagingVm = new PagingButtonsViewModel()
-            {
-                CurrentPage = page.IndexFrom,
-                TotalPages = page.TotalPages,
-                IsBackwardEnable = page.HasPreviousPage,
-                IsForwardEnable = page.HasNextPage
-            };
             foreach (var dto in tasks)
             {
-                Tasks.Insert(0, new TaskViewModel(service, aggregator)
+                Tasks.Add(new TaskViewModel(service, aggregator)
                 {
                     TaskId = dto.TaskId,
                     TaskDescription = dto.TaskDescription,
@@ -129,6 +139,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
             }
 
             CloseLoading(tasks.Count > 0);
+            aggregator.PublishMessage(viewTitle, $"刷新成功");
         }
         else
         {
@@ -137,7 +148,32 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         }
     }
 
-    private void OpenDrawer()
+    private async void PagingRefresh()
+    {
+        await FetchTasks(PagingVm.CurrentPage);
+    }
+
+    public async void PagingForward()
+    {
+        if (!PagingVm.IsForwardEnable)
+        {
+            return;
+        }
+
+        await FetchTasks(PagingVm.NextPage);
+    }
+
+    public async void PagingBackward()
+    {
+        if (!PagingVm.IsBackwardEnable)
+        {
+            return;
+        }
+
+        await FetchTasks(PagingVm.PreviousPage);
+    }
+
+    public void OpenDrawer()
     {
         IsDrawerOpen = !IsDrawerOpen;
 
@@ -163,10 +199,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         }
     }
 
-    /// <summary>
-    /// 添加一个新任务, 在VM中更新
-    /// </summary>
-    private async void AddTask()
+    public async void AddTask()
     {
         var task = new TaskDTO()
         {

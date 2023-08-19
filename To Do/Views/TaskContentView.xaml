@@ -34,7 +34,13 @@
             Grid.Row="0"
             Margin="40,0"
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom" />
+            VerticalAlignment="Bottom"
+            IsBackwardEnable="{Binding PagingVm.IsBackwardEnable}"
+            IsForwardEnable="{Binding PagingVm.IsForwardEnable}"
+            IsRefreshEnable="True"
+            PageBackwardCommand="{Binding PageBackCommand}"
+            PageForwardCommand="{Binding PageForwardCommand}"
+            PageRefreshCommand="{Binding PageRefreshCommand}" />
 
         <!--  View: Task List  -->
         <ListBox
