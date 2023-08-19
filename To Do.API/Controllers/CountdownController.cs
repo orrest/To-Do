@@ -38,9 +38,10 @@ public class CountdownController : ControllerBase
         try
         {
             var res = await repo.GetPagedListAsync(
-                 predicate: cd => cd.UserId.Equals(userId),
-                 pageIndex: paging.PageIndex,
-                 pageSize: paging.PageSize);
+                predicate: cd => cd.UserId.Equals(userId),
+                pageIndex: paging.PageIndex,
+                pageSize: paging.PageSize,
+                orderBy: items => items.OrderByDescending(ent => ent.UpdateTime));
 
             var mappedRes = PagedList.From(
                 res,

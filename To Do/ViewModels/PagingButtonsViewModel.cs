@@ -1,25 +1,10 @@
-﻿using Prism.Commands;
+﻿using Arch.EntityFrameworkCore.UnitOfWork.Collections;
 using Prism.Mvvm;
-using System;
 
 namespace To_Do.ViewModels;
 
 public class PagingButtonsViewModel : BindableBase
 {
-    private int currentPage;
-    public int CurrentPage
-    {
-        get { return currentPage; }
-        set { currentPage = value; RaisePropertyChanged(); }
-    }
-
-    private int totalPages;
-    public int TotalPages
-    {
-        get { return totalPages; }
-        set { totalPages = value; RaisePropertyChanged(); }
-    }
-
     private bool isBackwardEnable;
     public bool IsBackwardEnable
     {
@@ -34,30 +19,21 @@ public class PagingButtonsViewModel : BindableBase
         set { isForwardEnable = value; RaisePropertyChanged(); }
     }
 
+    public const int FIRST_PAGE = 0;
 
-    public DelegateCommand PageBackCommand { get; private set; }
-    public DelegateCommand PageForwardCommand { get; private set; }
-    public DelegateCommand PageRefreshCommand { get; private set; }
+    public int CurrentPage { get; set; }
+    public int PreviousPage { get; set; }
+    public int NextPage { get; set; }
+    public int TotalPages { get; set; }
 
-    public PagingButtonsViewModel()
+    public PagingButtonsViewModel() {  }
+    public void SetPageInfo<T>(IPagedList<T> page)
     {
-        PageRefreshCommand = new DelegateCommand(Refresh);
-        PageForwardCommand = new DelegateCommand(Forward);
-        PageBackCommand = new DelegateCommand(Backward);
-    }
-
-    private void Refresh()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void Forward()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void Backward()
-    {
-        throw new NotImplementedException();
+        CurrentPage = page.PageIndex;
+        TotalPages = page.TotalPages;
+        PreviousPage = page.HasPreviousPage ? CurrentPage - 1 : CurrentPage;
+        NextPage = page.HasNextPage ? CurrentPage + 1 : CurrentPage;
+        IsBackwardEnable = page.HasPreviousPage;
+        IsForwardEnable = page.HasNextPage;
     }
 }

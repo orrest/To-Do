@@ -32,9 +32,10 @@ public class TaskStepController : ControllerBase
         try
         {
             var res = await repo.GetPagedListAsync(
-            predicate: step => step.TaskId.Equals(paging.TaskId),
-            pageIndex: paging.PageIndex,
-            pageSize: paging.PageSize);
+                predicate: step => step.TaskId.Equals(paging.TaskId),
+                pageIndex: paging.PageIndex,
+                pageSize: paging.PageSize,
+                orderBy: items => items.OrderByDescending(ent => ent.UpdateTime));
 
             var mappedRes = PagedList.From(res, items =>
                 mapper.Map<IEnumerable<TaskStepEntity>, IEnumerable<TaskStepDTO>>(items));
