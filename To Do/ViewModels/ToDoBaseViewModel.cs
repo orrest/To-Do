@@ -58,16 +58,11 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     /// </summary>
     private Dictionary<TaskViewModel, TaskDrawerViewModel> drawerVms;
     public ObservableCollection<TaskViewModel> Tasks { get; private set; }
-    public PagingButtonsViewModel PagingVm { get; private set; }
     public DelegateCommand DrawerOpenCommand { get; private set; }
     public DelegateCommand AddTaskCommand { get; private set; }
-    public DelegateCommand PageBackCommand { get; private set; }
-    public DelegateCommand PageForwardCommand { get; private set; }
-    public DelegateCommand PageRefreshCommand { get; private set; }
 
+    private readonly IToDoApi service;
     protected TaskType taskType;
-    private readonly IEventAggregator aggregator;
-    protected readonly IToDoApi service;
 
     public ToDoBaseViewModel() {  }
 
@@ -76,16 +71,13 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         IToDoApi service, 
         TaskType taskType,
         IEventAggregator aggregator
-    ) : base(aggregator) 
+    ) : base(aggregator)
     {
         drawerVms = new Dictionary<TaskViewModel, TaskDrawerViewModel>();
 
         Tasks = new ObservableCollection<TaskViewModel>();
         DrawerOpenCommand = new DelegateCommand(OpenDrawer);
         AddTaskCommand = new DelegateCommand(AddTask);
-        PageRefreshCommand = new DelegateCommand(PagingRefresh);
-        PageForwardCommand = new DelegateCommand(PagingForward);
-        PageBackCommand = new DelegateCommand(PagingBackward);
 
         this.viewTitle = viewTitle;
         this.service = service;
@@ -95,17 +87,15 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         IsLoading = true;
         IsEmptyList = false;
 
-        PagingVm = new PagingButtonsViewModel();
-
-        LoadingItems();
+        InitFetch();
     }
 
-    public override async void LoadingItems()
+    public override async void InitFetch()
     {
-        await FetchTasks(PagingButtonsViewModel.FIRST_PAGE);
+        await FetchItems(PagingButtonsViewModel.FIRST_PAGE);
     }
 
-    private async Task FetchTasks(int pageIndex)
+    public override async Task FetchItems(int pageIndex)
     {
         OpenLoading();
 
@@ -146,31 +136,6 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
             aggregator.PublishMessage(viewTitle, $"º”‘ÿ ˝æ› ß∞‹ {response.StatusCode}");
             CloseLoading(false);
         }
-    }
-
-    private async void PagingRefresh()
-    {
-        await FetchTasks(PagingButtonsViewModel.FIRST_PAGE);
-    }
-
-    public async void PagingForward()
-    {
-        if (!PagingVm.IsForwardEnable)
-        {
-            return;
-        }
-
-        await FetchTasks(PagingVm.NextPage);
-    }
-
-    public async void PagingBackward()
-    {
-        if (!PagingVm.IsBackwardEnable)
-        {
-            return;
-        }
-
-        await FetchTasks(PagingVm.PreviousPage);
     }
 
     public void OpenDrawer()

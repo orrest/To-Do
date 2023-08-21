@@ -3,6 +3,7 @@ using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
@@ -57,10 +58,7 @@ public class TaskDrawerViewModel : BaseViewModel
     public DelegateCommand AddStepCommand { get; private set; }
     public DelegateCommand DeleteTaskCommand { get; private set; }
 
-    public TaskDrawerViewModel() : base(null)
-    {
-            
-    }
+    public TaskDrawerViewModel() : base(null) {  }
 
     public TaskDrawerViewModel(
         IToDoApi service,
@@ -78,15 +76,21 @@ public class TaskDrawerViewModel : BaseViewModel
         AddStepCommand = new DelegateCommand(AddStep);
         DeleteTaskCommand = new DelegateCommand(DeleteTask);
 
-        LoadingItems();
+        InitFetch();
     }
 
-    public override async void LoadingItems()
+    public override async void InitFetch()
+    {
+        await FetchItems(PagingButtonsViewModel.FIRST_PAGE);
+    }
+
+    public override async Task FetchItems(int pageIndex)
     {
         OpenLoading();
 
-        var response = await service.GetStepsAsync(
-            new TaskStepPagingDTO(){
+        var response = await service.GetAsync(
+            new TaskStepPagingDTO()
+            {
                 PageIndex = 0,
                 TaskId = task.TaskId
             });

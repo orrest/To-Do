@@ -4,6 +4,7 @@ using Prism.Events;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
@@ -30,12 +31,7 @@ public class CountdownViewModel : BaseViewModel
 
     public DelegateCommand CreateCommand { get; private set; }
 
-    public CountdownViewModel()
-        : base(null)
-    {
-           
-    }
-
+    public CountdownViewModel() : base(null) {  }
     public CountdownViewModel(
         IDialogService dialog,
         IEventAggregator aggregator,
@@ -48,19 +44,28 @@ public class CountdownViewModel : BaseViewModel
         this.dialog = dialog;
         this.service = service;
         CreateCommand = new DelegateCommand(Create);
-        LoadingItems();
+
+        InitFetch();
     }
 
-    public override async void LoadingItems()
+    public override async void InitFetch()
+    {
+        await FetchItems(PagingButtonsViewModel.FIRST_PAGE);
+    }
+
+    public override async Task FetchItems(int pageIndex)
     {
         OpenLoading();
         var response = await service.GetAsync(new CountdownPagingDTO()
         {
-            PageIndex = 0
+            PageIndex = pageIndex
         });
 
         if (response.IsSuccessStatusCode)
         {
+            FinishedCountdowns.Clear();
+            UnfinishedCountdowns.Clear();
+
             var dtos = response.Content.Items;
             var now = DateTime.Now;
             foreach (var dto in dtos)

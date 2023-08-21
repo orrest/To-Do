@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using To_Do.Shared;
 using To_Do.Secrets;
-using System.Collections.Generic;
 using To_Do.Shared.Paging;
 using Arch.EntityFrameworkCore.UnitOfWork.Collections;
 
@@ -25,7 +24,7 @@ public interface IToDoApi
 
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_STEPS_API)]
-    Task<IApiResponse<PagedList<TaskStepDTO>>> GetStepsAsync([Body] TaskStepPagingDTO paging);
+    Task<IApiResponse<PagedList<TaskStepDTO>>> GetAsync([Body] TaskStepPagingDTO paging);
     #endregion
 
     #region ToDo
