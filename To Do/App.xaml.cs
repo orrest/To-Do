@@ -1,6 +1,5 @@
 ﻿using Prism.DryIoc;
 using Prism.Ioc;
-using Prism.Services.Dialogs;
 using Refit;
 using System.Windows;
 using To_Do.Helpers;
@@ -20,12 +19,6 @@ public partial class App : PrismApplication
 
     protected override void OnInitialized()
     {
-        if (!SecretHelper.TokenExists())
-        {
-            var dialogService = Container.Resolve<IDialogService>();
-            dialogService.ShowDialog(nameof(LoginDialog));
-        }
-
         base.OnInitialized();
     }
 
@@ -39,7 +32,7 @@ public partial class App : PrismApplication
         }
         var api = RestService.For<IToDoApi>(apiUrl, new RefitSettings()
         {
-            AuthorizationHeaderValueGetter = SecretHelper.GetTokenAsync,
+            AuthorizationHeaderValueGetter = () => SecretHelper.GetTokenAsync(),
             ContentSerializer = new NewtonsoftJsonContentSerializer()
         });
         containerRegistry.RegisterInstance(api);
@@ -57,7 +50,7 @@ public partial class App : PrismApplication
 
         /*dialog*/
         containerRegistry.RegisterDialogWindow<ToDoDialog>();
-        containerRegistry.RegisterDialog<LoginDialog, LogingDialogViewModel>();
+        containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
         containerRegistry.RegisterDialog<CountdownCreateDialog, CountdownCreateDialogViewModel>();
     }
 }
