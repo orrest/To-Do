@@ -5,7 +5,7 @@ using System;
 
 namespace To_Do.ViewModels
 {
-    public class LoginViewModel : BindableBase, IDialogAware
+    public class LogingDialogViewModel : BindableBase, IDialogAware
     {
         public string Title => "";
 
@@ -13,7 +13,7 @@ namespace To_Do.ViewModels
 
         public DelegateCommand CloseCommand { get; private set; }
 
-        public LoginViewModel()
+        public LogingDialogViewModel()
         {
             CloseCommand = new DelegateCommand(Close);
         }

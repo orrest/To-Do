@@ -12,7 +12,7 @@ namespace To_Do.Views
     /// <summary>
     /// LoginView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class LoginDialog : UserControl
     {
         private readonly IToDoApi userService;
         private readonly SnackbarMessageQueue snackbarMessage;
@@ -20,7 +20,7 @@ namespace To_Do.Views
         private readonly int LOGIN = 0;
         private readonly int REGISTER = 1;
 
-        public LoginView(IToDoApi userService)
+        public LoginDialog(IToDoApi userService)
         {
             InitializeComponent();
             this.userService = userService;
