@@ -105,7 +105,7 @@ public class MainViewModel : BindableBase, INavigationAware
             Icon = "ExclamationThick",
             Color = "#7b8791",
             Title = "重要",
-            ViewPath = Helpers.Constants.URGENT_VIEW
+            ViewPath = Helpers.Constants.STARED_VIEW
         });
         MenuItems.Add(new MenuItem
         {

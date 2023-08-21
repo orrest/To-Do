@@ -1,3 +1,5 @@
+using To_Do.Views;
+
 namespace To_Do.Helpers;
 
 public class Constants
@@ -10,8 +12,8 @@ public class Constants
     public static readonly string WEEK_VIEW = "WeekView";
     public static readonly string MONTH_VIEW = "MonthView";
     public static readonly string LONGTERM_VIEW = "LongTermView";
-    public static readonly string COUNTDOWN_VIEW = "CountdownView";
-    public static readonly string URGENT_VIEW = "UrgentView";
+    public static readonly string COUNTDOWN_VIEW = nameof(CountdownView);
+    public static readonly string STARED_VIEW = nameof(StaredView);
 
     public static readonly string COUNTDOWN_CREATE_DIALOG = "CountdownCreateDialog";
 

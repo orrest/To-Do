@@ -18,9 +18,9 @@ namespace To_Do.Views
     /// <summary>
     /// UrgentView.xaml 的交互逻辑
     /// </summary>
-    public partial class UrgentView : UserControl
+    public partial class StaredView : UserControl
     {
-        public UrgentView()
+        public StaredView()
         {
             InitializeComponent();
         }

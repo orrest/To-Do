@@ -108,7 +108,6 @@ public class TaskDrawerViewModel : BaseViewModel
                     CreateTime = dto.CreateTime,
                     UpdateTime = dto.UpdateTime,
                 });
-                Steps.OrderBy(vm => vm.StepOrder);
             }
             CloseLoading(steps.Count > 0);
         }

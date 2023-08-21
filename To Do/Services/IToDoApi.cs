@@ -43,6 +43,10 @@ public interface IToDoApi
     [Headers("Authorization: Bearer")]
     [Post(SecretConstants.GET_TODO_API)]
     Task<IApiResponse<PagedList<TaskDTO>>> GetAsync([Body] TaskPagingDTO paging); // Can't IPagedList
+
+    [Headers("Authorization: Bearer")]
+    [Post(SecretConstants.GET_STARED_TODO_API)]
+    Task<IApiResponse<PagedList<TaskDTO>>> GetStaredAsync([Body] PagingBase paging);
     #endregion
 
     #region Countdowns

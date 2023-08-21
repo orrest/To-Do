@@ -56,6 +56,30 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
+    public async Task<IActionResult> GetStared(
+        [FromBody] PagingBase paging)
+    {
+        try
+        {
+            var res = await repo.GetPagedListAsync(
+                predicate: tsk => tsk.UserId.Equals(userId)
+                    && tsk.IsStared,
+                pageIndex: paging.PageIndex,
+                pageSize: paging.PageSize,
+                orderBy: items => items.OrderByDescending(ent => ent.UpdateTime));
+
+            var mappedRes = PagedList.From(
+                res,
+                items => mapper.Map<IEnumerable<TaskEntity>, IEnumerable<TaskDTO>>(items));
+            return Ok(mappedRes);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex);
+        }
+    }
+
+    [HttpPost]
     public async Task<IActionResult> Add([FromBody] TaskDTO model)
     {
         try
