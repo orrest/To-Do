@@ -13,7 +13,6 @@ namespace To_Do.ViewModels;
 public class TaskDrawerViewModel : BaseViewModel
 {
     private readonly IToDoApi service;
-    private readonly IEventAggregator aggregator;
 
     /// <summary>
     /// 当前Drawer所属的task
@@ -70,7 +69,6 @@ public class TaskDrawerViewModel : BaseViewModel
         this.task = task;
         this.closeDrawer = closeDrawer;
         this.deleteTaskAction = deleteTaskAction;
-        this.aggregator = aggregator;
         this.service = service;
         CloseDrawerCommand = new DelegateCommand(closeDrawer);
         AddStepCommand = new DelegateCommand(AddStep);

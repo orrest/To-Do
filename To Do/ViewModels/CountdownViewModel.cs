@@ -40,7 +40,6 @@ public class CountdownViewModel : BaseViewModel
     {
         this.ViewTitle = "µ¹¼ÆÊ±";
         this.IsEmptyList = true;
-        this.aggregator = aggregator;
         this.dialog = dialog;
         this.service = service;
         CreateCommand = new DelegateCommand(Create);
