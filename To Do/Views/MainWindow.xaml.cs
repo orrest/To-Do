@@ -53,6 +53,6 @@ public partial class MainWindow : Window
     {
         regionManager.RequestNavigate(
             Constants.MAIN_CONTENT_REGION,
-            Constants.MAIN_VIEW);
+            nameof(MainView));
     }
 }

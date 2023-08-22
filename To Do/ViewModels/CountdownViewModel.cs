@@ -9,6 +9,7 @@ using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared;
 using To_Do.Shared.Paging;
+using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
@@ -90,7 +91,7 @@ public class CountdownViewModel : BaseViewModel
 
     private void Create()
     {
-        dialog.ShowDialog(Helpers.Constants.COUNTDOWN_CREATE_DIALOG, result =>
+        dialog.ShowDialog(nameof(CountdownCreateDialog), result =>
         {
             switch (result.Result)
             {

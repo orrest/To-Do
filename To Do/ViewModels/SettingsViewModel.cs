@@ -3,6 +3,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using To_Do.Helpers;
+using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
@@ -31,7 +32,7 @@ public class SettingsViewModel : BindableBase, INavigationAware
     private void NavigateBack()
     {
         regionManager.RequestNavigate(Helpers.Constants.MAIN_CONTENT_REGION,
-            Helpers.Constants.MAIN_VIEW);
+            nameof(MainView));
     }
 
     public bool IsNavigationTarget(NavigationContext navigationContext)

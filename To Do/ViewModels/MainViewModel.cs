@@ -7,6 +7,7 @@ using Prism.Services.Dialogs;
 using System.Collections.ObjectModel;
 using To_Do.Events;
 using To_Do.Models;
+using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
@@ -95,7 +96,7 @@ public class MainViewModel : BindableBase, INavigationAware
     private void OpenSettingsView()
     {
         regionManager.RequestNavigate(Helpers.Constants.MAIN_CONTENT_REGION,
-            Helpers.Constants.SETTINGS_VIEW);
+            nameof(SettingsView));
     }
 
     private void InitMenuItems()
@@ -105,35 +106,35 @@ public class MainViewModel : BindableBase, INavigationAware
             Icon = "ExclamationThick",
             Color = "#7b8791",
             Title = "重要",
-            ViewPath = Helpers.Constants.STARED_VIEW
+            ViewPath = nameof(StaredView)
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarWeekOutline",
             Color = "#78b1ad",
             Title = "周任务",
-            ViewPath = Helpers.Constants.WEEK_VIEW
+            ViewPath = nameof(WeekView)
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarMonthOutline",
             Color = "#84b09d",
             Title = "月任务",
-            ViewPath = Helpers.Constants.MONTH_VIEW
+            ViewPath = nameof(MonthView)
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "CalendarCheckOutline",
             Color = "#bac8d4",
             Title = "长期任务",
-            ViewPath = Helpers.Constants.LONGTERM_VIEW
+            ViewPath = nameof(LongTermView)
         });
         MenuItems.Add(new MenuItem
         {
             Icon = "TimerStarOutline",
             Color = "#9b2a46",
             Title = "倒计时",
-            ViewPath = Helpers.Constants.COUNTDOWN_VIEW
+            ViewPath = nameof(CountdownView)
         });
     }
 
