@@ -124,34 +124,40 @@
                                 Height="24"
                                 Kind="{Binding IsExpanded, Converter={StaticResource BoolToArrowDirectionConverter}}" />
                         </Button>
-                        <!--  Steps  -->
-                        <ItemsControl
+                        <StackPanel
                             Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            ItemsSource="{Binding Steps}"
+                            Margin="20,0,0,0"
                             Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type vm:TaskStepViewModel}">
-                                    <md:Card Margin="3" Padding="5">
-                                        <Grid>
-                                            <!--  Step Check Icon  -->
-                                            <todo:IndicationCheckIcon
-                                                Margin="10,0,0,0"
-                                                HorizontalAlignment="Left"
-                                                Command="{Binding UpdateStepCommand}"
-                                                IsChecked="{Binding IsFinished}" />
-                                            <!--  Step Description  -->
-                                            <TextBlock
-                                                x:Name="StepDescriptionTextBox"
-                                                Margin="50,0,30,0"
-                                                HorizontalAlignment="Center"
-                                                Text="{Binding StepDescription}"
-                                                TextWrapping="Wrap" />
-                                        </Grid>
-                                    </md:Card>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                            <!--  Memo Description  -->
+                            <TextBlock
+                                Margin="10,0,0,5"
+                                FontStyle="Oblique"
+                                Text="{Binding TaskMemo}" />
+                            <!--  Steps  -->
+                            <ItemsControl ItemsSource="{Binding Steps}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type vm:TaskStepViewModel}">
+                                        <md:Card Margin="3" Padding="5">
+                                            <Grid>
+                                                <!--  Step Check Icon  -->
+                                                <todo:IndicationCheckIcon
+                                                    HorizontalAlignment="Left"
+                                                    Command="{Binding UpdateStepCommand}"
+                                                    IsChecked="{Binding IsFinished}" />
+                                                <!--  Step Description  -->
+                                                <TextBlock
+                                                    x:Name="StepDescriptionTextBox"
+                                                    Margin="50,0,30,0"
+                                                    HorizontalAlignment="Center"
+                                                    Text="{Binding StepDescription}"
+                                                    TextWrapping="Wrap" />
+                                            </Grid>
+                                        </md:Card>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
