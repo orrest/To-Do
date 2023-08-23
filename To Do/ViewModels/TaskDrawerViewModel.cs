@@ -2,7 +2,6 @@
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using To_Do.Helpers;
 using To_Do.Services;
@@ -56,6 +55,8 @@ public class TaskDrawerViewModel : BaseViewModel
     public DelegateCommand CloseDrawerCommand { get; private set; }
     public DelegateCommand AddStepCommand { get; private set; }
     public DelegateCommand DeleteTaskCommand { get; private set; }
+
+    public override string ViewTitle => "";
 
     public TaskDrawerViewModel() : base(null) {  }
 

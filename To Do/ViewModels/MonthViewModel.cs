@@ -1,11 +1,14 @@
 using Prism.Events;
 using To_Do.Services;
 using To_Do.Shared;
+using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
 internal class MonthViewModel : ToDoBaseViewModel
 {
     public MonthViewModel(IToDoApi service, IEventAggregator aggregator) 
-        : base("ÔÂÈÎÎñ", service, TaskType.MONTH, aggregator) {  }
+        : base(service, TaskType.MONTH, aggregator) {  }
+
+    public override string ViewTitle => MonthView.Title;
 }

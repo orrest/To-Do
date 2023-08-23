@@ -20,6 +20,10 @@ namespace To_Do.Views
     /// </summary>
     public partial class MonthView : UserControl
     {
+        public const string Title = "月任务";
+        public const string Color = "#84b09d";
+        public const string Icon = "CalendarMonthOutline";
+
         public MonthView()
         {
             InitializeComponent();

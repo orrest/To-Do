@@ -20,6 +20,10 @@ namespace To_Do.Views
     /// </summary>
     public partial class StaredView : UserControl
     {
+        public const string Title = "已标记";
+        public const string Color = "#7b8791";
+        public const string Icon = "ExclamationThick";
+
         public StaredView()
         {
             InitializeComponent();

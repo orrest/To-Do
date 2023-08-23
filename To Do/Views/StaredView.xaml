@@ -2,13 +2,166 @@
     x:Class="To_Do.Views.StaredView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:converters="clr-namespace:To_Do.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:To_Do.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:todo="clr-namespace:To_Do.Controls"
+    xmlns:vm="clr-namespace:To_Do.ViewModels"
+    d:Background="Black"
+    d:DataContext="{d:DesignInstance vm:StaredViewModel,
+                                     IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:BoolToArrowDirectionConverter x:Key="BoolToArrowDirectionConverter" />
+    </UserControl.Resources>
+    <!--  View  -->
     <Grid>
-        <TextBlock Text="重要" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="90" />
+        </Grid.RowDefinitions>
+
+        <!--  View: Title bar  -->
+        <todo:TitleBar
+            Title="{Binding ViewTitle}"
+            Grid.Row="0"
+            Margin="15,0"
+            FontSize="26"
+            IconKind="TimerStartOutline" />
+
+        <!--  Paging buttons  -->
+        <todo:PagingButtons
+            Grid.Row="0"
+            Margin="40,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            IsBackwardEnable="{Binding PagingVm.IsBackwardEnable}"
+            IsForwardEnable="{Binding PagingVm.IsForwardEnable}"
+            IsRefreshEnable="True"
+            PageBackwardCommand="{Binding PageBackCommand}"
+            PageForwardCommand="{Binding PageForwardCommand}"
+            PageRefreshCommand="{Binding PageRefreshCommand}" />
+
+        <!--  Tasks  -->
+        <ListBox
+            Grid.Row="1"
+            Margin="45,0"
+            HorizontalContentAlignment="Stretch"
+            ItemContainerStyle="{StaticResource TaskItemStyle}"
+            ItemsSource="{Binding StaredTasks}"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            SelectedItem="{Binding SelectedTask}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:ExpandableTaskViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="9*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <!--  Task  -->
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="60" />
+                            </Grid.ColumnDefinitions>
+                            <!--  Task List: Left finish icon  -->
+                            <todo:IndicationCheckIcon
+                                x:Name="FinishingCheckIcon"
+                                Grid.Column="0"
+                                Command="{Binding FinishTaskCommand}"
+                                IsChecked="{Binding IsFinished}" />
+                            <!--  Task List: Central task content  -->
+                            <TextBlock
+                                x:Name="DescriptionTextBlock"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{Binding TaskDescription}"
+                                TextWrapping="Wrap">
+                                <behavior:Interaction.Triggers>
+                                    <behavior:EventTrigger EventName="MouseLeftButtonUp">
+                                        <behavior:InvokeCommandAction Command="{Binding ExpandCommand}" />
+                                    </behavior:EventTrigger>
+                                </behavior:Interaction.Triggers>
+                            </TextBlock>
+                            <!--  Task List: Right star icon  -->
+                            <todo:CheckIcon
+                                x:Name="StarIcon"
+                                Grid.Column="2"
+                                Command="{Binding StarTaskCommand}"
+                                IsChecked="{Binding IsStared}" />
+                        </Grid>
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Width="50"
+                            Height="50"
+                            Padding="0"
+                            VerticalContentAlignment="Center"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding ExpandCommand}">
+                            <Button.Clip>
+                                <EllipseGeometry
+                                    Center="25, 25"
+                                    RadiusX="25"
+                                    RadiusY="25" />
+                            </Button.Clip>
+                            <md:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="{Binding IsExpanded, Converter={StaticResource BoolToArrowDirectionConverter}}" />
+                        </Button>
+                        <!--  Steps  -->
+                        <ItemsControl
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            ItemsSource="{Binding Steps}"
+                            Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type vm:TaskStepViewModel}">
+                                    <md:Card Margin="3" Padding="5">
+                                        <Grid>
+                                            <!--  Step Check Icon  -->
+                                            <todo:IndicationCheckIcon
+                                                Margin="10,0,0,0"
+                                                HorizontalAlignment="Left"
+                                                Command="{Binding UpdateStepCommand}"
+                                                IsChecked="{Binding IsFinished}" />
+                                            <!--  Step Description  -->
+                                            <TextBlock
+                                                x:Name="StepDescriptionTextBox"
+                                                Margin="50,0,30,0"
+                                                HorizontalAlignment="Center"
+                                                Text="{Binding StepDescription}"
+                                                TextWrapping="Wrap" />
+                                        </Grid>
+                                    </md:Card>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--  Empty Image  -->
+        <Image
+            Grid.Row="1"
+            Width="180"
+            Source="/Images/emptylist.png"
+            Visibility="{Binding IsEmptyList, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>

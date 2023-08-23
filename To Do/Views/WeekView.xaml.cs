@@ -20,6 +20,9 @@ namespace To_Do.Views
     /// </summary>
     public partial class WeekView : UserControl
     {
+        public const string Title = "周任务";
+        public const string Color = "#78b1ad";
+        public const string Icon = "CalendarWeekOutline";
         public WeekView()
         {
             InitializeComponent();

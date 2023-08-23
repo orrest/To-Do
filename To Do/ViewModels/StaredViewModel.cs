@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using To_Do.Helpers;
 using To_Do.Services;
 using To_Do.Shared.Paging;
+using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
@@ -11,8 +12,12 @@ public class StaredViewModel : BaseViewModel
 {
     private readonly IToDoApi service;
 
-    public ObservableCollection<TaskViewModel> Tasks { get; private set; }
-        = new ObservableCollection<TaskViewModel>();
+    public ObservableCollection<ExpandableTaskViewModel> StaredTasks { get; private set; }
+        = new ObservableCollection<ExpandableTaskViewModel>();
+
+    public override string ViewTitle => StaredView.Title;
+
+    public StaredViewModel() {  }
 
     public StaredViewModel(
         IToDoApi service,
@@ -37,11 +42,11 @@ public class StaredViewModel : BaseViewModel
 
             PagingVm.SetPageInfo(page);
 
-            Tasks.Clear();
+            StaredTasks.Clear();
             var tasks = page.Items;
             foreach (var dto in tasks)
             {
-                Tasks.Add(new TaskViewModel(service, aggregator)
+                StaredTasks.Add(new ExpandableTaskViewModel(service, aggregator)
                 {
                     TaskId = dto.TaskId,
                     TaskDescription = dto.TaskDescription,
@@ -55,11 +60,11 @@ public class StaredViewModel : BaseViewModel
             }
 
             CloseLoading(tasks.Count > 0);
-            aggregator.PublishMessage(viewTitle, $"刷新成功");
+            aggregator.PublishMessage(ViewTitle, $"刷新成功");
         }
         else
         {
-            aggregator.PublishMessage(viewTitle, $"加载数据失败 {response.StatusCode}");
+            aggregator.PublishMessage(ViewTitle, $"加载数据失败 {response.StatusCode}");
             CloseLoading(false);
         }
     }

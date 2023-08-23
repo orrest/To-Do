@@ -32,6 +32,8 @@ public class CountdownViewModel : BaseViewModel
 
     public DelegateCommand CreateCommand { get; private set; }
 
+    public override string ViewTitle => CountdownView.Title;
+
     public CountdownViewModel() : base(null) {  }
     public CountdownViewModel(
         IDialogService dialog,
@@ -39,7 +41,6 @@ public class CountdownViewModel : BaseViewModel
         IToDoApi service
     ) : base(aggregator)
     {
-        this.ViewTitle = "µ¹¼ÆÊ±";
         this.IsEmptyList = true;
         this.dialog = dialog;
         this.service = service;

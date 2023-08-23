@@ -55,10 +55,7 @@ public class MainViewModel : BindableBase, INavigationAware
     /// <summary>
     /// For d:DesignInstance
     /// </summary>
-    public MainViewModel()
-    {
-            
-    }
+    public MainViewModel() {  }
 
     public MainViewModel(
         IRegionManager regionManager,
@@ -103,37 +100,37 @@ public class MainViewModel : BindableBase, INavigationAware
     {
         MenuItems.Add(new MenuItem
         {
-            Icon = "ExclamationThick",
-            Color = "#7b8791",
-            Title = "重要",
+            Icon = StaredView.Icon,
+            Color = StaredView.Color,
+            Title = StaredView.Title,
             ViewPath = nameof(StaredView)
         });
         MenuItems.Add(new MenuItem
         {
-            Icon = "CalendarWeekOutline",
-            Color = "#78b1ad",
-            Title = "周任务",
+            Icon = WeekView.Icon,
+            Color = WeekView.Color,
+            Title = WeekView.Title,
             ViewPath = nameof(WeekView)
         });
         MenuItems.Add(new MenuItem
         {
-            Icon = "CalendarMonthOutline",
-            Color = "#84b09d",
-            Title = "月任务",
+            Icon = MonthView.Icon,
+            Color = MonthView.Color,
+            Title = MonthView.Title,
             ViewPath = nameof(MonthView)
         });
         MenuItems.Add(new MenuItem
         {
-            Icon = "CalendarCheckOutline",
-            Color = "#bac8d4",
-            Title = "长期任务",
+            Icon = LongTermView.Icon,
+            Color = LongTermView.Color,
+            Title = LongTermView.Title,
             ViewPath = nameof(LongTermView)
         });
         MenuItems.Add(new MenuItem
         {
-            Icon = "TimerStarOutline",
-            Color = "#9b2a46",
-            Title = "倒计时",
+            Icon = CountdownView.Icon,
+            Color = CountdownView.Color,
+            Title = CountdownView.Title,
             ViewPath = nameof(CountdownView)
         });
     }

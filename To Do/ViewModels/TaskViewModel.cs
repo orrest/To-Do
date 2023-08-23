@@ -62,8 +62,8 @@ public class TaskViewModel : BindableBase
     }
 
     private DateTime updateTime;
-    private readonly IToDoApi service;
-    private readonly IEventAggregator aggregator;
+    protected readonly IToDoApi service;
+    protected readonly IEventAggregator aggregator;
 
     public DateTime UpdateTime
     {

@@ -67,8 +67,7 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     public ToDoBaseViewModel() {  }
 
     public ToDoBaseViewModel(
-        string viewTitle, 
-        IToDoApi service, 
+        IToDoApi service,
         TaskType taskType,
         IEventAggregator aggregator
     ) : base(aggregator)
@@ -79,7 +78,6 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
         DrawerOpenCommand = new DelegateCommand(OpenDrawer);
         AddTaskCommand = new DelegateCommand(AddTask);
 
-        this.viewTitle = viewTitle;
         this.service = service;
         this.taskType = taskType;
         this.aggregator = aggregator;
@@ -129,11 +127,11 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
             }
 
             CloseLoading(tasks.Count > 0);
-            aggregator.PublishMessage(viewTitle, $"刷新成功");
+            aggregator.PublishMessage(ViewTitle, $"刷新成功");
         }
         else
         {
-            aggregator.PublishMessage(viewTitle, $"加载数据失败 {response.StatusCode}");
+            aggregator.PublishMessage(ViewTitle, $"加载数据失败 {response.StatusCode}");
             CloseLoading(false);
         }
     }

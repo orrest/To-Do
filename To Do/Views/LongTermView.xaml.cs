@@ -20,6 +20,10 @@ namespace To_Do.Views
     /// </summary>
     public partial class LongTermView : UserControl
     {
+        public const string Title = "长期任务";
+        public const string Color = "#bac8d4";
+        public const string Icon = "CalendarCheckOutline";
+
         public LongTermView()
         {
             InitializeComponent();

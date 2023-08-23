@@ -20,6 +20,10 @@ namespace To_Do.Views
     /// </summary>
     public partial class CountdownView : UserControl
     {
+        public const string Title = "倒计时";
+        public const string Color = "#9b2a46";
+        public const string Icon = "TimerStarOutline";
+
         public CountdownView()
         {
             InitializeComponent();

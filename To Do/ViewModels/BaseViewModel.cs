@@ -7,15 +7,7 @@ namespace To_Do.ViewModels;
 
 public abstract class BaseViewModel : BindableBase
 {
-    /// <summary>
-    /// 当前视图的标题
-    /// </summary>
-    protected string viewTitle = "view";
-    public string ViewTitle
-    {
-        get { return viewTitle; }
-        set { viewTitle = value; RaisePropertyChanged(); }
-    }
+    public abstract string ViewTitle { get; }
 
     private bool isEmptyList;
     public bool IsEmptyList
