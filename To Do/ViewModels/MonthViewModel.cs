@@ -5,7 +5,7 @@ using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
-internal class MonthViewModel : ToDoBaseViewModel
+internal class MonthViewModel : TaskCollectionViewModel
 {
     public MonthViewModel(IToDoApi service, IEventAggregator aggregator) 
         : base(service, TaskType.MONTH, aggregator) {  }

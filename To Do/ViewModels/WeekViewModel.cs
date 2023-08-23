@@ -5,7 +5,7 @@ using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
-internal class WeekViewModel : ToDoBaseViewModel
+internal class WeekViewModel : TaskCollectionViewModel
 {
     public WeekViewModel(IToDoApi service, IEventAggregator aggregator) 
         : base(service, TaskType.WEEK, aggregator) { }

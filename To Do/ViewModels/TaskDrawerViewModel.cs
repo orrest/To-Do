@@ -9,7 +9,7 @@ using To_Do.Shared;
 
 namespace To_Do.ViewModels;
 
-public class TaskDrawerViewModel : BaseViewModel
+public class TaskDrawerViewModel : PagingViewModel
 {
     private readonly IToDoApi service;
 
@@ -74,8 +74,6 @@ public class TaskDrawerViewModel : BaseViewModel
         CloseDrawerCommand = new DelegateCommand(closeDrawer);
         AddStepCommand = new DelegateCommand(AddStep);
         DeleteTaskCommand = new DelegateCommand(DeleteTask);
-
-        InitFetch();
     }
 
     public override async void InitFetch()

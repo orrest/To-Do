@@ -1,13 +1,15 @@
 ﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Prism.Regions;
 using System.Threading.Tasks;
 
 namespace To_Do.ViewModels;
 
-public abstract class BaseViewModel : BindableBase
+public abstract class PagingViewModel : BindableBase, INavigationAware
 {
     public abstract string ViewTitle { get; }
+    public bool IsInitialized { get; set; }
 
     private bool isEmptyList;
     public bool IsEmptyList
@@ -29,9 +31,9 @@ public abstract class BaseViewModel : BindableBase
 
     protected IEventAggregator aggregator;
 
-    public BaseViewModel() {  }
+    public PagingViewModel() {  }
 
-    public BaseViewModel(
+    public PagingViewModel(
         IEventAggregator aggregator)
     {
         this.aggregator = aggregator;
@@ -68,6 +70,10 @@ public abstract class BaseViewModel : BindableBase
 
     public abstract Task FetchItems(int pageIndex);
 
+    /// <summary>
+    /// Fetch data when navigated to.
+    /// See OnNavigatedTo.
+    /// </summary>
     public abstract void InitFetch();
 
     public void OpenLoading()
@@ -79,5 +85,38 @@ public abstract class BaseViewModel : BindableBase
     {
         IsLoading = false;
         IsEmptyList = !hasContent;
+    }
+
+    /// <summary>
+    /// Fetch data when navigated to.
+    /// See InitFetch.
+    /// </summary>
+    /// <param name="navigationContext"></param>
+    public virtual void OnNavigatedTo(NavigationContext navigationContext)
+    {
+        if (!IsInitialized)
+        {
+            IsInitialized = true;
+            InitFetch();
+        }
+    }
+
+    /// <summary>
+    /// Determine whether this vm can be navigated to.
+    /// Can use the navigation parameters to determine:
+    ///     var person = navigationContext.Parameters["person"] as Person;
+    /// or the vm's inner state.
+    /// 
+    /// Default returns true.
+    /// </summary>
+    /// <param name="navigationContext"></param>
+    /// <returns></returns>
+    public virtual bool IsNavigationTarget(NavigationContext navigationContext)
+    {
+        return true;
+    }
+
+    public virtual void OnNavigatedFrom(NavigationContext navigationContext)
+    {
     }
 }

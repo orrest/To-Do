@@ -13,7 +13,7 @@ using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
-public class CountdownViewModel : BaseViewModel
+public class CountdownViewModel : PagingViewModel
 {
     private readonly IDialogService dialog;
     private readonly IToDoApi service;
@@ -35,18 +35,16 @@ public class CountdownViewModel : BaseViewModel
     public override string ViewTitle => CountdownView.Title;
 
     public CountdownViewModel() : base(null) {  }
+
     public CountdownViewModel(
         IDialogService dialog,
         IEventAggregator aggregator,
-        IToDoApi service
-    ) : base(aggregator)
+        IToDoApi service) : base(aggregator)
     {
         this.IsEmptyList = true;
         this.dialog = dialog;
         this.service = service;
         CreateCommand = new DelegateCommand(Create);
-
-        InitFetch();
     }
 
     public override async void InitFetch()

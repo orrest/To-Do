@@ -8,7 +8,7 @@ using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
-public class StaredViewModel : BaseViewModel
+public class StaredViewModel : PagingViewModel
 {
     private readonly IToDoApi service;
 
@@ -24,7 +24,6 @@ public class StaredViewModel : BaseViewModel
         IEventAggregator aggregator) : base(aggregator)
     {
         this.service = service;
-        InitFetch();
     }
 
     public override async Task FetchItems(int pageIndex)

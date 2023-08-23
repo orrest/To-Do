@@ -1,5 +1,6 @@
 using Prism.Commands;
 using Prism.Events;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ using To_Do.Shared.Paging;
 
 namespace To_Do.ViewModels;
 
-internal abstract class ToDoBaseViewModel : BaseViewModel
+internal abstract class TaskCollectionViewModel : PagingViewModel
 {
     /// <summary>
     /// 鼠标选中的Task
@@ -64,9 +65,9 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
     private readonly IToDoApi service;
     protected TaskType taskType;
 
-    public ToDoBaseViewModel() {  }
+    public TaskCollectionViewModel() {  }
 
-    public ToDoBaseViewModel(
+    public TaskCollectionViewModel(
         IToDoApi service,
         TaskType taskType,
         IEventAggregator aggregator
@@ -84,8 +85,6 @@ internal abstract class ToDoBaseViewModel : BaseViewModel
 
         IsLoading = true;
         IsEmptyList = false;
-
-        InitFetch();
     }
 
     public override async void InitFetch()

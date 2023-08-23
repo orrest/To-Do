@@ -5,7 +5,7 @@ using To_Do.Views;
 
 namespace To_Do.ViewModels;
 
-internal class LongTermViewModel : ToDoBaseViewModel
+internal class LongTermViewModel : TaskCollectionViewModel
 {
     public LongTermViewModel(IToDoApi service, IEventAggregator aggregator) 
         : base(service, TaskType.LONGTERM, aggregator) {  }
