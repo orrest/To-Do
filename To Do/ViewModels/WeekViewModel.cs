@@ -11,4 +11,6 @@ internal class WeekViewModel : TaskCollectionViewModel
         : base(service, TaskType.WEEK, aggregator) { }
 
     public override string ViewTitle => WeekView.Title;
+
+    public WeekViewModel() {  }
 }

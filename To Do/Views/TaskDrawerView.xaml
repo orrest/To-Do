@@ -55,6 +55,12 @@
 
             </materialDesign:Card>
 
+            <!--  Loading  -->
+            <ProgressBar
+                Grid.Row="1"
+                Style="{StaticResource ProgressBarLoading}"
+                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
             <!--  Drawer: Steps  -->
             <materialDesign:Card Margin="0,5">
                 <ListBox

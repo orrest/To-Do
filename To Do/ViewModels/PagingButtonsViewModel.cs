@@ -5,6 +5,13 @@ namespace To_Do.ViewModels;
 
 public class PagingButtonsViewModel : BindableBase
 {
+    private bool isRefreshEnable;
+    public bool IsRefreshEnable
+    {
+        get { return isRefreshEnable; }
+        set { isRefreshEnable = value; RaisePropertyChanged(); }
+    }
+
     private bool isBackwardEnable;
     public bool IsBackwardEnable
     {
@@ -27,6 +34,7 @@ public class PagingButtonsViewModel : BindableBase
     public int TotalPages { get; set; }
 
     public PagingButtonsViewModel() {  }
+
     public void SetPageInfo<T>(IPagedList<T> page)
     {
         CurrentPage = page.PageIndex;
@@ -35,5 +43,6 @@ public class PagingButtonsViewModel : BindableBase
         NextPage = page.HasNextPage ? CurrentPage + 1 : CurrentPage;
         IsBackwardEnable = page.HasPreviousPage;
         IsForwardEnable = page.HasNextPage;
+        IsRefreshEnable = true;
     }
 }

@@ -368,4 +368,27 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="ProgressBarLoading" TargetType="{x:Type ProgressBar}">
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <materialDesign:Card
+                        Padding="4"
+                        UniformCornerRadius="25"
+                        Visibility="{TemplateBinding Visibility}">
+                        <ProgressBar
+                            Width="30"
+                            Height="30"
+                            Foreground="White"
+                            IsIndeterminate="True"
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            Value="50" />
+                    </materialDesign:Card>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

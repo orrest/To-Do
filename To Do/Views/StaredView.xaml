@@ -42,10 +42,16 @@
             VerticalAlignment="Bottom"
             IsBackwardEnable="{Binding PagingVm.IsBackwardEnable}"
             IsForwardEnable="{Binding PagingVm.IsForwardEnable}"
-            IsRefreshEnable="True"
+            IsRefreshEnable="{Binding PagingVm.IsRefreshEnable}"
             PageBackwardCommand="{Binding PageBackCommand}"
             PageForwardCommand="{Binding PageForwardCommand}"
             PageRefreshCommand="{Binding PageRefreshCommand}" />
+
+        <!--  Loading  -->
+        <ProgressBar
+            Grid.Row="1"
+            Style="{StaticResource ProgressBarLoading}"
+            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <!--  Tasks  -->
         <ListBox
