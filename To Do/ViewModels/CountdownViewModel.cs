@@ -34,7 +34,7 @@ public class CountdownViewModel : PagingViewModel
 
     public override string ViewTitle => CountdownView.Title;
 
-    public CountdownViewModel() : base(null) {  }
+    public CountdownViewModel() {  }
 
     public CountdownViewModel(
         IDialogService dialog,
@@ -65,7 +65,10 @@ public class CountdownViewModel : PagingViewModel
             FinishedCountdowns.Clear();
             UnfinishedCountdowns.Clear();
 
-            var dtos = response.Content.Items;
+            var page = response.Content;
+            PagingVm.SetPageInfo(page);
+            
+            var dtos = page.Items;
             var now = DateTime.Now;
             foreach (var dto in dtos)
             {

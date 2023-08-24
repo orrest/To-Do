@@ -41,12 +41,6 @@
             PageForwardCommand="{Binding PageForwardCommand}"
             PageRefreshCommand="{Binding PageRefreshCommand}" />
 
-        <!--  Loading  -->
-        <ProgressBar
-            Grid.Row="1"
-            Style="{StaticResource ProgressBarLoading}"
-            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
         <!--  View : Countdowns List  -->
         <ScrollViewer
             Grid.Row="1"
@@ -203,5 +197,11 @@
             Width="180"
             Source="/Images/emptylist.png"
             Visibility="{Binding IsEmptyList, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <!--  Loading  -->
+        <ProgressBar
+            Grid.Row="1"
+            Style="{StaticResource ProgressBarLoading}"
+            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>
 </UserControl>
