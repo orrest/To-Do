@@ -14,7 +14,7 @@ namespace To_Do.Views
     /// </summary>
     public partial class LoginView : UserControl
     {
-        private readonly IToDoApi userService;
+        private readonly IToDoApi service;
         private readonly SnackbarMessageQueue snackbarMessage;
 
         private readonly int LOGIN = 0;
@@ -23,7 +23,7 @@ namespace To_Do.Views
         public LoginView(IToDoApi userService)
         {
             InitializeComponent();
-            this.userService = userService;
+            this.service = userService;
             snackbarMessage = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
             MessageBar.MessageQueue = snackbarMessage;
             Transitioner.SelectedIndex = LOGIN;
@@ -53,14 +53,14 @@ namespace To_Do.Views
 
             ProgressBar.IsLoading = true;
 
-            var response = await userService.LoginAsync(
-                new LoginDTO(email, SecretHelper.SHA2Hash(pwd)));
+            var response = await service.LoginAsync(
+                SecretHelper.CreateLoginDTO(email, pwd));
 
             // response
             if (response.IsSuccessStatusCode)
             {
                 snackbarMessage.Enqueue("登录成功");
-                await SecretHelper.SaveTokenAsync(response.Content);
+                await SecretHelper.SaveTokenAsync(response.Content, email, pwd);
             }
             else
             {
@@ -102,7 +102,7 @@ namespace To_Do.Views
             ProgressBar.IsLoading = true;
 
             // TODO Loading
-            var response = await userService.RegisterAsync(
+            var response = await service.RegisterAsync(
                 new RegisterDTO(email, pwd, cfmPwd));
 
             // response

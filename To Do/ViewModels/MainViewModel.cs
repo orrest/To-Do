@@ -4,6 +4,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using System;
 using System.Collections.ObjectModel;
 using To_Do.Events;
 using To_Do.Models;
@@ -71,7 +72,7 @@ public class MainViewModel : BindableBase, INavigationAware
         this.regionManager = regionManager;
         this.dialogService = dialogService;
         this.aggregator = aggregator;
-        messageQueue = new SnackbarMessageQueue();
+        messageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
 
         aggregator.GetEvent<MessageEvent>().Subscribe((message) =>
         {

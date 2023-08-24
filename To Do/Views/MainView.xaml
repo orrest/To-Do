@@ -28,8 +28,9 @@
             <!--  User Popup  -->
             <materialDesign:PopupBox
                 Width="300"
+                Padding="0"
+                materialDesign:ElevationAssist.Elevation="Dp3"
                 materialDesign:RippleAssist.IsDisabled="True"
-                IsPopupOpen="{Binding IsUserPopupOpen}"
                 StaysOpen="True">
                 <materialDesign:PopupBox.ToggleContent>
                     <!--  User Info  -->
@@ -79,7 +80,7 @@
                 </materialDesign:PopupBox.ToggleContent>
                 <materialDesign:Card>
                     <ListBox>
-                        <ListBoxItem>
+                        <ListBoxItem Width="120">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
                                     Margin="5"
@@ -88,7 +89,7 @@
                                 <TextBlock
                                     Margin="5"
                                     VerticalAlignment="Center"
-                                    Text="重试同步" />
+                                    Text="同步" />
                             </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem>
@@ -96,11 +97,11 @@
                                 <materialDesign:PackIcon
                                     Margin="5"
                                     VerticalAlignment="Center"
-                                    Kind="AccountSettings" />
+                                    Kind="Login" />
                                 <TextBlock
                                     Margin="5"
                                     VerticalAlignment="Center"
-                                    Text="管理账户" />
+                                    Text="登录" />
                             </StackPanel>
                             <behavior:Interaction.Triggers>
                                 <behavior:EventTrigger EventName="MouseLeftButtonUp">
@@ -129,9 +130,12 @@
                 </materialDesign:Card>
             </materialDesign:PopupBox>
 
-            <!--  Search box  -->
+            <!--  TODO : Search box  -->
             <Grid Margin="20,8">
-                <TextBox CaretBrush="{StaticResource MaterialDesignDarkForeground}" FontSize="16">
+                <TextBox
+                    CaretBrush="{StaticResource MaterialDesignDarkForeground}"
+                    FontSize="16"
+                    IsEnabled="False">
                     <TextBox.Template>
                         <ControlTemplate TargetType="TextBox">
                             <Grid>
