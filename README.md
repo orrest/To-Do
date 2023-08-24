@@ -142,6 +142,9 @@
 <ul>
 <li>Service
 <ul>
+<li>[x] 注册</li>
+<li>[x] 登录</li>
+<li>[x] token</li>
 <li>[x] 移除IService、Service，直接使用Controller</li>
 </ul>
 </li>
