@@ -7,12 +7,7 @@
 <li>[ ] 用户信息展示</li>
 <li>[ ] 搜索框</li>
 <li>[x] 导航栏</li>
-<li>[x] 登录检测
-<ul>
-<li>[x] 如果没有token，打开登录对话框</li>
-<li>[x] 如果存在token文件，自动登录</li>
-</ul>
-</li>
+<li>[x] 自动登录</li>
 <li>[x] 登录</li>
 <li>[x] 注册</li>
 </ul>
@@ -29,8 +24,8 @@
 <li>分页
 <ul>
 <li>[x] 分页功能</li>
-<li>[x] 测试前后页</li>
-<li>[x] 测试多页数据刷新</li>
+<li>[x] 前后页</li>
+<li>[x] 数据刷新</li>
 </ul>
 </li>
 <li>Task页面
@@ -38,13 +33,13 @@
 <li>[x] 读取任务
 <ul>
 <li>[x] Tasks属性</li>
-<li>[x] 读取到VM并显示</li>
+<li>[x] 读取到集合并显示</li>
 </ul>
 </li>
 <li>[x] 添加任务
 <ul>
 <li>[x] 通过API插入数据库</li>
-<li>[x] 插入到VM并在前端显示</li>
+<li>[x] 插入到集合并在前端显示</li>
 </ul>
 </li>
 <li>[x] 更新任务
@@ -58,7 +53,6 @@
 </li>
 </ul>
 </li>
-<li>[x] 缓存抽屉：由Task的VM决定，在TaskVM中使用字典进行缓存，key是taskId，value是drawerVM的引用</li>
 <li>[x] 月度页面</li>
 <li>[x] 长期任务页面</li>
 </ul>
@@ -79,7 +73,7 @@
 </li>
 <li>[x] 添加备注</li>
 <li>[x] 修改备注</li>
-<li>[ ] 重构，删除外部的所谓缓存，直接在每个Task的vm中自己持有自己的drawer内容。外部也不需要selectedtask</li>
+<li>[ ] 重构，在每个Task的vm中自己持有自己的drawer内容。外部也不需要selectedtask</li>
 </ul>
 </li>
 <li>TaskStepVm
@@ -101,8 +95,8 @@
 </li>
 <li>倒计时页面
 <ul>
-<li>[x] material:Expander未完成</li>
-<li>[x] Progressbar无法自动填充Grid
+<li>[x] material:Expander未完成项</li>
+</ul>
 <ul>
 <li>[x] 确保 HorizontalContentAlignment="Stretch" 设置到ListBox 中</li>
 </ul>
