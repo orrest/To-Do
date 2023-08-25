@@ -93,6 +93,7 @@ public class MainViewModel : BindableBase, INavigationAware
 
     private void OpenSettingsView()
     {
+        IsUserPopupOpen = false;
         regionManager.RequestNavigate(Helpers.Constants.MAIN_CONTENT_REGION,
             nameof(SettingsView));
     }

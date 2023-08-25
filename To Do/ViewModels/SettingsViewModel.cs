@@ -15,6 +15,8 @@ public class SettingsViewModel : BindableBase, INavigationAware
     public DelegateCommand NavigateBackCommand { get; private set; }
     public SnackbarMessageQueue MessageQueue { get; set; }
 
+    public SettingsViewModel() {  }
+
     public SettingsViewModel(IRegionManager regionManager)
     {
         SignOutCommand = new DelegateCommand(SignOut);
