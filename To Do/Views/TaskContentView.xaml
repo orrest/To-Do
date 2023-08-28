@@ -109,6 +109,7 @@
             Grid.Row="2"
             Margin="40,10,40,30"
             VerticalAlignment="Center"
+            Background="#323232"
             FontSize="16"
             Hint="添加任务"
             ReturnCommand="{Binding AddTaskCommand}"

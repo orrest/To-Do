@@ -35,6 +35,7 @@ public partial class App : PrismApplication
             {
                 aggregator.PublishMessage("ToDo", "自动登录成功");
                 aggregator.PublishSyncInfo("Green", "自动登录成功");
+                aggregator.PublishAvatarInfo(user.Email);
                 await SecretHelper.SaveTokenAsync(response.Content);
             }
             else

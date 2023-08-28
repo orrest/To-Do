@@ -54,6 +54,14 @@ public class MainViewModel : BindableBase, INavigationAware
         set { syncVm = value; RaisePropertyChanged(); }
     }
 
+    private AvatarViewModel avatarVm = new AvatarViewModel();
+    public AvatarViewModel AvatarVm
+    {
+        get { return avatarVm; }
+        set { avatarVm = value; RaisePropertyChanged(); }
+    }
+
+
     /// <summary>
     /// For d:DesignInstance
     /// </summary>
@@ -68,6 +76,7 @@ public class MainViewModel : BindableBase, INavigationAware
         OpenLoginDialogCommand = new DelegateCommand(OpenLoginDialog);
         OpenSettingsViewCommand = new DelegateCommand(OpenSettingsView);
         SyncVm = new SyncViewModel(aggregator);
+        AvatarVm = new AvatarViewModel(aggregator);
 
         InitMenuItems();
 

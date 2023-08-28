@@ -2,7 +2,7 @@
 
 namespace To_Do.Events;
 
-public class SyncInfoEvent : PubSubEvent<SyncInfo>
+public class SyncEvent : PubSubEvent<SyncInfo>
 {
 
 }

@@ -45,27 +45,29 @@
 
                         <!--  User Avatar  -->
                         <Grid Grid.Column="0">
-                            <Image
+                            <md:PackIcon
                                 Grid.Column="0"
                                 Width="60"
                                 Height="60"
-                                Source="/Images/avatar.jpg">
-                                <Image.Clip>
+                                Background="{Binding AvatarVm.Color}"
+                                Foreground="White"
+                                Kind="{Binding AvatarVm.Kind}">
+                                <md:PackIcon.Clip>
                                     <EllipseGeometry
                                         Center="30, 30"
                                         RadiusX="30"
                                         RadiusY="30" />
-                                </Image.Clip>
-                            </Image>
+                                </md:PackIcon.Clip>
+                            </md:PackIcon>
                         </Grid>
 
                         <!--  Sync Message  -->
                         <StackPanel Grid.Column="2" VerticalAlignment="Center">
                             <TextBlock
-                                Margin="0,2"
+                                Margin="0,0,0,10"
                                 FontWeight="Bold"
                                 Foreground="AntiqueWhite"
-                                Text="Me" />
+                                Text="{Binding AvatarVm.Email}" />
                             <StackPanel Margin="0,2" Orientation="Horizontal">
                                 <Grid
                                     Width="8"

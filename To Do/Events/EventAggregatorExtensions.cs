@@ -1,5 +1,7 @@
-﻿using Prism.Events;
+﻿using MaterialDesignThemes.Wpf;
+using Prism.Events;
 using System;
+using System.Drawing;
 using To_Do.Events;
 
 namespace To_Do.Helpers;
@@ -21,12 +23,44 @@ public static class EventAggregatorExtensions
     #region SyncInfo event
     public static void PublishSyncInfo(this IEventAggregator aggregator, string color, string info)
     {
-        aggregator.GetEvent<SyncInfoEvent>().Publish(new SyncInfo(color, info));
+        aggregator.GetEvent<SyncEvent>().Publish(new SyncInfo(color, info));
     }
 
     public static void SubscribeSyncInfo(this IEventAggregator aggregator, Action<SyncInfo> action)
     {
-        aggregator.GetEvent<SyncInfoEvent>().Subscribe(action, ThreadOption.UIThread);
+        aggregator.GetEvent<SyncEvent>().Subscribe(action, ThreadOption.UIThread);
+    }
+    #endregion
+
+    #region AvatarInfo event
+    public static void PublishAvatarInfo(this IEventAggregator aggregator, string userName)
+    {
+        var seed = 0;
+        foreach (var ch in userName)
+        {
+            seed += ch;
+        }
+        var random = new Random(seed);
+        var randomColor = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
+
+        var capital = userName[0];
+        var kind = "";
+        if (char.IsLetter(capital))
+        {
+            kind = $"Alpha{char.ToUpper(userName[0])}";
+        } 
+        else if (char.IsDigit(capital))
+        {
+            kind = $"Numeric{char.ToUpper(userName[0])}";
+        }
+
+        aggregator.GetEvent<AvatarEvent>()
+            .Publish(new AvatarInfo($"#{randomColor.Name}", kind, userName));
+    }
+
+    public static void SubscribeAvatarInfo(this IEventAggregator aggregator, Action<AvatarInfo> action)
+    {
+        aggregator.GetEvent<AvatarEvent>().Subscribe(action, ThreadOption.UIThread);
     }
     #endregion
 }
