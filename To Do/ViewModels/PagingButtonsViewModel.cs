@@ -5,7 +5,7 @@ namespace To_Do.ViewModels;
 
 public class PagingButtonsViewModel : BindableBase
 {
-    private bool isRefreshEnable;
+    private bool isRefreshEnable = true;
     public bool IsRefreshEnable
     {
         get { return isRefreshEnable; }

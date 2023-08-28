@@ -33,29 +33,29 @@ public static class EventAggregatorExtensions
     #endregion
 
     #region AvatarInfo event
-    public static void PublishAvatarInfo(this IEventAggregator aggregator, string userName)
+    public static void PublishAvatarInfo(this IEventAggregator aggregator, string email)
     {
         var seed = 0;
-        foreach (var ch in userName)
+        foreach (var ch in email)
         {
             seed += ch;
         }
         var random = new Random(seed);
         var randomColor = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
 
-        var capital = userName[0];
+        var capital = email[0];
         var kind = "";
         if (char.IsLetter(capital))
         {
-            kind = $"Alpha{char.ToUpper(userName[0])}";
+            kind = $"Alpha{char.ToUpper(email[0])}";
         } 
         else if (char.IsDigit(capital))
         {
-            kind = $"Numeric{char.ToUpper(userName[0])}";
+            kind = $"Numeric{char.ToUpper(email[0])}";
         }
 
         aggregator.GetEvent<AvatarEvent>()
-            .Publish(new AvatarInfo($"#{randomColor.Name}", kind, userName));
+            .Publish(new AvatarInfo($"#{randomColor.Name}", kind, email));
     }
 
     public static void SubscribeAvatarInfo(this IEventAggregator aggregator, Action<AvatarInfo> action)

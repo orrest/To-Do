@@ -41,13 +41,13 @@ public partial class App : PrismApplication
             else
             {
                 aggregator.PublishSyncInfo("Red", "自动登录成功");
-                aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录 {response.Error.Message}");
+                aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录");
             }
         }
         catch (FileNotFoundException ex)
         {
             aggregator.PublishSyncInfo("Red", "自动登录失败");
-            aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录 {ex.Message}");
+            aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录");
         }
     }
 

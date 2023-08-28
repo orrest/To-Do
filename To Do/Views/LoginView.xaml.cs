@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Prism.Events;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,15 +16,17 @@ namespace To_Do.Views
     public partial class LoginView : UserControl
     {
         private readonly IToDoApi service;
+        private readonly IEventAggregator aggregator;
         private readonly SnackbarMessageQueue snackbarMessage;
 
         private readonly int LOGIN = 0;
         private readonly int REGISTER = 1;
 
-        public LoginView(IToDoApi userService)
+        public LoginView(IToDoApi service, IEventAggregator aggregator)
         {
             InitializeComponent();
-            this.service = userService;
+            this.service = service;
+            this.aggregator = aggregator;
             snackbarMessage = new SnackbarMessageQueue(TimeSpan.FromSeconds(5));
             MessageBar.MessageQueue = snackbarMessage;
             Transitioner.SelectedIndex = LOGIN;
@@ -62,6 +65,8 @@ namespace To_Do.Views
                 snackbarMessage.Enqueue("登录成功");
                 await SecretHelper.SaveTokenAsync(response.Content);
                 await SecretHelper.SaveSecretsAsync(email, pwd);
+                aggregator.PublishAvatarInfo(email);
+                aggregator.PublishSyncInfo("Green", "登录成功");
             }
             else
             {
