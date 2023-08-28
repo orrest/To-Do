@@ -28,23 +28,25 @@ public partial class App : PrismApplication
 
         try
         {
-            var user = SecretHelper.LocalLoginDTO();
+            var user = SecretHelper.CreateLoginDTOFromLocal();
             var response = await service.LoginAsync(user);
 
-            // response
             if (response.IsSuccessStatusCode)
             {
                 aggregator.PublishMessage("ToDo", "自动登录成功");
-                await SecretHelper.SaveTokenAsync(response.Content, user.Email, user.Password);
+                aggregator.PublishSyncInfo("Green", "自动登录成功");
+                await SecretHelper.SaveTokenAsync(response.Content);
             }
             else
             {
-                aggregator.PublishMessage("ToDo", "自动登录失败, 请手动登录");
+                aggregator.PublishSyncInfo("Red", "自动登录成功");
+                aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录 {response.Error.Message}");
             }
         }
         catch (FileNotFoundException ex)
         {
-            aggregator.PublishMessage("ToDo", "自动登录失败, 请手动登录");
+            aggregator.PublishSyncInfo("Red", "自动登录失败");
+            aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录 {ex.Message}");
         }
     }
 

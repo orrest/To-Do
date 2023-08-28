@@ -58,7 +58,7 @@ public class TaskDrawerViewModel : PagingViewModel
 
     public override string ViewTitle => "";
 
-    public TaskDrawerViewModel() : base(null) {  }
+    public TaskDrawerViewModel() {  }
 
     public TaskDrawerViewModel(
         IToDoApi service,
@@ -117,10 +117,6 @@ public class TaskDrawerViewModel : PagingViewModel
         }
     }
 
-    /// <summary>
-    /// 添加一个新的Step到数据库
-    /// TODO 要不要把它放到dispatcher 闲时
-    /// </summary>
     public async void AddStep()
     {
         var response = await service.AddStepAsync(new TaskStepDTO()

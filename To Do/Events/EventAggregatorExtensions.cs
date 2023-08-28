@@ -17,4 +17,16 @@ public static class EventAggregatorExtensions
         aggregator.GetEvent<MessageEvent>().Subscribe(action, ThreadOption.UIThread);
     }
     #endregion
+
+    #region SyncInfo event
+    public static void PublishSyncInfo(this IEventAggregator aggregator, string color, string info)
+    {
+        aggregator.GetEvent<SyncInfoEvent>().Publish(new SyncInfo(color, info));
+    }
+
+    public static void SubscribeSyncInfo(this IEventAggregator aggregator, Action<SyncInfo> action)
+    {
+        aggregator.GetEvent<SyncInfoEvent>().Subscribe(action, ThreadOption.UIThread);
+    }
+    #endregion
 }

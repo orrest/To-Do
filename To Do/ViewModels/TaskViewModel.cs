@@ -78,10 +78,14 @@ public class TaskViewModel : BindableBase
     public DelegateCommand StarTaskCommand { get; private set; }
     public DelegateCommand UpdateTaskCommand { get; private set; }
 
-    public TaskViewModel()
+    private TaskDrawerViewModel drawer;
+    public TaskDrawerViewModel Drawer
     {
-        
+        get { return drawer; }
+        set { drawer = value; RaisePropertyChanged(); }
     }
+
+    public TaskViewModel() {  }
 
     public TaskViewModel(
         IToDoApi service, 

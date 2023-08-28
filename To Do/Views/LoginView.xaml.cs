@@ -53,14 +53,15 @@ namespace To_Do.Views
 
             ProgressBar.IsLoading = true;
 
-            var response = await service.LoginAsync(
-                SecretHelper.CreateLoginDTO(email, pwd));
+            var dto = SecretHelper.CreateLoginDTO(email, pwd);
+            var response = await service.LoginAsync(dto);
 
             // response
             if (response.IsSuccessStatusCode)
             {
                 snackbarMessage.Enqueue("登录成功");
-                await SecretHelper.SaveTokenAsync(response.Content, email, pwd);
+                await SecretHelper.SaveTokenAsync(response.Content);
+                await SecretHelper.SaveSecretsAsync(email, pwd);
             }
             else
             {

@@ -17,40 +17,41 @@ public class MainViewModel : BindableBase, INavigationAware
     private readonly IRegionManager regionManager;
     private readonly IDialogService dialogService;
     private readonly IEventAggregator aggregator;
-    private MenuItem? selectedItem;
-    private bool isUserPopupOpen = false;
-    private ISnackbarMessageQueue messageQueue;
-    private bool isLoading;
 
     public DelegateCommand<MenuItem> NavigationCommand { get; private set; }
     public DelegateCommand OpenLoginDialogCommand { get; private set; }
     public DelegateCommand OpenSettingsViewCommand { get; private set; }
+    public ISnackbarMessageQueue MessageQueue { get; private set; }
 
     public ObservableCollection<MenuItem> MenuItems { get; private set; }
         = new ObservableCollection<MenuItem>();
 
+    private MenuItem? selectedItem;
     public MenuItem? SelectedItem
     {
         get { return selectedItem; }
         set { selectedItem = value; RaisePropertyChanged(); }
     }
 
+    private bool isUserPopupOpen = false;
     public bool IsUserPopupOpen
     {
         get { return isUserPopupOpen; }
         set { isUserPopupOpen = value; RaisePropertyChanged(); }
     }
-
-    public ISnackbarMessageQueue MessageQueue
-    {
-        get { return messageQueue; }
-        set { messageQueue = value; }
-    }
-
+    
+    private bool isLoading;
     public bool IsLoading
     {
         get { return isLoading; }
         set { isLoading = value; RaisePropertyChanged(); }
+    }
+
+    private SyncViewModel syncVm;
+    public SyncViewModel SyncVm
+    {
+        get { return syncVm; }
+        set { syncVm = value; RaisePropertyChanged(); }
     }
 
     /// <summary>
@@ -66,17 +67,18 @@ public class MainViewModel : BindableBase, INavigationAware
         NavigationCommand = new DelegateCommand<MenuItem>(Naivgate);
         OpenLoginDialogCommand = new DelegateCommand(OpenLoginDialog);
         OpenSettingsViewCommand = new DelegateCommand(OpenSettingsView);
+        SyncVm = new SyncViewModel(aggregator);
 
         InitMenuItems();
 
         this.regionManager = regionManager;
         this.dialogService = dialogService;
         this.aggregator = aggregator;
-        messageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
+        this.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
 
         aggregator.GetEvent<MessageEvent>().Subscribe((message) =>
         {
-            messageQueue.Enqueue(message);
+            MessageQueue.Enqueue(message);
         });
     }
 
@@ -149,6 +151,6 @@ public class MainViewModel : BindableBase, INavigationAware
 
     public void OnNavigatedTo(NavigationContext navigationContext)
     {
-
+        Naivgate(MenuItems[1]);
     }
 }

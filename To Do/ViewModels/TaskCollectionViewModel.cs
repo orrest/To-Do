@@ -1,6 +1,5 @@
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -139,26 +138,22 @@ internal abstract class TaskCollectionViewModel : PagingViewModel
     {
         IsDrawerOpen = !IsDrawerOpen;
 
-        if (SelectedTask != null)
-        {
-            var isContained = drawerVms.ContainsKey(SelectedTask);
-
-            if (!isContained)
-            {
-                drawerVms[SelectedTask] = new TaskDrawerViewModel(
-                    service,
-                    aggregator,
-                    SelectedTask,
-                    () => { IsDrawerOpen = false; }, 
-                    (task) => { Tasks.Remove(task); });
-            }
-
-            CurrentDrawer = drawerVms[SelectedTask];
-        }
-        else
+        if (SelectedTask == null)
         {
             throw new ApplicationException("Task not selected, this OpenDrawer method shouldn't be triggered");
         }
+        
+        if (SelectedTask.Drawer != null)
+        {
+            return;
+        }
+
+        SelectedTask.Drawer = new TaskDrawerViewModel(
+            service,
+            aggregator,
+            SelectedTask,
+            () => { IsDrawerOpen = false; }, 
+            (task) => { Tasks.Remove(task); });
     }
 
     public async void AddTask()
