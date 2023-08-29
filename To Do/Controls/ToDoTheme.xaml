@@ -98,17 +98,6 @@
         </Setter>
     </Style>
 
-    <Style
-        x:Key="TaskStepItemStyle"
-        BasedOn="{StaticResource MaterialDesignListBoxItem}"
-        TargetType="{x:Type ListBoxItem}">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource Self}}" Value="True">
-                <Setter Property="IsSelected" Value="True" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
     <Style TargetType="{x:Type local:CheckIcon}">
         <Setter Property="Template">
             <Setter.Value>

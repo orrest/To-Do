@@ -1,7 +1,6 @@
 using Prism.Commands;
 using Prism.Events;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using To_Do.Helpers;
@@ -53,10 +52,6 @@ internal abstract class TaskCollectionViewModel : PagingViewModel
         set { currentDrawer = value; RaisePropertyChanged(); }
     }
 
-    /// <summary>
-    /// Drawer的ViewModel, 打开抽屉时动态初始化
-    /// </summary>
-    private Dictionary<TaskViewModel, TaskDrawerViewModel> drawerVms;
     public ObservableCollection<TaskViewModel> Tasks { get; private set; }
     public DelegateCommand DrawerOpenCommand { get; private set; }
     public DelegateCommand AddTaskCommand { get; private set; }
@@ -72,8 +67,6 @@ internal abstract class TaskCollectionViewModel : PagingViewModel
         IEventAggregator aggregator
     ) : base(aggregator)
     {
-        drawerVms = new Dictionary<TaskViewModel, TaskDrawerViewModel>();
-
         Tasks = new ObservableCollection<TaskViewModel>();
         DrawerOpenCommand = new DelegateCommand(OpenDrawer);
         AddTaskCommand = new DelegateCommand(AddTask);
@@ -153,7 +146,10 @@ internal abstract class TaskCollectionViewModel : PagingViewModel
             aggregator,
             SelectedTask,
             () => { IsDrawerOpen = false; }, 
-            (task) => { Tasks.Remove(task); });
+            (task) => { 
+                Tasks.Remove(task);
+                IsEmptyList = Tasks.Count == 0;
+            });
     }
 
     public async void AddTask()

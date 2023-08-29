@@ -27,16 +27,6 @@ public class TaskDrawerViewModel : PagingViewModel
     }
 
     /// <summary>
-    /// 当前选中的Step
-    /// </summary>
-    private TaskStepViewModel? currentSelectedStep;
-    public TaskStepViewModel? CurrentSelectedStep
-    {
-        get { return currentSelectedStep; }
-        set { currentSelectedStep = value; RaisePropertyChanged(); }
-    }
-
-    /// <summary>
     /// 添加Step的描述
     /// </summary>
     private string inputStepDescription = "";
@@ -74,6 +64,8 @@ public class TaskDrawerViewModel : PagingViewModel
         CloseDrawerCommand = new DelegateCommand(closeDrawer);
         AddStepCommand = new DelegateCommand(AddStep);
         DeleteTaskCommand = new DelegateCommand(DeleteTask);
+
+        InitFetch();
     }
 
     public override async void InitFetch()

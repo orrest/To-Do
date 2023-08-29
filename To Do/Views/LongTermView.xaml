@@ -24,7 +24,7 @@
         <!--  Right drawer  -->
         <materialDesign:DrawerHost.RightDrawerContent>
             <!--  Drawer: Layout  -->
-            <local:TaskDrawerView DataContext="{Binding CurrentDrawer}" />
+            <local:TaskDrawerView DataContext="{Binding SelectedTask.Drawer}" />
         </materialDesign:DrawerHost.RightDrawerContent>
     </materialDesign:DrawerHost>
 </UserControl>

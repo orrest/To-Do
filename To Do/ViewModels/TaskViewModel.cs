@@ -129,6 +129,7 @@ public class TaskViewModel : BindableBase
             TaskId = TaskId,
             TaskDescription = TaskDescription,
             TaskMemo = TaskMemo,
+            CreateTime = CreateTime,
             UpdateTime = UpdateTime,
             TaskType = TaskType,
             IsFinished = IsFinished,
@@ -142,6 +143,10 @@ public class TaskViewModel : BindableBase
         if (!res)
         {
             aggregator.PublishMessage("TaskViewModel", $"Task#{TaskId} 更新失败");
+        }
+        else
+        {
+            aggregator.PublishMessage("TaskViewModel", $"Task#{TaskId} 更新成功");
         }
     }
 }
