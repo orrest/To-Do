@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /To Do.Secrets/SecretConstants.cs
 /To Do.Secrets/TokenHelper.cs
 /To Do.Secrets/SecretHelper.cs
+/To Do.Secrets/SecretEncrypter.cs
