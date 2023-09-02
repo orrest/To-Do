@@ -33,10 +33,13 @@ public partial class App : PrismApplication
 
             if (response.IsSuccessStatusCode)
             {
+                await SecretHelper.SaveTokenAsync(response.Content);
+                CreateApi(ContainerLocator.Current);
+
                 aggregator.PublishMessage("ToDo", "自动登录成功");
                 aggregator.PublishSyncInfo("Green", "自动登录成功");
                 aggregator.PublishAvatarInfo(user.Email);
-                await SecretHelper.SaveTokenAsync(response.Content);
+                aggregator.PublishStartupNavigation();
             }
             else
             {
@@ -54,17 +57,7 @@ public partial class App : PrismApplication
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
         /*refit*/
-        var apiUrl = SecretConstants.RELEASE_URL;
-        if (SecretConstants.IS_DEV)
-        {
-            apiUrl = SecretConstants.DEV_URL;
-        }
-        var api = RestService.For<IToDoApi>(apiUrl, new RefitSettings()
-        {
-            AuthorizationHeaderValueGetter = () => SecretHelper.GetTokenAsync(),
-            ContentSerializer = new NewtonsoftJsonContentSerializer()
-        });
-        containerRegistry.RegisterInstance(api);
+        CreateApi(containerRegistry);
 
         /*viewmodels*/
         containerRegistry.RegisterForNavigation<MainWindow, MainWindowViewModel>();
@@ -81,5 +74,20 @@ public partial class App : PrismApplication
         containerRegistry.RegisterDialogWindow<ToDoDialog>();
         containerRegistry.RegisterDialog<LoginView, LoginViewModel>();
         containerRegistry.RegisterDialog<CountdownCreateDialog, CountdownCreateDialogViewModel>();
+    }
+
+    public static void CreateApi(IContainerRegistry containerRegistry)
+    {
+        var apiUrl = SecretConstants.RELEASE_URL;
+        if (SecretConstants.IS_DEV)
+        {
+            apiUrl = SecretConstants.DEV_URL;
+        }
+        var api = RestService.For<IToDoApi>(apiUrl, new RefitSettings()
+        {
+            AuthorizationHeaderValueGetter = () => SecretHelper.GetTokenAsync(),
+            ContentSerializer = new NewtonsoftJsonContentSerializer()
+        });
+        containerRegistry.RegisterInstance(api);
     }
 }

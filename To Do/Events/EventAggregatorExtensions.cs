@@ -63,4 +63,16 @@ public static class EventAggregatorExtensions
         aggregator.GetEvent<AvatarEvent>().Subscribe(action, ThreadOption.UIThread);
     }
     #endregion
+
+    #region
+    public static void PublishStartupNavigation(this IEventAggregator aggregator)
+    {
+        aggregator.GetEvent<NavigationEvent>().Publish();
+    }
+
+    public static void SubscribeStartupNavigation(this IEventAggregator aggregator, Action action)
+    {
+        aggregator.GetEvent<NavigationEvent>().Subscribe(action, ThreadOption.UIThread);
+    }
+    #endregion
 }

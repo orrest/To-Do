@@ -7,6 +7,7 @@ using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using To_Do.Events;
+using To_Do.Helpers;
 using To_Do.Models;
 using To_Do.Views;
 
@@ -85,9 +86,13 @@ public class MainViewModel : BindableBase, INavigationAware
         this.aggregator = aggregator;
         this.MessageQueue = new SnackbarMessageQueue(TimeSpan.FromSeconds(3));
 
-        aggregator.GetEvent<MessageEvent>().Subscribe((message) =>
+        aggregator.SubscribeMessage((message) =>
         {
             MessageQueue.Enqueue(message);
+        });
+        aggregator.SubscribeStartupNavigation(() =>
+        {
+            Naivgate(MenuItems[1]);
         });
     }
 
@@ -160,6 +165,5 @@ public class MainViewModel : BindableBase, INavigationAware
 
     public void OnNavigatedTo(NavigationContext navigationContext)
     {
-        Naivgate(MenuItems[1]);
     }
 }
