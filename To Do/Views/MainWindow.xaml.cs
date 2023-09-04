@@ -1,4 +1,5 @@
 ﻿using Prism.Regions;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using To_Do.Helpers;
@@ -39,5 +40,33 @@ public partial class MainWindow : Window
         regionManager.RequestNavigate(
             Constants.MAIN_CONTENT_REGION,
             nameof(MainView));
+    }
+
+    protected override void OnStateChanged(EventArgs e)
+    {
+        if (this.WindowState == WindowState.Minimized)
+        {
+            this.Hide();
+        }
+        base.OnStateChanged(e);
+    }
+
+    private void TrayIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
+    {
+        if (Application.Current.MainWindow.WindowState == WindowState.Minimized)
+        {
+            this.Show();
+            Application.Current.MainWindow.WindowState = WindowState.Normal;
+            Application.Current.MainWindow.Activate();
+        }
+        else
+        {
+            Application.Current.MainWindow.Activate();
+        }
+    }
+
+    private void MenuExit_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
     }
 }
