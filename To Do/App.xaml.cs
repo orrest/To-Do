@@ -2,6 +2,7 @@
 using Prism.Events;
 using Prism.Ioc;
 using Refit;
+using System;
 using System.IO;
 using System.Windows;
 using To_Do.Helpers;
@@ -47,7 +48,7 @@ public partial class App : PrismApplication
                 aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录");
             }
         }
-        catch (FileNotFoundException ex)
+        catch (Exception ex)
         {
             aggregator.PublishSyncInfo("Red", "自动登录失败");
             aggregator.PublishMessage("ToDo", $"自动登录失败, 请手动登录");

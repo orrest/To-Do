@@ -49,7 +49,7 @@ public class StaredViewModel : PagingViewModel
                 {
                     TaskId = dto.TaskId,
                     TaskDescription = dto.TaskDescription,
-                    TaskMemo = dto.TaskMemo,
+                    TaskMemo = string.IsNullOrEmpty(dto.TaskMemo) ? "<ÔÝÎÞ±¸×¢>" : dto.TaskMemo,
                     IsStared = dto.IsStared,
                     IsFinished = dto.IsFinished,
                     CreateTime = dto.CreateTime,
