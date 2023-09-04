@@ -5,24 +5,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="clr-namespace:To_Do.Helpers"
     xmlns:local="clr-namespace:To_Do"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
     Width="1020"
     Height="600"
     MinWidth="1020"
     MinHeight="600"
-    AllowsTransparency="True"
     Background="Transparent"
     FontFamily="{DynamicResource MaterialDesignFont}"
+    Loaded="Window_Loaded"
     TextElement.FontSize="14"
     TextElement.FontWeight="Regular"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
-    WindowStyle="None"
-    mc:Ignorable="d"
-        Loaded="Window_Loaded">
+    mc:Ignorable="d">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
@@ -40,10 +39,24 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!--  System bar  -->
+            <tb:TaskbarIcon
+                x:Name="TrayIcon"
+                IconSource="/todo.ico"
+                ToolTipText="My Application">
+                <!--  添加菜单项  -->
+                <tb:TaskbarIcon.ContextMenu>
+                    <ContextMenu>
+                        退出
+                    </ContextMenu>
+                </tb:TaskbarIcon.ContextMenu>
+            </tb:TaskbarIcon>
+
+
             <!--  Title bar  -->
-            <materialDesign:ColorZone
+            <md:ColorZone
                 x:Name="TitleBar"
-                materialDesign:ElevationAssist.Elevation="Dp4"
+                md:ElevationAssist.Elevation="Dp4"
                 Background="{StaticResource MaterialDesignDarkBackground}"
                 CornerRadius="8,8,0,0"
                 Mode="PrimaryMid"
@@ -68,28 +81,25 @@
                             Background="Transparent"
                             BorderBrush="Transparent"
                             BorderThickness="0"
-                            Click="btnMin_Click"
-                            Content="{materialDesign:PackIcon Kind=WindowMinimize}"
+                            Content="{md:PackIcon Kind=WindowMinimize}"
                             Style="{StaticResource MaterialDesignFlatMidBgButton}" />
                         <Button
                             Name="btnMax"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             BorderThickness="0"
-                            Click="btnMax_Click"
-                            Content="{materialDesign:PackIcon Kind=WindowMaximize}"
+                            Content="{md:PackIcon Kind=WindowMaximize}"
                             Style="{StaticResource MaterialDesignFlatMidBgButton}" />
                         <Button
                             Name="btnClose"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             BorderThickness="0"
-                            Click="btnClose_Click"
-                            Content="{materialDesign:PackIcon Kind=WindowClose}"
+                            Content="{md:PackIcon Kind=WindowClose}"
                             Style="{StaticResource MaterialDesignFlatMidBgButton}" />
                     </StackPanel>
                 </DockPanel>
-            </materialDesign:ColorZone>
+            </md:ColorZone>
 
             <!--  Content  -->
             <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static helpers:Constants.MAIN_CONTENT_REGION}" />

@@ -13,13 +13,17 @@
     <None Remove="Images\avatar.jpg" />
     <None Remove="Images\emptylist.png" />
     <None Remove="Images\todo.png" />
+    <None Remove="todo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="todo.ico" />
+    <Resource Include="todo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Refit" Version="6.3.2" />
@@ -39,6 +43,9 @@
     <Resource Include="Images\avatar.jpg" />
     <Resource Include="Images\emptylist.png" />
     <Resource Include="Images\todo.png" />
+    <Resource Include="todo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

@@ -15,21 +15,6 @@ public partial class MainWindow : Window
         this.regionManager = regionManager;
     }
 
-    private void btnMin_Click(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
-    }
-
-    private void btnMax_Click(object sender, RoutedEventArgs e)
-    {
-        WindowScale();
-    }
-
-    private void btnClose_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
-
     private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed)
