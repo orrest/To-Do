@@ -100,7 +100,7 @@ public class CountdownViewModel : PagingViewModel
                 case ButtonResult.OK:
                     var dto = result.Parameters
                         .GetValue<CountdownDTO>("Countdown");
-                    UnfinishedCountdowns.Add(new CountdownItemViewModel(dto));
+                    UnfinishedCountdowns.Insert(0, new CountdownItemViewModel(dto));
                     break;
                 default: 
                     break;

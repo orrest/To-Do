@@ -126,15 +126,23 @@
                     Width="80"
                     Margin="10,0"
                     HorizontalAlignment="Right"
+                    md:ButtonProgressAssist.IndicatorForeground="White"
+                    md:ButtonProgressAssist.IsIndeterminate="{Binding IsLoading}"
+                    md:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
+                    BorderBrush="#4ba89f"
                     Command="{Binding AddCountdownCommand}"
                     Content="添加"
+                    Foreground="White"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBooleanConverter}}"
                     Style="{StaticResource MaterialDesignOutlinedLightButton}" />
                 <Button
                     Width="80"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Right"
+                    BorderBrush="#4ba89f"
                     Command="{Binding CancelCommand}"
                     Content="取消"
+                    Foreground="White"
                     Style="{StaticResource MaterialDesignOutlinedLightButton}" />
             </StackPanel>
         </StackPanel>

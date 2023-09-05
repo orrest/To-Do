@@ -180,6 +180,8 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             md:ButtonAssist.CornerRadius="15"
+            Background="#4ba89f"
+            BorderThickness="0"
             Command="{Binding CreateCommand}">
             <StackPanel Orientation="Horizontal">
                 <md:PackIcon VerticalAlignment="Center" Kind="Add" />

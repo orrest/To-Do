@@ -98,6 +98,16 @@ public class CountdownCreateDialogViewModel : BindableBase, IDialogAware
     }
 
     /// <summary>
+    /// 访问网络的loading
+    /// </summary>
+    private bool isLoading;
+    public bool IsLoading
+    {
+        get { return isLoading; }
+        set { isLoading = value; RaisePropertyChanged(); }
+    }
+
+    /// <summary>
     /// 关闭本dialog
     /// </summary>
     public DelegateCommand CancelCommand { get; private set; }
@@ -155,27 +165,40 @@ public class CountdownCreateDialogViewModel : BindableBase, IDialogAware
 
     private async void AddCountdown()
     {
-        var response = await service.AddAsync(new CountdownDTO()
+        try
         {
-            CreateTime = CreateDate,
-            UpdateTime = CreateDate,
-            Icon = SelectedIcon,
-            Description = Description,
-            StartDate = CreateDate,
-            EndDate = TargetDate
-        });
+            IsLoading = true;
 
-        if (response.IsSuccessStatusCode)
-        {
-            var dto = new DialogParameters
+            var response = await service.AddAsync(new CountdownDTO()
             {
-                { "Countdown", response.Content }
-            };
-            RequestClose?.Invoke(new DialogResult(ButtonResult.OK, dto));
-        }
+                CreateTime = CreateDate,
+                UpdateTime = CreateDate,
+                Icon = SelectedIcon,
+                Description = Description,
+                StartDate = CreateDate,
+                EndDate = TargetDate
+            });
 
-        aggregator.PublishMessage("Countdown", $"{response.IsSuccessStatusCode}, " +
-            $"{response.Content}");
+            if (response.IsSuccessStatusCode)
+            {
+                var dto = new DialogParameters
+                {
+                    { "Countdown", response.Content }
+                };
+                RequestClose?.Invoke(new DialogResult(ButtonResult.OK, dto));
+            }
+
+            aggregator.PublishMessage("Countdown", $"{response.IsSuccessStatusCode}, " +
+                $"{response.Content}");
+        }
+        catch (Exception ex)
+        {
+            aggregator.PublishMessage("Countdown", $"{ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private void CancelDialog()
